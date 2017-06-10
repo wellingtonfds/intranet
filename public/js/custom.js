@@ -3,6 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+function getCategories(){
+    return $.ajax({
+        url:'/api/list/categories',
+        'type':'get',
+        'dataType':'json'
+    }).fail(function( jqXHR, textStatus, errorThrown ){
+        alert('Falha ao recuperar as categorias')
+    })
+}
+
 
 var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
     $BODY = $('body'),
@@ -82,9 +92,7 @@ $(document).ready(function() {
     }).parent().addClass('active');
 
     // recompute content when resizing
-    $(window).smartresize(function(){  
-        setContentHeight();
-    });
+
 
     setContentHeight();
 
@@ -99,9 +107,21 @@ $(document).ready(function() {
 });
 // /Sidebar
 
+
+
 // Panel toolbox
 $(document).ready(function() {
     $BODY.toggleClass('nav-md nav-sm');
+    getCategories().done(function(response){
+        for(i=0;i<response.length;i++){
+            console.log(response[i]);
+            $('.nav .child_menu').append(
+            '<li><a href="categorie/'+response[i].id+'">'+response[i].name+'</a></li>'
+            );
+        }
+
+
+    });
     $('.collapse-link').on('click', function() {
         var $BOX_PANEL = $(this).closest('.x_panel'),
             $ICON = $(this).find('i'),
@@ -133,6 +153,8 @@ $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip({
         container: 'body'
     });
+
+
 });
 // /Tooltip
 

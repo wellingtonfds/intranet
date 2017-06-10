@@ -38,6 +38,7 @@
 </head>
 
 <body class="nav-md">
+
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col">
@@ -57,15 +58,16 @@
                             </li>
                             <li><a><i class="fa fa-edit"></i> Informes <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a href="form.html">SAP</a></li>
-                                    <li><a href="form_advanced.html">Contigência</a></li>
-                                    <li><a href="form_validation.html">Hora Certa</a></li>
-                                    <li><a href="form_wizards.html">Recebimento</a></li>
-                                    <li><a href="form_upload.html">Informativos</a></li>
-                                    <li><a href="form_buttons.html">Planilhas</a></li>
-                                    <li><a href="form_buttons.html">Links de acesso</a></li>
                                 </ul>
                             </li>
+                            @can('admin')
+                            <li>
+                                <a href="/procedimentos"><i class="fa fa-file">
+                                    </i>Prodecimentos<span class="fa fa-chevron-down"></span></a>
+
+                            </li>
+                            @endcan
+
                         </ul>
                     </div>
                 </div>
@@ -216,6 +218,7 @@
         <!-- /footer content -->
     </div>
 </div>
+
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
