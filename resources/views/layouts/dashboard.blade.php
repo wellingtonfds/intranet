@@ -35,6 +35,8 @@
 
     <!-- Custom Theme Style -->
     <link href="{{ asset('/css/custom.min.css') }}" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="{{ asset('/css/all.css') }}" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -62,10 +64,16 @@
                             </li>
                             @can('admin')
                             <li>
-                                <a href="/procedimentos"><i class="fa fa-file">
+                                <a href="/categories"><i class="fa fa-file">
+                                    </i>Categorias<span class="fa fa-chevron-down"></span></a>
+
+                            </li>
+                            <li>
+                                <a href="/procedures"><i class="fa fa-file">
                                     </i>Prodecimentos<span class="fa fa-chevron-down"></span></a>
 
                             </li>
+
                             @endcan
 
                         </ul>
@@ -222,6 +230,11 @@
 
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/all.js') }}"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.js"></script>
+
 <!-- jQuery -->
 {{--<script src="../vendors/jquery/dist/jquery.min.js"></script>--}}
 <!-- Bootstrap -->

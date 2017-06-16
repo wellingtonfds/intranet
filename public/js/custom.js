@@ -114,7 +114,6 @@ $(document).ready(function() {
     $BODY.toggleClass('nav-md nav-sm');
     getCategories().done(function(response){
         for(i=0;i<response.length;i++){
-            console.log(response[i]);
             $('.nav .child_menu').append(
             '<li><a href="categorie/'+response[i].id+'">'+response[i].name+'</a></li>'
             );
