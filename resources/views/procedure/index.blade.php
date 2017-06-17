@@ -25,7 +25,10 @@
             @forelse($procedures as $procedure)
                 <tr>
                     <td>{{$procedure->name}}</td>
-                    <td></td>
+                    <td>{{$procedure->category->name}}</td>
+                    <td>{{$procedure->publish ? $procedure->date_publish->format('d/m/Y') : "Não publicado"}}</td>
+                    <td>{{empty($procedure->date_publish_finish) ? 'Sem limite' : $procedure->date_publish_finish->format('d/m/Y')}}</td>
+                    <td>{{$procedure->download ? 'Sim' : 'Não' }}</td>
                     <td>
                         <input type="hidden" class="id-category" value="{{$procedure->id}}">
                         <button class="btn btn-primary btn-xs editar">
@@ -34,6 +37,7 @@
                         <button class="btn btn-danger btn-xs excluir">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
+                        <a href="{{str_replace('/public/','/storage/',asset($procedure->file))}}">File</a>
                     </td>
                 </tr>
             @empty
@@ -57,9 +61,10 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Nova procedimento</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <form>
+                <form id="newFormProcedure" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="row">
+
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Nome</label>
@@ -70,7 +75,7 @@
                                 <div class="form-group">
                                     <label>Data final publicação</label>
                                     <input type="text" class="form-control" name="date_publish_finish"
-                                           id="date_publish_finish" required>
+                                           id="date_publish_finish">
                                 </div>
                             </div>
                             <div class="col-sm-12">
@@ -101,13 +106,14 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary insertCategory">Salvar</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary insertProcedure">Salvar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -152,6 +158,15 @@
 @endsection
 @section('scripts')
     <script>
+        function dateBrToUs(date) {
+            if (date !== '') {
+                aux = date.split('/');
+                return aux[2] + '-' + aux[1] + '-' + aux[0];
+            }
+            return date;
+
+
+        }
         function request(url, method, data) {
             return $.ajax({
                 url: url,
@@ -198,111 +213,112 @@
             })
         }
         $(document).ready(function () {
+            $('#date_publish_finish').datepicker();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $('.insertCategory').click(function () {
-                var category = {
-                    name: $('#name').val(),
-                    description: $('#description').val().trim()
-                }
-                request('categories', 'post', category).done(function (response) {
-                    swal({
-                        title: 'Categoria inserida!',
-                        text: 'A tela irá se recarregar em 2 segundos.',
-                        timer: 2000
-                    }).then(
-                            function () {
-                                location.reload();
-                            },
-                            // handling the promise rejection
-                            function (dismiss) {
-                                if (dismiss === 'timer') {
-                                    location.reload();
-                                }
-                            }
-                    )
-                })
-            });
+            $('#newFormProcedure').submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                formData.set('date_publish_finish', dateBrToUs(formData.get('date_publish_finish')));
 
-            $(document).on('click', '.editar', function () {
-                var id = $(this).parent().find('.id-category').val();
-                request('categories/' + id + '/edit', 'get').done(function (response) {
-                    $('#nameEdit').val(response.name);
-                    $('#descriptionEdit').val(response.description)
-                    $('#idEdit').val(response.id);
-                    $('#editCategory').modal('show');
-                })
-            });
-            $(document).on('click', '.excluir', function () {
-                var id = $(this).parent().find('.id-category').val();
-                swal({
-                    title: 'Você tem certeza?',
-                    text: "Não será possível reverter",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sim, faça isso!',
-                    cancelButtonText: 'Não, cancelar!',
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
-                    buttonsStyling: false
-                }).then(function () {
+                $.ajax({
+                    url: 'procedures', // Url do lado server que vai receber o arquivo
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    statusCode: {
+                        422: function (response) {
+                            console.log(response.responseJSON)
 
-
-                    request('categories/' + id, 'delete').done(function (response) {
-                        swal({
-                            title: 'Apagado!',
-                            text: 'A categoria foi deletada',
-                            type: 'success'
-                        }).then(function () {
-                            location.reload();
-                        })
-                    });
-
-                }, function (dismiss) {
-                    // dismiss can be 'cancel', 'overlay',
-                    // 'close', and 'timer'
-                    if (dismiss === 'cancel') {
-                        swal(
-                                'Cancelado',
-                                'Nenhum dado foi removido',
-                                'error'
-                        )
+                        },
+                    },
+                    success: function (data) {
+                        console.log(data);
                     }
-                })
+                });
+            });
 
+        });
 
+        $(document).on('click', '.editar', function () {
+            var id = $(this).parent().find('.id-category').val();
+            request('categories/' + id + '/edit', 'get').done(function (response) {
+                $('#nameEdit').val(response.name);
+                $('#descriptionEdit').val(response.description)
+                $('#idEdit').val(response.id);
+                $('#editCategory').modal('show');
             })
-            $(".updateCategory").click(function () {
-                var category = {
-                    name: $('#nameEdit').val(),
-                    description: $('#descriptionEdit').val(),
-                    id: $('#idEdit').val()
-                }
-                request('categories/' + category.id, 'put', category).done(function (response) {
+        });
+        $(document).on('click', '.excluir', function () {
+            var id = $(this).parent().find('.id-category').val();
+            swal({
+                title: 'Você tem certeza?',
+                text: "Não será possível reverter",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, faça isso!',
+                cancelButtonText: 'Não, cancelar!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false
+            }).then(function () {
 
+
+                request('categories/' + id, 'delete').done(function (response) {
                     swal({
-                        title: 'Categoria atualizada!',
-                        text: 'A tela irá se recarregar em 2 segundos.',
-                        timer: 2000
-                    }).then(
-                            function () {
-                                location.reload();
-                            },
-                            // handling the promise rejection
-                            function (dismiss) {
-                                if (dismiss === 'timer') {
-                                    location.reload();
-                                }
-                            }
-                    )
+                        title: 'Apagado!',
+                        text: 'A categoria foi deletada',
+                        type: 'success'
+                    }).then(function () {
+                        location.reload();
+                    })
                 });
 
+            }, function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    swal(
+                            'Cancelado',
+                            'Nenhum dado foi removido',
+                            'error'
+                    )
+                }
             })
+
+
+        })
+        $(".updateCategory").click(function () {
+            var category = {
+                name: $('#nameEdit').val(),
+                description: $('#descriptionEdit').val(),
+                id: $('#idEdit').val()
+            }
+            request('categories/' + category.id, 'put', category).done(function (response) {
+
+                swal({
+                    title: 'Categoria atualizada!',
+                    text: 'A tela irá se recarregar em 2 segundos.',
+                    timer: 2000
+                }).then(
+                        function () {
+                            location.reload();
+                        },
+                        // handling the promise rejection
+                        function (dismiss) {
+                            if (dismiss === 'timer') {
+                                location.reload();
+                            }
+                        }
+                )
+            });
+
         });
     </script>
 

@@ -37,6 +37,9 @@
     <link href="{{ asset('/css/custom.min.css') }}" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet">
+    {{--Jquery UI--}}
+    <link href="{{ asset('/css/jquery-ui.theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/jquery-ui.css') }}" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -275,6 +278,7 @@
 
 <!-- Custom Theme Scripts -->
 <script src="{{ asset('/js/custom.js') }}"></script>
+<script src="{{ asset('/js/jquery-ui.min.js') }}"></script>
 @yield('scripts')
 
 </body>
