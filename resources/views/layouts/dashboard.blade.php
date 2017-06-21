@@ -275,10 +275,10 @@
 <!-- bootstrap-daterangepicker -->
 <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
 <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-
 <!-- Custom Theme Scripts -->
 <script src="{{ asset('/js/custom.js') }}"></script>
 <script src="{{ asset('/js/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('/js/jquery.media.js') }}"></script>
 @yield('scripts')
 
 </body>

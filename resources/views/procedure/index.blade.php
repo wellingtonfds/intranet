@@ -15,29 +15,41 @@
         </div>
         <table class="table table-striped hover">
             <thead>
-            <th>Name</th>
+            <th>Nome</th>
+            <th>Versão</th>
             <th>Categoria</th>
             <th>Publicação</th>
             <th>Final publicação</th>
             <th>Download</th>
+            <th>Fase</th>
+            <th></th>
             </thead>
             <tbody>
             @forelse($procedures as $procedure)
                 <tr>
                     <td>{{$procedure->name}}</td>
+                    <td>{{ $procedure->revisions()->count()}}</td>
                     <td>{{$procedure->category->name}}</td>
                     <td>{{$procedure->publish ? $procedure->date_publish->format('d/m/Y') : "Não publicado"}}</td>
                     <td>{{empty($procedure->date_publish_finish) ? 'Sem limite' : $procedure->date_publish_finish->format('d/m/Y')}}</td>
                     <td>{{$procedure->download ? 'Sim' : 'Não' }}</td>
+                    <td>{{$procedure->step()}}</td>
                     <td>
-                        <input type="hidden" class="id-category" value="{{$procedure->id}}">
+                        <input type="hidden" class="id-procedure" value="{{$procedure->id}}">
+                        <input type="hidden" class="url-procedure"
+                               value="{{str_replace('/public/','/storage/',asset($procedure->file))}}">
                         <button class="btn btn-primary btn-xs editar">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
                         <button class="btn btn-danger btn-xs excluir">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
-                        <a href="{{str_replace('/public/','/storage/',asset($procedure->file))}}">File</a>
+                        <button class="btn btn-success btn-xs view">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </button>
+                        <button class="btn btn-warning btn-xs" title="Revisões do procedimento">
+                            <span class="glyphicon glyphicon-file"></span>
+                        </button>
                     </td>
                 </tr>
             @empty
@@ -51,7 +63,6 @@
         </table>
         {{$procedures->links()}}
     </div>
-
     <!-- Modal New Category-->
     <div class="modal fade" id="newCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -155,6 +166,20 @@
             </div>
         </div>
     </div>
+
+    {{--View Files--}}
+    <div class="modal fade bs-example-modal-lg" id="view-files" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <a href="" class="media"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script>
@@ -213,6 +238,7 @@
             })
         }
         $(document).ready(function () {
+            //$('.media').media();
             $('#date_publish_finish').datepicker();
             $.ajaxSetup({
                 headers: {
@@ -246,12 +272,23 @@
 
         $(document).on('click', '.editar', function () {
             var id = $(this).parent().find('.id-category').val();
+
             request('categories/' + id + '/edit', 'get').done(function (response) {
                 $('#nameEdit').val(response.name);
                 $('#descriptionEdit').val(response.description)
                 $('#idEdit').val(response.id);
                 $('#editCategory').modal('show');
             })
+        });
+        $(document).on('click', '.view', function () {
+            var url = $(this).parent().find('.url-procedure').val();
+
+            $('.media').attr('href', url);
+            $('.media').media({
+                width:     885,
+                height:    800,
+            });
+            $('#view-files').modal('show');
         });
         $(document).on('click', '.excluir', function () {
             var id = $(this).parent().find('.id-category').val();
