@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 Route::resource('/categories','CategoryController');
 Route::resource('/procedures','ProcedureController');
+Route::get('/procedure/details/{procedure}','ProcedureController@details');
+Route::put('/procedure/state/{procedure}','ProcedureController@state');

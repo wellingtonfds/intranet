@@ -1,7 +1,14 @@
 @extends('layouts.dashboard')
 
 @section('content')
-
+    <style>
+        .space-line{
+            line-height:0.2
+        }
+        .hide{
+            display:none ;
+        }
+    </style>
     <div class="row">
         <div class="page-header">
             <h1>Procedimentos
@@ -172,6 +179,36 @@
          aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
+                <div class="modal-header">
+                    <input type="hidden" id="idDetails">
+                    <div class="">
+                        <p class="space-line"><label>Publicado :</label> <span id="publishDetails"></span></p>
+                        <p class="space-line"><label>Versão :</label> <span id="versionDetails"></span></p>
+                        <p class="space-line"><label>Status:</label> <span class="label label-warning"><span id="stateDetails"></span></span></p>
+                        <p class="space-line"><label>Categoria:</label> <span id="categoryDetails"></span></p>
+                        <p class="space-line"><label>Data final publicação:</label> <span id="datePublishFinishDetails"></span></p>
+
+                    </div>
+                    <div class="elaborate">
+                        <p class="space-line"><label>Elaborado por:</label> <span id="elaborateDetails"></span></p>
+                        <p class="space-line"><label>Data Elaboração:</label> <span id="elaborateDateDetails"></span></p>
+                    </div>
+                    <div class="revision hide">
+                        <p class="space-line"><label>Revisado por:</label> <span id="revisionDetails"></span></p>
+                        <p class="space-line"><label>Data Revisão:</label> <span id="revisionDateDetails"></span></p>
+                    </div>
+                    <div class="approved hide">
+                        <p style="line-height:0"><label>Aprovado por :</label> <span id="approvedDetails"></span></p>
+                        <p style="line-height:0"><label>Data Aprovação:</label> <span id="approvedDateDetails"></span></p>
+                    </div>
+
+                    <button type="button " class="btn btn-default approvedButton stepButton hide">
+                        Aprovar
+                    </button>
+                    <button type="button " class="btn btn-default revisionButton stepButton hide">
+                        Revisar
+                    </button>
+                </div>
                 <div class="modal-body">
                     <div class="row">
                         <a href="" class="media"></a>
@@ -189,8 +226,6 @@
                 return aux[2] + '-' + aux[1] + '-' + aux[0];
             }
             return date;
-
-
         }
         function request(url, method, data) {
             return $.ajax({
@@ -282,13 +317,45 @@
         });
         $(document).on('click', '.view', function () {
             var url = $(this).parent().find('.url-procedure').val();
+            var id = $(this).parent().find('.id-procedure').val();
+            request('procedure/details/'+id,'get').then(function(response){
+                console.log(response);
+                $('#idDetails').val(response.procedure.id);
+                $('#publishDetails').text(response.procedure.publish === '1' ? "Sim":"Não");
+                $('#versionDetails').text(response.lastRevision.lastVersion.version);
+                $('#stateDetails').text(response.step);
+                $('#categoryDetails').text(response.category);
+                $('#datePublishFinishDetails').text(response.date_publish_finish != null ? response.date_publish_finish:"Sem data.");
+                $('#elaborateDetails').text(response.lastRevision.users.elaborate.name);
+                $('#elaborateDateDetails').text(response.lastRevision.lastVersion.elaborate_date);
+                $('#revisionDetails').text(response.lastRevision.users.reviewed.name);
+                $('#revisionDateDetails').text(response.lastRevision.lastVersion.reviewed_date);
+                $('#approvedDetails').text(response.lastRevision.users.approved.name);
+                $('#approvedDateDetails').text(response.lastRevision.lastVersion.approved_date);
+                if(response.step == 'revisão pendente'){
+                    $('.revisionButton').removeClass('hide');
+                }else if(response.step == 'Aprovação pendente'){
+                    $('.revision').removeClass('hide');
+                    $('.approvedButton').removeClass('hide');
+                }else{
+                    $('.revision').removeClass('hide');
+                    $('.approved').removeClass('hide');
+                }
 
-            $('.media').attr('href', url);
-            $('.media').media({
-                width:     885,
-                height:    800,
-            });
-            $('#view-files').modal('show');
+                $('.media').attr('href', url);
+                $('.media').media({
+                    width:     885,
+                    height:    800,
+                });
+                $('#view-files').modal('show');
+            })
+
+        });
+        $('#view-files').on('hidden.bs.modal', function (e) {
+            $('.revision').addClass('hide');
+            $('.approved').addClass('hide');
+            $('.approvedButton').addClass('hide');
+            $('.revisionButton').addClass('hide');
         });
         $(document).on('click', '.excluir', function () {
             var id = $(this).parent().find('.id-category').val();
@@ -330,7 +397,13 @@
             })
 
 
-        })
+        });
+        $(".stepButton").click(function(){
+            var id = $('#idDetails').val();
+            request('procedure/state/'+id,'PUT').then(function(response){
+               console.log(response);
+            });
+        });
         $(".updateCategory").click(function () {
             var category = {
                 name: $('#nameEdit').val(),
