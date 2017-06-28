@@ -18,7 +18,7 @@ class CreateProceduresTable extends Migration
             $table->string('name',150);
             $table->string('file');
             $table->dateTime('date_publish')->nullable();
-            $table->dateTime('date_publish_finish')->nullable();
+            $table->date('date_publish_finish')->nullable();
             $table->boolean('publish')->default(false);
             $table->boolean('download')->default(false);
             $table->timestamps();

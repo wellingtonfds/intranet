@@ -2,11 +2,12 @@
 
 @section('content')
     <style>
-        .space-line{
-            line-height:0.2
+        .space-line {
+            line-height: 0.2
         }
-        .hide{
-            display:none ;
+
+        .hide {
+            display: none;
         }
     </style>
     <div class="row">
@@ -27,7 +28,6 @@
             <th>Categoria</th>
             <th>Publicação</th>
             <th>Final publicação</th>
-            <th>Download</th>
             <th>Fase</th>
             <th></th>
             </thead>
@@ -39,7 +39,6 @@
                     <td>{{$procedure->category->name}}</td>
                     <td>{{$procedure->publish ? $procedure->date_publish->format('d/m/Y') : "Não publicado"}}</td>
                     <td>{{empty($procedure->date_publish_finish) ? 'Sem limite' : $procedure->date_publish_finish->format('d/m/Y')}}</td>
-                    <td>{{$procedure->download ? 'Sim' : 'Não' }}</td>
                     <td>{{$procedure->step()}}</td>
                     <td>
                         <input type="hidden" class="id-procedure" value="{{$procedure->id}}">
@@ -137,17 +136,18 @@
     </div>
 
     <!-- Modal Editar Category-->
-    <div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="editProcedure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Editar Categoria</h4>
+                    <h4 class="modal-title" id="myModalLabel">Editar procedimento</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <form>
+                <form id="editFormProcedure" enctype="multipart/form-data">
+                    <input type="hidden" id="idEdit" name="id">
+                    <div class="modal-body">
+                        <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Nome</label>
@@ -156,20 +156,48 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Descrição</label>
-                                    <textarea type="text" class="form-control" name="descriptionEdit"
-                                              id="descriptionEdit">
-                                        </textarea>
-                                    <input type="hidden" id="idEdit">
+                                    <label>Data final publicação</label>
+                                    <input type="text" class="form-control" name="date_publish_finishEdit"
+                                           id="date_publish_finishEdit">
                                 </div>
                             </div>
-                        </form>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Categoria</label>
+                                    <select type="text" class="form-control" name="category_idEdit"
+                                            id="category_idEdit" required>
+                                        @foreach($categories as $category)
+                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Arquivo</label>
+                                    <p class="text-warning">Caso faça o upload de um novo arquivo, será gerado uma nova
+                                        versão.</p>
+                                    <input type="file" class="form-control" name="file" id="file">
+                                    <div class="checkbox">
+                                        <p class="text-warning">A publicação só acontence após o procedimeto ser
+                                            validado.</p>
+
+                                        <label>
+                                            <input type="checkbox" name="publishEdit" disabled> Publicar
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary updateCategory">Salvar</button>
-                </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary updateProcedure">Salvar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -184,14 +212,17 @@
                     <div class="">
                         <p class="space-line"><label>Publicado :</label> <span id="publishDetails"></span></p>
                         <p class="space-line"><label>Versão :</label> <span id="versionDetails"></span></p>
-                        <p class="space-line"><label>Status:</label> <span class="label label-warning"><span id="stateDetails"></span></span></p>
+                        <p class="space-line"><label>Status:</label> <span class="label label-warning"><span
+                                        id="stateDetails"></span></span></p>
                         <p class="space-line"><label>Categoria:</label> <span id="categoryDetails"></span></p>
-                        <p class="space-line"><label>Data final publicação:</label> <span id="datePublishFinishDetails"></span></p>
+                        <p class="space-line"><label>Data final publicação:</label> <span
+                                    id="datePublishFinishDetails"></span></p>
 
                     </div>
                     <div class="elaborate">
                         <p class="space-line"><label>Elaborado por:</label> <span id="elaborateDetails"></span></p>
-                        <p class="space-line"><label>Data Elaboração:</label> <span id="elaborateDateDetails"></span></p>
+                        <p class="space-line"><label>Data Elaboração:</label> <span id="elaborateDateDetails"></span>
+                        </p>
                     </div>
                     <div class="revision hide">
                         <p class="space-line"><label>Revisado por:</label> <span id="revisionDetails"></span></p>
@@ -199,7 +230,8 @@
                     </div>
                     <div class="approved hide">
                         <p style="line-height:0"><label>Aprovado por :</label> <span id="approvedDetails"></span></p>
-                        <p style="line-height:0"><label>Data Aprovação:</label> <span id="approvedDateDetails"></span></p>
+                        <p style="line-height:0"><label>Data Aprovação:</label> <span id="approvedDateDetails"></span>
+                        </p>
                     </div>
 
                     <button type="button " class="btn btn-default approvedButton stepButton hide">
@@ -224,6 +256,16 @@
             if (date !== '') {
                 aux = date.split('/');
                 return aux[2] + '-' + aux[1] + '-' + aux[0];
+
+
+            }
+            return date;
+        }
+        function dateUsToBr(date) {
+            if (date !== null) {
+                date = date.replace('00:00:00', '').trim();
+                aux = date.split('-');
+                return aux[2] + '/' + aux[1] + '/' + aux[0];
             }
             return date;
         }
@@ -273,8 +315,8 @@
             })
         }
         $(document).ready(function () {
-            //$('.media').media();
             $('#date_publish_finish').datepicker();
+            $('#date_publish_finishEdit').datepicker();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -283,6 +325,7 @@
             $('#newFormProcedure').submit(function (e) {
                 e.preventDefault();
                 var formData = new FormData(this);
+
                 formData.set('date_publish_finish', dateBrToUs(formData.get('date_publish_finish')));
 
                 $.ajax({
@@ -303,49 +346,77 @@
                 });
             });
 
+            $('#editFormProcedure').submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                formData.set('date_publish_finish', dateBrToUs(formData.get('date_publish_finishEdit')));
+                $.ajax({
+                    url: 'procedures/' + $('#idEdit').val(),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    statusCode: {
+                        422: function (response) {
+                            console.log(response.responseJSON)
+
+                        },
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
         });
-
         $(document).on('click', '.editar', function () {
-            var id = $(this).parent().find('.id-category').val();
+            var id = $(this).parent().find('.id-procedure').val();
 
-            request('categories/' + id + '/edit', 'get').done(function (response) {
+            request('procedures/' + id + '/edit', 'get').done(function (response) {
+
                 $('#nameEdit').val(response.name);
-                $('#descriptionEdit').val(response.description)
                 $('#idEdit').val(response.id);
-                $('#editCategory').modal('show');
+                $('#date_publish_finishEdit').val(dateUsToBr(response.date_publish_finish))
+                $('#category_idEdit').val(response.categories_id);
+                if (response.step == 'Aprovado') {
+                    $('input[name=publishEdit]').removeAttr('disabled');
+                } else {
+                    $('input[name=publishEdit]').prop('disabled', true);
+                }
+                $('#editProcedure').modal('show');
             })
         });
         $(document).on('click', '.view', function () {
             var url = $(this).parent().find('.url-procedure').val();
             var id = $(this).parent().find('.id-procedure').val();
-            request('procedure/details/'+id,'get').then(function(response){
+            request('procedure/details/' + id, 'get').then(function (response) {
                 console.log(response);
                 $('#idDetails').val(response.procedure.id);
-                $('#publishDetails').text(response.procedure.publish === '1' ? "Sim":"Não");
+                $('#publishDetails').text(response.procedure.publish === '1' ? "Sim" : "Não");
                 $('#versionDetails').text(response.lastRevision.lastVersion.version);
                 $('#stateDetails').text(response.step);
                 $('#categoryDetails').text(response.category);
-                $('#datePublishFinishDetails').text(response.date_publish_finish != null ? response.date_publish_finish:"Sem data.");
+                $('#datePublishFinishDetails').text(response.date_publish_finish != null ? response.date_publish_finish : "Sem data.");
                 $('#elaborateDetails').text(response.lastRevision.users.elaborate.name);
                 $('#elaborateDateDetails').text(response.lastRevision.lastVersion.elaborate_date);
                 $('#revisionDetails').text(response.lastRevision.users.reviewed.name);
                 $('#revisionDateDetails').text(response.lastRevision.lastVersion.reviewed_date);
                 $('#approvedDetails').text(response.lastRevision.users.approved.name);
                 $('#approvedDateDetails').text(response.lastRevision.lastVersion.approved_date);
-                if(response.step == 'revisão pendente'){
+                if (response.step == 'revisão pendente') {
                     $('.revisionButton').removeClass('hide');
-                }else if(response.step == 'Aprovação pendente'){
+                } else if (response.step == 'Aprovação pendente') {
                     $('.revision').removeClass('hide');
                     $('.approvedButton').removeClass('hide');
-                }else{
+                } else {
                     $('.revision').removeClass('hide');
                     $('.approved').removeClass('hide');
                 }
 
                 $('.media').attr('href', url);
                 $('.media').media({
-                    width:     885,
-                    height:    800,
+                    width: 885,
+                    height: 800,
                 });
                 $('#view-files').modal('show');
             })
@@ -358,7 +429,7 @@
             $('.revisionButton').addClass('hide');
         });
         $(document).on('click', '.excluir', function () {
-            var id = $(this).parent().find('.id-category').val();
+            var id = $(this).parent().find('.id-procedure').val();
             swal({
                 title: 'Você tem certeza?',
                 text: "Não será possível reverter",
@@ -398,10 +469,10 @@
 
 
         });
-        $(".stepButton").click(function(){
+        $(".stepButton").click(function () {
             var id = $('#idDetails').val();
-            request('procedure/state/'+id,'PUT').then(function(response){
-               console.log(response);
+            request('procedure/state/' + id, 'PUT').then(function (response) {
+                console.log(response);
             });
         });
         $(".updateCategory").click(function () {

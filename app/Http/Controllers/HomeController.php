@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Procedure;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,6 +26,12 @@ class HomeController extends Controller
     public function index()
     {
 
-        return view('home/home');
+        $lastProcedures = $lastProcedures = Procedure::where('date_publish', '<', Carbon::now()->addDays(5))
+            ->where('publish','=',true)
+            ->limit(5)
+            ->get();
+        return view('home/home',[
+            'lastProcedures'=>$lastProcedures
+        ]);
     }
 }
