@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     protected $fillable = ['name','description'];
+
+    public function procedures(){
+        return $this->hasMany(Procedure::class,'categories_id');
+    }
 }

@@ -115,7 +115,7 @@ $(document).ready(function() {
     getCategories().done(function(response){
         for(i=0;i<response.length;i++){
             $('.nav .child_menu').append(
-            '<li><a href="categorie/'+response[i].id+'">'+response[i].name+'</a></li>'
+                '<li><a href="/categories/'+response[i].id+'">'+response[i].name+'</a></li>'
             );
         }
 

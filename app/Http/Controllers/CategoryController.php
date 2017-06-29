@@ -44,5 +44,13 @@ class CategoryController extends Controller
         $category->delete();
         return $category;
     }
+    public function show(Category $category){
+
+
+        return view('procedure.list',[
+           'categories'=>$category,
+           'procedures'=>$category->procedures()->paginate(15)
+        ]);
+    }
 
 }
