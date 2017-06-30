@@ -2,12 +2,15 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Authenticatable
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use Notifiable;
+    use Authenticatable, CanResetPassword; // Insert trait here
 
     /**
      * The attributes that are mass assignable.
@@ -26,4 +29,24 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasPermission(Permission $permission)
+    {
+
+        return $this->hasAnyroles($permission->roles);
+
+    }
+
+    public function hasAnyRoles($roles)
+    {
+        if (is_array($roles) || is_object($roles)) {
+            return !!$roles->intersect($this->roles())->count();
+        }
+        return $this->roles()->get()->contains('name', $roles);
+    }
 }

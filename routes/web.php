@@ -12,9 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('layouts/dashboard');
+    return view('welcome');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/categories','CategoryController');
+Route::post('/procedures/{procedure}','ProcedureController@update');
+Route::resource('/procedures','ProcedureController');
+Route::get('/procedure/details/{procedure}','ProcedureController@details');
+Route::put('/procedure/state/{procedure}','ProcedureController@state');

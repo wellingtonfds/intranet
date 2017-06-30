@@ -14,7 +14,10 @@ const { mix } = require('laravel-mix');
 mix.js(
     [
         'resources/assets/js/app.js',
-        'node_modules/jquery/dist/jquery.min.js'
-    ],
-    'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css');
+        'node_modules/jquery/dist/jquery.min.js',
+    ],  'public/js')
+    .sass('resources/assets/sass/app.scss', 'public/css')
+    .styles([
+        'node_modules/sweetalert2/dist/sweetalert2.min.css',
+    ], 'public/css/all.css')
+    .js(['node_modules/sweetalert2/dist/sweetalert2.js'],'public/js/all.js')
