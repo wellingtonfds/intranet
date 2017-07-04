@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Mail\NewProcedure;
 use App\Procedure;
 use App\Revision;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ProcedureController extends Controller
 {
@@ -58,7 +61,6 @@ class ProcedureController extends Controller
 
     public function store(Request $request, Procedure $procedure)
     {
-
         $this->validate($request, [
             'name' => 'required',
             'category_id' => 'required|exists:categories,id',
@@ -83,9 +85,24 @@ class ProcedureController extends Controller
         $procedure->revisions()->create([
             'elaborate_date' => Carbon::now(),
             'version' => 1,
-            'elaborate', Auth::user()->id,
+            'elaborate' => Auth::user()->id,
             'description' => 'teste'
         ]);
+        $users = DB::table('users')
+            ->join('role_user', 'users.id', '=', 'role_user.user_id')
+            ->join('roles', 'role_user.role_id', '=', 'roles.id')
+            ->where('roles.id', '=', 4)
+            ->get();
+        foreach ($users as $user) {
+            $email = new NewProcedure('Criação de procedimento', "O administrador(a) " . $user->name . " criou o procedimento " . $procedure->name . ". O mesmo necessita de revisão.<br><br>Obrigado");
+            $email->subject("Criação de procedimento");
+            $email->to($user->email);
+            $email->from(env('MAIL_DEFAULT_TI', 'informatica@lyonegenharia.com.br'));
+            Mail::send($email);
+            $email = null;
+        }
+
+        return $procedure;
 
 
     }
@@ -123,7 +140,7 @@ class ProcedureController extends Controller
 
                 $procedure->publish = $request->has('publishEdit') ? 1 : 0;
                 $procedure->date_publish = $request->has('publishEdit') ? Carbon::now() : null;
-                
+
 
             }
             $procedure->save();
@@ -132,22 +149,46 @@ class ProcedureController extends Controller
 
         return $procedure;
     }
-
     public function state(Procedure $procedure)
     {
+        $users = DB::table('users')
+            ->join('role_user', 'users.id', '=', 'role_user.user_id')
+            ->join('roles', 'role_user.role_id', '=', 'roles.id')
+            ->where('roles.id', '=', 4)
+            ->get();
         $lastRevision = $procedure->lastRevision();
         $lastRevision = Revision::find($lastRevision[0]->id);
-
-
         if (empty($lastRevision->reviewed)) {
             $lastRevision->reviewed = Auth::user()->id;
             $lastRevision->reviewed_date = Carbon::now();
             $lastRevision->save();
+            foreach ($users as $user) {
+                $email = new NewProcedure('Revisão de procedimento', "O administrador(a) " . $user->name . " revisou o procedimento \"" . $procedure->name . "\". O mesmo necessita de aprovação.<br><br>Obrigado(a)");
+                $email->subject("Revisão de procedimento");
+                $email->to($user->email);
+                $email->from(env('MAIL_DEFAULT_TI', 'informatica@lyonegenharia.com.br'));
+                Mail::send($email);
+                $email = null;
+            }
         } elseif (empty($lastRevision->approved)) {
             $lastRevision->approved = Auth::user()->id;
             $lastRevision->approved_date = Carbon::now();
             $lastRevision->save();
+            foreach ($users as $user) {
+                $email = new NewProcedure('Aprovação de procedimento', "O administrador(a) " . $user->name . " aprovou o procedimento \"" . $procedure->name . "\". O mesmo já pode ser publicado.<br><br>Obrigado(a)");
+                $email->subject("Aprovação de procedimento");
+                $email->to($user->email);
+                $email->from(env('MAIL_DEFAULT_TI', 'informatica@lyonegenharia.com.br'));
+                Mail::send($email);
+                $email = null;
+            }
         }
         return $lastRevision;
+    }
+
+    public function destroy(Procedure $procedure)
+    {
+        $procedure->delete();
+        return $procedure;
     }
 }

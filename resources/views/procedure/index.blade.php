@@ -111,16 +111,6 @@
                                 <div class="form-group">
                                     <label>Arquivo</label>
                                     <input type="file" class="form-control" name="file" id="file" required>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="publish"> Publicar
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="download"> Permitir download
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
 
@@ -208,6 +198,11 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Revisão de procedimento</h4>
+                </div>
+                <div class="modal-body">
                     <input type="hidden" id="idDetails">
                     <div class="">
                         <p class="space-line"><label>Publicado :</label> <span id="publishDetails"></span></p>
@@ -252,82 +247,13 @@
 @endsection
 @section('scripts')
     <script>
-        function dateBrToUs(date) {
-            if (date !== '') {
-                aux = date.split('/');
-                return aux[2] + '-' + aux[1] + '-' + aux[0];
-
-
-            }
-            return date;
-        }
-        function dateUsToBr(date) {
-            if (date !== null) {
-                date = date.replace('00:00:00', '').trim();
-                aux = date.split('-');
-                return aux[2] + '/' + aux[1] + '/' + aux[0];
-            }
-            return date;
-        }
-        function request(url, method, data) {
-            return $.ajax({
-                url: url,
-                data: data,
-                dataType: 'json',
-                method: method,
-                statusCode: {
-                    404: function () {
-                        swal(
-                                'Oops...',
-                                'Endereço não encontrado!',
-                                'error'
-                        )
-
-                    },
-                    403: function () {
-                        swal(
-                                'Oops...',
-                                'Acesso não autorizado!',
-                                'error'
-                        )
-                    },
-                    500: function () {
-                        swal(
-                                'Oops...',
-                                'Erro interno do servidor!',
-                                'error'
-                        )
-
-                    },
-                    422: function (response) {
-
-                        var messagem = "";
-                        $.each(response.responseJSON, function (index, item) {
-                            messagem += item + "\n";
-                        });
-                        swal(
-                                'Oops...',
-                                messagem,
-                                'error'
-                        )
-                    }
-                }
-            })
-        }
         $(document).ready(function () {
             $('#date_publish_finish').datepicker();
             $('#date_publish_finishEdit').datepicker();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             $('#newFormProcedure').submit(function (e) {
                 e.preventDefault();
                 var formData = new FormData(this);
-
                 formData.set('date_publish_finish', dateBrToUs(formData.get('date_publish_finish')));
-
                 $.ajax({
                     url: 'procedures', // Url do lado server que vai receber o arquivo
                     data: formData,
@@ -335,13 +261,50 @@
                     contentType: false,
                     type: 'POST',
                     statusCode: {
-                        422: function (response) {
-                            console.log(response.responseJSON)
+                        404: function () {
+                            swal(
+                                    'Oops...',
+                                    'Endereço não encontrado!',
+                                    'error'
+                            )
 
                         },
+                        403: function () {
+                            swal(
+                                    'Oops...',
+                                    'Acesso não autorizado!',
+                                    'error'
+                            )
+                        },
+                        500: function () {
+                            swal(
+                                    'Oops...',
+                                    'Erro interno do servidor!',
+                                    'error'
+                            )
+
+                        },
+                        422: function (response) {
+
+                            var messagem = "";
+                            $.each(response.responseJSON, function (index, item) {
+                                messagem += item + "\n";
+                            });
+                            swal(
+                                    'Oops...',
+                                    messagem,
+                                    'error'
+                            )
+                        }
                     },
                     success: function (data) {
-                        console.log(data);
+                        swal({
+                            title: 'Inserido',
+                            text: 'O procedimento foi inserido',
+                            type: 'success'
+                        }).then(function () {
+                            location.reload();
+                        });
                     }
                 });
             });
@@ -357,13 +320,50 @@
                     contentType: false,
                     type: 'POST',
                     statusCode: {
-                        422: function (response) {
-                            console.log(response.responseJSON)
+                        404: function () {
+                            swal(
+                                    'Oops...',
+                                    'Endereço não encontrado!',
+                                    'error'
+                            )
 
                         },
+                        403: function () {
+                            swal(
+                                    'Oops...',
+                                    'Acesso não autorizado!',
+                                    'error'
+                            )
+                        },
+                        500: function () {
+                            swal(
+                                    'Oops...',
+                                    'Erro interno do servidor!',
+                                    'error'
+                            )
+
+                        },
+                        422: function (response) {
+
+                            var messagem = "";
+                            $.each(response.responseJSON, function (index, item) {
+                                messagem += item + "\n";
+                            });
+                            swal(
+                                    'Oops...',
+                                    messagem,
+                                    'error'
+                            )
+                        }
                     },
                     success: function (data) {
-                        console.log(data);
+                        swal({
+                            title: 'Atualizado',
+                            text: 'O procedimento foi atualizado',
+                            type: 'success'
+                        }).then(function () {
+                            location.reload();
+                        });
                     }
                 });
             });
@@ -371,9 +371,7 @@
         });
         $(document).on('click', '.editar', function () {
             var id = $(this).parent().find('.id-procedure').val();
-
             request('procedures/' + id + '/edit', 'get').done(function (response) {
-
                 $('#nameEdit').val(response.name);
                 $('#idEdit').val(response.id);
                 $('#date_publish_finishEdit').val(dateUsToBr(response.date_publish_finish))
@@ -383,6 +381,11 @@
                 } else {
                     $('input[name=publishEdit]').prop('disabled', true);
                 }
+                if(response.publish == '1'){
+                    $('input[name=publishEdit]').prop("checked", true);
+                }else{
+                    $('input[name=publishEdit]').prop("checked", false);
+                }
                 $('#editProcedure').modal('show');
             })
         });
@@ -390,7 +393,6 @@
             var url = $(this).parent().find('.url-procedure').val();
             var id = $(this).parent().find('.id-procedure').val();
             request('procedure/details/' + id, 'get').then(function (response) {
-                console.log(response);
                 $('#idDetails').val(response.procedure.id);
                 $('#publishDetails').text(response.procedure.publish === '1' ? "Sim" : "Não");
                 $('#versionDetails').text(response.lastRevision.lastVersion.version);
@@ -443,21 +445,16 @@
                 cancelButtonClass: 'btn btn-danger',
                 buttonsStyling: false
             }).then(function () {
-
-
-                request('categories/' + id, 'delete').done(function (response) {
+                request('procedures/' + id, 'delete').done(function (response) {
                     swal({
                         title: 'Apagado!',
-                        text: 'A categoria foi deletada',
+                        text: 'O procedimento foi deletado',
                         type: 'success'
                     }).then(function () {
                         location.reload();
                     })
                 });
-
             }, function (dismiss) {
-                // dismiss can be 'cancel', 'overlay',
-                // 'close', and 'timer'
                 if (dismiss === 'cancel') {
                     swal(
                             'Cancelado',
@@ -472,7 +469,13 @@
         $(".stepButton").click(function () {
             var id = $('#idDetails').val();
             request('procedure/state/' + id, 'PUT').then(function (response) {
-                console.log(response);
+                swal({
+                    title: 'Revisado',
+                    text: 'O procedimento foi revisado',
+                    type: 'success'
+                }).then(function () {
+                    location.reload();
+                });
             });
         });
         $(".updateCategory").click(function () {

@@ -122,51 +122,6 @@
 @endsection
 @section('scripts')
     <script>
-        function request(url, method, data) {
-            return $.ajax({
-                url: url,
-                data: data,
-                dataType: 'json',
-                method: method,
-                statusCode: {
-                    404: function () {
-                        swal(
-                                'Oops...',
-                                'Endereço não encontrado!',
-                                'error'
-                        )
-
-                    },
-                    403: function () {
-                        swal(
-                                'Oops...',
-                                'Acesso não autorizado!',
-                                'error'
-                        )
-                    },
-                    500: function () {
-                        swal(
-                                'Oops...',
-                                'Erro interno do servidor!',
-                                'error'
-                        )
-
-                    },
-                    422: function (response) {
-
-                        var messagem = "";
-                        $.each(response.responseJSON, function (index, item) {
-                            messagem += item + "\n";
-                        });
-                        swal(
-                                'Oops...',
-                                messagem,
-                                'error'
-                        )
-                    }
-                }
-            })
-        }
         $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
@@ -179,6 +134,7 @@
                     description: $('#description').val().trim()
                 }
                 request('categories', 'post', category).done(function (response) {
+
                     swal({
                         title: 'Categoria inserida!',
                         text: 'A tela irá se recarregar em 2 segundos.',

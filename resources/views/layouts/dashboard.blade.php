@@ -67,7 +67,12 @@
                             </li>
                             @can('admin')
                             <li>
-                                <a href="/categories"><i class="fa fa-file">
+                                <a href="/users"><i class="fa fa-user">
+                                    </i>Usuários<span class="fa fa-chevron-down"></span></a>
+
+                            </li>
+                            <li>
+                                <a href="/categories"><i class="fa fa-list">
                                     </i>Categorias<span class="fa fa-chevron-down"></span></a>
 
                             </li>
@@ -76,7 +81,11 @@
                                     </i>Prodecimentos<span class="fa fa-chevron-down"></span></a>
 
                             </li>
+                            <li>
+                                <a href="/suggestions"><i class="fa fa-question">
+                                    </i>Sugestões<span class="fa fa-chevron-down"></span></a>
 
+                            </li>
                             @endcan
 
                         </ul>
