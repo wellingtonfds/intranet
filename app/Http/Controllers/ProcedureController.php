@@ -72,10 +72,8 @@ class ProcedureController extends Controller
             'category_id.required' => 'A categoria é requerida.',
             'category_id.exists' => 'A categoria informada não existe.',
             'file.required' => 'A arquivo é requerido.',
-            'file.mimes' => 'A extensão do arquivo não foi aceita, utilizar apenas:doc,docx,pdf,xls,xlsx,ppt,pptx',
+            'file.mimes' => 'A extensão do arquivo não foi aceita, utilizar apenas:pdf',
         ]);
-
-
         $procedure->name = $request->get('name');
         $procedure->categories_id = $request->get('category_id');
         $procedure->date_publish_finish = $request->get('date_publish_finish');
@@ -127,7 +125,7 @@ class ProcedureController extends Controller
         $procedure->categories_id = $request->get('category_idEdit');
         $procedure->name = $request->get('nameEdit');
         if ($request->hasFile('file')) {
-            $procedure->publish = 1;
+            $procedure->publish = 0;
             $procedure->date_publish = null;
             $procedure->file = $request->file('file')->store('public/procedures');
             $procedure->save();
@@ -198,7 +196,7 @@ class ProcedureController extends Controller
 
         $validator = Validator::make($request->all(), [],[]);
         $validator->after(function ($validator) use ($procedure) {
-            if ($procedure->step() != 'Aprovado') {
+            if ($procedure->step() != 'Aprovado' && $procedure->publish) {
                 $validator->errors()->add('Procedimento', 'Não é possivel notificar os usuários para ler um procedimento não revisado!');
             }
         });
