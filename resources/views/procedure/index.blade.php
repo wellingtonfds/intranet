@@ -308,7 +308,6 @@
                     }
                 });
             });
-
             $('#editFormProcedure').submit(function (e) {
                 e.preventDefault();
                 var formData = new FormData(this);
@@ -371,6 +370,7 @@
         });
         $(document).on('click', '.editar', function () {
             var id = $(this).parent().find('.id-procedure').val();
+            var button = $(this);
             request('procedures/' + id + '/edit', 'get').done(function (response) {
                 $('#nameEdit').val(response.name);
                 $('#idEdit').val(response.id);
@@ -387,7 +387,7 @@
                     $('input[name=publishEdit]').prop("checked", false);
                 }
                 $('#editProcedure').modal('show');
-            })
+            });
         });
         $(document).on('click', '.view', function () {
             var url = $(this).parent().find('.url-procedure').val();
@@ -467,6 +467,9 @@
 
         });
         $(".stepButton").click(function () {
+            var button = $(this);
+            button.prop('disabled',true);
+            button.text('processando...');
             var id = $('#idDetails').val();
             request('procedure/state/' + id, 'PUT').then(function (response) {
                 swal({
@@ -519,8 +522,6 @@
                 cancelButtonClass: 'btn btn-danger',
                 buttonsStyling: false
             }).then(function () {
-
-
                 request('/procedure/notification/' + id, 'GET').done(function (response) {
                     swal({
                         title: 'Feito!',
