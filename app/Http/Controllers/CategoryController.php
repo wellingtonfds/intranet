@@ -7,29 +7,20 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
-        return view('category.index',[
-            'categories'=>Category::paginate(5)
+        return view('category.index', [
+            'categories' => Category::paginate(5)
         ]);
     }
-    public function update(Request $request, Category $category){
-        $this->validate($request,[
-            'name'=>'required',
-        ],[
-            'name.required'=>'O nome é requerido.'
-        ]);
 
-        $category->fill($request->all());
-        $category->save();
-        return $category;
-    }
-
-    public function store(Request $request, Category $category){
-        $this->validate($request,[
-            'name'=>'required',
-        ],[
-            'name.required'=>'O nome é requerido.'
+    public function update(Request $request, Category $category)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+        ], [
+            'name.required' => 'O nome é requerido.'
         ]);
 
         $category->fill($request->all());
@@ -37,19 +28,37 @@ class CategoryController extends Controller
         return $category;
     }
 
-    public function edit(Category $category){
+    public function store(Request $request, Category $category)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+        ], [
+            'name.required' => 'O nome é requerido.'
+        ]);
+
+        $category->fill($request->all());
+        $category->save();
         return $category;
     }
-    public function destroy(Category $category){
+
+    public function edit(Category $category)
+    {
+        return $category;
+    }
+
+    public function destroy(Category $category)
+    {
         $category->delete();
         return $category;
     }
-    public function show(Category $category){
 
-
-        return view('procedure.list',[
-           'categories'=>$category,
-           'procedures'=>$category->procedures()->paginate(15)
+    public function show(Category $category)
+    {
+        return view('procedure.list', [
+            'categories' => $category,
+            'procedures' => $category->procedures()
+                ->where('publish','=',true)
+                ->paginate(15)
         ]);
     }
 

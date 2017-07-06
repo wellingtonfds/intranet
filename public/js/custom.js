@@ -21,6 +21,7 @@ function request(url, method, data) {
         method: method,
         statusCode: {
             404: function () {
+
                 swal(
                     'Oops...',
                     'Endereço não encontrado!',

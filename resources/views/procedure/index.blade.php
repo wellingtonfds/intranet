@@ -51,9 +51,9 @@
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                         <button class="btn btn-success btn-xs view">
-                            <span class="glyphicon glyphicon-eye-open"></span>
+                            <span class="glyphicon glyphicon-eye-open" title="Revisões do procedimento"></span>
                         </button>
-                        <button class="btn btn-warning btn-xs" title="Revisões do procedimento">
+                        <button class="btn btn-warning btn-xs notification" title="Notificar usuários">
                             <span class="glyphicon glyphicon-file"></span>
                         </button>
                     </td>
@@ -502,6 +502,45 @@
                         }
                 )
             });
+
+        });
+        $(document).on('click', '.notification', function () {
+            var id = $(this).parent().find('.id-procedure').val();
+            swal({
+                title: 'Notificar todos os usuários ?',
+                text: "Não será possível reverter",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, faça isso!',
+                cancelButtonText: 'Não, cancelar!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false
+            }).then(function () {
+
+
+                request('/procedure/notification/' + id, 'GET').done(function (response) {
+                    swal({
+                        title: 'Feito!',
+                        text: 'Todos os usuários serão notificados',
+                        type: 'success'
+                    });
+                });
+
+            }, function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    swal(
+                            'Cancelado',
+                            'Nenhum dado foi removido',
+                            'error'
+                    )
+                }
+            })
+
 
         });
     </script>

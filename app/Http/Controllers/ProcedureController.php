@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Jobs\SendReminderEmail;
 use App\Mail\NewProcedure;
 use App\Procedure;
 use App\Revision;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class ProcedureController extends Controller
 {
@@ -190,5 +192,28 @@ class ProcedureController extends Controller
     {
         $procedure->delete();
         return $procedure;
+    }
+
+    public function notification(Procedure $procedure,Request $request){
+
+        $validator = Validator::make($request->all(), [],[]);
+        $validator->after(function ($validator) use ($procedure) {
+            if ($procedure->step() != 'Aprovado') {
+                $validator->errors()->add('Procedimento', 'Não é possivel notificar os usuários para ler um procedimento não revisado!');
+            }
+        });
+        if ($validator->fails()) {
+            return response($validator->errors(),422);
+        }
+        dispatch(new SendReminderEmail($procedure,Auth::user()));
+        return $procedure;
+
+
+
+
+
+
+
+
     }
 }
