@@ -13,7 +13,118 @@ function getCategories(){
     })
 }
 
+function request(url, method, data) {
+    return $.ajax({
+        url: url,
+        data: data,
+        dataType: 'json',
+        method: method,
+        statusCode: {
+            404: function () {
 
+                swal(
+                    'Oops...',
+                    'Endereço não encontrado!',
+                    'error'
+                )
+
+            },
+            401: function () {
+                swal(
+                    'Oops...',
+                    'Acesso não autorizado!Tente atualizar a página',
+                    'error'
+                )
+            },
+            403: function () {
+                swal(
+                    'Oops...',
+                    'Acesso não autorizado!',
+                    'error'
+                )
+            },
+            500: function () {
+                swal(
+                    'Oops...',
+                    'Erro interno do servidor!',
+                    'error'
+                )
+
+            },
+            422: function (response) {
+                var messagem = "";
+                $.each(response.responseJSON, function (index, item) {
+                    messagem += item + "\n";
+                });
+                swal(
+                    'Oops...',
+                    messagem,
+                    'error'
+                )
+            }
+        }
+    })
+}
+function dateBrToUs(date) {
+    if (date !== '') {
+        aux = date.split('/');
+        return aux[2] + '-' + aux[1] + '-' + aux[0];
+    }
+    return date;
+}
+function dateUsToBr(date) {
+    if (date !== null) {
+        date = date.replace('00:00:00', '').trim();
+        aux = date.split('-');
+        return aux[2] + '/' + aux[1] + '/' + aux[0];
+    }
+    return date;
+}
+function request(url, method, data) {
+    return $.ajax({
+        url: url,
+        data: data,
+        dataType: 'json',
+        method: method,
+        statusCode: {
+            404: function () {
+                swal(
+                    'Oops...',
+                    'Endereço não encontrado!',
+                    'error'
+                )
+
+            },
+            403: function () {
+                swal(
+                    'Oops...',
+                    'Acesso não autorizado!',
+                    'error'
+                )
+            },
+            500: function () {
+                swal(
+                    'Oops...',
+                    'Erro interno do servidor!',
+                    'error'
+                )
+
+            },
+            422: function (response) {
+
+                var messagem = "";
+                $.each(response.responseJSON, function (index, item) {
+                    messagem += item + "\n";
+                });
+                swal(
+                    'Oops...',
+                    messagem,
+                    'error'
+                )
+            }
+        }
+    })
+}
 var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
     $BODY = $('body'),
     $MENU_TOGGLE = $('#menu_toggle'),
@@ -104,6 +215,12 @@ $(document).ready(function() {
             mouseWheel:{ preventDefault: true }
         });
     }
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 });
 // /Sidebar
 

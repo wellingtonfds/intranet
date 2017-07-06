@@ -30,6 +30,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'password', 'remember_token',
     ];
 
+    public function role(){
+        $roles = "";
+        foreach ($this->roles as $role){
+            $roles .= $role->name." ";
+        }
+        return $roles;
+    }
     public function roles()
     {
         return $this->belongsToMany(Role::class);

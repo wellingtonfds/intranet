@@ -41,11 +41,8 @@
                         <input type="hidden" class="id-procedure" value="{{$procedure->id}}">
                         <input type="hidden" class="url-procedure"
                                value="{{str_replace('/public/','/storage/',asset($procedure->file))}}">
-                        <button class="btn btn-success btn-xs view">
+                        <button class="btn btn-success btn-xs view" title="Visualizar procedimento">
                             <span class="glyphicon glyphicon-eye-open"></span>
-                        </button>
-                        <button class="btn btn-warning btn-xs" title="Revisões do procedimento">
-                            <span class="glyphicon glyphicon-file"></span>
                         </button>
                     </td>
                 </tr>
@@ -69,10 +66,10 @@
                 <div class="modal-header">
                     <input type="hidden" id="idDetails">
                     <div class="">
-                        <p class="space-line"><label>Publicado :</label> <span id="publishDetails"></span></p>
+                        {{--<p class="space-line"><label>Publicado :</label> <span id="publishDetails"></span></p>--}}
                         <p class="space-line"><label>Versão :</label> <span id="versionDetails"></span></p>
-                        <p class="space-line"><label>Status:</label> <span class="label label-warning"><span
-                                        id="stateDetails"></span></span></p>
+                        {{--<p class="space-line"><label>Status:</label> <span class="label label-warning"><span--}}
+                                        {{--id="stateDetails"></span></span></p>--}}
                         <p class="space-line"><label>Categoria:</label> <span id="categoryDetails"></span></p>
                         <p class="space-line"><label>Data final publicação:</label> <span
                                     id="datePublishFinishDetails"></span></p>
@@ -279,6 +276,48 @@
             $('.approvedButton').addClass('hide');
             $('.revisionButton').addClass('hide');
         });
+
+        $(document).on('click', '.notification', function () {
+            var id = $(this).parent().find('.id-procedure').val();
+            swal({
+                title: 'Notificar todos os usuários ?',
+                text: "Não será possível reverter",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, faça isso!',
+                cancelButtonText: 'Não, cancelar!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false
+            }).then(function () {
+
+
+                request('categories/' + id, 'delete').done(function (response) {
+                    swal({
+                        title: 'Apagado!',
+                        text: 'A categoria foi deletada',
+                        type: 'success'
+                    }).then(function () {
+                        location.reload();
+                    })
+                });
+
+            }, function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    swal(
+                            'Cancelado',
+                            'Nenhum dado foi removido',
+                            'error'
+                    )
+                }
+            })
+
+
+        });
         $(document).on('click', '.excluir', function () {
             var id = $(this).parent().find('.id-procedure').val();
             swal({
@@ -294,7 +333,6 @@
                 cancelButtonClass: 'btn btn-danger',
                 buttonsStyling: false
             }).then(function () {
-
 
                 request('categories/' + id, 'delete').done(function (response) {
                     swal({
