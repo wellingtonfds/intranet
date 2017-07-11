@@ -42,7 +42,7 @@
     <tr>
         <td width="75%" bgcolor="#D2B48C" style="padding: 30px 30px 30px 30px" >
             &reg; Lyon Engenharia {{\Carbon\Carbon::now()->year}}<br/>
-            Tecnologia da Informação | informatica@lyonengenharia - (31)2125-6639
+            Tecnologia da Informação | {{ env('MAIL_DEFAULT_TI', 'informe@lyonengenharia.com') }} - (31)2125-6639
         </td>
     </tr>
 </table>

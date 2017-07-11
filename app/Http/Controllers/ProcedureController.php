@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Jobs\NotificationAdministrators;
 use App\Jobs\SendReminderEmail;
 use App\Mail\NewProcedure;
 use App\Procedure;
@@ -88,19 +89,12 @@ class ProcedureController extends Controller
             'elaborate' => Auth::user()->id,
             'description' => 'teste'
         ]);
-        $users = DB::table('users')
-            ->join('role_user', 'users.id', '=', 'role_user.user_id')
-            ->join('roles', 'role_user.role_id', '=', 'roles.id')
-            ->where('roles.id', '=', 4)
-            ->get();
-        foreach ($users as $user) {
-            $email = new NewProcedure('Criação de procedimento', "O administrador(a) " . $user->name . " criou o procedimento " . $procedure->name . ". O mesmo necessita de revisão.<br><br>Obrigado");
-            $email->subject("Criação de procedimento");
-            $email->to($user->email);
-            $email->from(env('MAIL_DEFAULT_TI', 'informatica@lyonegenharia.com.br'));
-            Mail::send($email);
-            $email = null;
-        }
+
+
+        $email = new NewProcedure('Criação de procedimento', "O administrador(a) [user_name] criou o procedimento \" [procedure_name]  \". O mesmo necessita de revisão.<br><br>Obrigado");
+        $email->subject("Criação de procedimento");
+        dispatch(new NotificationAdministrators($procedure, $email));
+
 
         return $procedure;
 
@@ -149,39 +143,30 @@ class ProcedureController extends Controller
 
         return $procedure;
     }
+
     public function state(Procedure $procedure)
     {
-        $users = DB::table('users')
-            ->join('role_user', 'users.id', '=', 'role_user.user_id')
-            ->join('roles', 'role_user.role_id', '=', 'roles.id')
-            ->where('roles.id', '=', 4)
-            ->get();
+
         $lastRevision = $procedure->lastRevision();
         $lastRevision = Revision::find($lastRevision[0]->id);
         if (empty($lastRevision->reviewed)) {
             $lastRevision->reviewed = Auth::user()->id;
             $lastRevision->reviewed_date = Carbon::now();
             $lastRevision->save();
-            foreach ($users as $user) {
-                $email = new NewProcedure('Revisão de procedimento', "O administrador(a) " . $user->name . " revisou o procedimento \"" . $procedure->name . "\". O mesmo necessita de aprovação.<br><br>Obrigado(a)");
-                $email->subject("Revisão de procedimento");
-                $email->to($user->email);
-                $email->from(env('MAIL_DEFAULT_TI', 'informatica@lyonegenharia.com.br'));
-                Mail::send($email);
-                $email = null;
-            }
+            $email = new NewProcedure('Revisão de procedimento', "O administrador(a) [user_name] revisou o procedimento \" [procedure_name]  \" O mesmo necessita de aprovação.<br><br>Obrigado(a)");
+            $email->subject("Revisão de procedimento");
+            dispatch(new NotificationAdministrators($procedure, $email));
+
+
         } elseif (empty($lastRevision->approved)) {
             $lastRevision->approved = Auth::user()->id;
             $lastRevision->approved_date = Carbon::now();
             $lastRevision->save();
-            foreach ($users as $user) {
-                $email = new NewProcedure('Aprovação de procedimento', "O administrador(a) " . $user->name . " aprovou o procedimento \"" . $procedure->name . "\". O mesmo já pode ser publicado.<br><br>Obrigado(a)");
-                $email->subject("Aprovação de procedimento");
-                $email->to($user->email);
-                $email->from(env('MAIL_DEFAULT_TI', 'informatica@lyonegenharia.com.br'));
-                Mail::send($email);
-                $email = null;
-            }
+            $email = new NewProcedure('Aprovação de procedimento', "O administrador(a)  [user_name] aprovou o procedimento \" [procedure_name] \" O mesmo já pode ser publicado.<br><br>Obrigado(a)");
+            $email->subject("Aprovação de procedimento");
+            dispatch(new NotificationAdministrators($procedure, $email));
+
+
         }
         return $lastRevision;
     }
@@ -192,25 +177,29 @@ class ProcedureController extends Controller
         return $procedure;
     }
 
-    public function notification(Procedure $procedure,Request $request){
-
-        $validator = Validator::make($request->all(), [],[]);
+    public function notification(Procedure $procedure, Request $request)
+    {
+        $validator = Validator::make($request->all(), [], []);
         $validator->after(function ($validator) use ($procedure) {
             if ($procedure->step() != 'Aprovado' && $procedure->publish) {
                 $validator->errors()->add('Procedimento', 'Não é possivel notificar os usuários para ler um procedimento não revisado!');
             }
         });
         if ($validator->fails()) {
-            return response($validator->errors(),422);
+            return response($validator->errors(), 422);
         }
-        dispatch(new SendReminderEmail($procedure,Auth::user()));
+        dispatch(new SendReminderEmail($procedure, Auth::user()));
         return $procedure;
-
-
-
-
-
-
+    }
+    public function publishfinish() {
+        $procedures = Procedure::where('date_publish_finish','<',Carbon::now()->format('Y-m-d'))
+            ->where('publish','=',true)
+            ->get();
+        foreach ($procedures as $procedure):
+            $procedure->date_publish_finish = null;
+            $procedure->publish = false;
+            $procedure->save();
+        endforeach;
 
 
     }

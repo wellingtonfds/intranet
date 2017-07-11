@@ -191,10 +191,9 @@
             </div>
         </div>
     </div>
-
     {{--View Files--}}
     <div class="modal fade bs-example-modal-lg" id="view-files" tabindex="-1" role="dialog"
-         aria-labelledby="myLargeModalLabel">
+         aria-labelledby="myLargeModalLabel" style=" height: 900px;">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
