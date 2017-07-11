@@ -1,6 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('content')
+        <!-- Include Editor style. -->
+
+
+<!-- Include JS file. -->
+
     <style>
         .space-line {
             line-height: 0.2
@@ -71,7 +76,7 @@
     </div>
     <!-- Modal New Category-->
     <div class="modal fade" id="newCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -111,6 +116,12 @@
                                 <div class="form-group">
                                     <label>Arquivo</label>
                                     <input type="file" class="form-control" name="file" id="file" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Texto</label>
+                                    <textarea name="editor1"></textarea>
                                 </div>
                             </div>
 
@@ -245,7 +256,9 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="http://cdn.jsdelivr.net/contenttools/1.3.1/content-tools.min.js"></script>
     <script>
+        
         $(document).ready(function () {
             $('#date_publish_finish').datepicker();
             $('#date_publish_finishEdit').datepicker();
