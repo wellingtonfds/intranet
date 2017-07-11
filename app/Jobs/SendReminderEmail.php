@@ -47,7 +47,7 @@ class SendReminderEmail implements ShouldQueue
             solicitar sua atenção para o procedimento \"" . $this->procedure->name . "\", categoria \"".$this->procedure->category->name." \" . <br><br>Obrigado, Sistema Informe ");
             $email->subject("Atenção ao procedimento");
             $email->to($user->email);
-            $email->from(env('MAIL_DEFAULT_TI', 'informatica@lyonegenharia.com.br'));
+            $email->from(env('MAIL_DEFAULT_TI', 'informe@lyonengenharia.com'));
             Mail::send($email);
             $email = null;
         }
@@ -55,7 +55,7 @@ class SendReminderEmail implements ShouldQueue
             informar que todos os usuários foram notificados para ler o procedimento " . $this->procedure->name . "\", categoria \"".$this->procedure->category->name." \". <br><br>Obrigado, Sistema Informe ");
         $email->subject("Notificação de usuários");
         $email->to($this->user->email);
-        $email->from(env('MAIL_DEFAULT_TI', 'informatica@lyonegenharia.com.br'));
+        $email->from(env('MAIL_DEFAULT_TI', 'informe@lyonengenharia.com'));
         Mail::send($email);
     }
 }

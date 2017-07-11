@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -51,15 +52,18 @@ class CategoryController extends Controller
         $category->delete();
         return $category;
     }
-
     public function show(Category $category)
     {
         return view('procedure.list', [
             'categories' => $category,
             'procedures' => $category->procedures()
+                ->where('date_publish_finish','>=',Carbon::now()->format('Y-m-d'))
+                ->orWhere('date_publish_finish','=', null)
                 ->where('publish','=',true)
                 ->paginate(15)
         ]);
     }
+
+
 
 }
