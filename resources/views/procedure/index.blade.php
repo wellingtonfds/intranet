@@ -258,7 +258,6 @@
 @section('scripts')
     <script src="http://cdn.jsdelivr.net/contenttools/1.3.1/content-tools.min.js"></script>
     <script>
-        
         $(document).ready(function () {
             $('#date_publish_finish').datepicker();
             $('#date_publish_finishEdit').datepicker();

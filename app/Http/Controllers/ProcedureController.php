@@ -203,4 +203,8 @@ class ProcedureController extends Controller
 
 
     }
+
+    public function test(){
+        return view('procedure.test');
+    }
 }
