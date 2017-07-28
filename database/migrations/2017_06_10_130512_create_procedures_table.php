@@ -16,7 +16,7 @@ class CreateProceduresTable extends Migration
         Schema::create('procedures', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name',150);
-            $table->string('file');
+            $table->string('file')->nullable();
             $table->dateTime('date_publish')->nullable();
             $table->date('date_publish_finish')->nullable();
             $table->boolean('publish')->default(false);

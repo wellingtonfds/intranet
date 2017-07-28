@@ -14,7 +14,7 @@
 Route::get('/', function () {
     return redirect('login');
 });
-Route::get('/procedures/test','ProcedureController@test' );
+Route::get('/procedures/text/{procedure}','ProcedureController@text' );
 Route::get('/publishfinish','ProcedureController@publishfinish' );
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {

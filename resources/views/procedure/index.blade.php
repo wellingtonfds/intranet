@@ -6,254 +6,253 @@
 
 <!-- Include JS file. -->
 
-    <style>
-        .space-line {
-            line-height: 0.2
-        }
+<style>
+    .space-line {
+        line-height: 0.2
+    }
 
-        .hide {
-            display: none;
-        }
-    </style>
-    <div class="row">
-        <div class="page-header">
-            <h1>Procedimentos
-                <small> Lista de procedimentos</small>
-            </h1>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <button class="btn btn-default" data-toggle="modal" data-target="#newCategory">Novo</button>
-            </div>
-        </div>
-        <table class="table table-striped hover">
-            <thead>
-            <th>Nome</th>
-            <th>Versão</th>
-            <th>Categoria</th>
-            <th>Publicação</th>
-            <th>Final publicação</th>
-            <th>Fase</th>
-            <th></th>
-            </thead>
-            <tbody>
-            @forelse($procedures as $procedure)
-                <tr>
-                    <td>{{$procedure->name}}</td>
-                    <td>{{ $procedure->revisions()->count()}}</td>
-                    <td>{{$procedure->category->name}}</td>
-                    <td>{{$procedure->publish ? $procedure->date_publish->format('d/m/Y') : "Não publicado"}}</td>
-                    <td>{{empty($procedure->date_publish_finish) ? 'Sem limite' : $procedure->date_publish_finish->format('d/m/Y')}}</td>
-                    <td>{{$procedure->step()}}</td>
-                    <td>
-                        <input type="hidden" class="id-procedure" value="{{$procedure->id}}">
-                        <input type="hidden" class="url-procedure"
-                               value="{{str_replace('/public/','/storage/',asset($procedure->file))}}">
-                        <button class="btn btn-primary btn-xs editar">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </button>
-                        <button class="btn btn-danger btn-xs excluir">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                        <button class="btn btn-success btn-xs view">
-                            <span class="glyphicon glyphicon-eye-open" title="Revisões do procedimento"></span>
-                        </button>
-                        <button class="btn btn-warning btn-xs notification" title="Notificar usuários">
-                            <span class="glyphicon glyphicon-file"></span>
-                        </button>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td rowspan="3">
-                        Sem registros
-                    </td>
-                </tr>
-            @endforelse
-            </tbody>
-        </table>
-        {{$procedures->links()}}
+    .hide {
+        display: none;
+    }
+</style>
+<div class="row">
+    <div class="page-header">
+        <h1>Procedimentos
+            <small> Lista de procedimentos</small>
+        </h1>
     </div>
-    <!-- Modal New Category-->
-    <div class="modal fade" id="newCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Nova procedimento</h4>
-                </div>
-                <form id="newFormProcedure" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <div class="row">
-
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Nome</label>
-                                    <input type="text" class="form-control" name="name" id="name" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Data final publicação</label>
-                                    <input type="text" class="form-control" name="date_publish_finish"
-                                           id="date_publish_finish">
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Categoria</label>
-                                    <select type="text" class="form-control" name="category_id"
-                                            id="category_id" required>
-                                        @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Arquivo</label>
-                                    <input type="file" class="form-control" name="file" id="file" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Texto</label>
-                                    <textarea name="editor1"></textarea>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary insertProcedure">Salvar</button>
-                    </div>
-                </form>
-            </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <button class="btn btn-default" data-toggle="modal" data-target="#newCategory">Novo</button>
         </div>
     </div>
-
-    <!-- Modal Editar Category-->
-    <div class="modal fade" id="editProcedure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Editar procedimento</h4>
-                </div>
-                <form id="editFormProcedure" enctype="multipart/form-data">
-                    <input type="hidden" id="idEdit" name="id">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Nome</label>
-                                    <input type="text" class="form-control" name="nameEdit" id="nameEdit" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Data final publicação</label>
-                                    <input type="text" class="form-control" name="date_publish_finishEdit"
-                                           id="date_publish_finishEdit">
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Categoria</label>
-                                    <select type="text" class="form-control" name="category_idEdit"
-                                            id="category_idEdit" required>
-                                        @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Arquivo</label>
-                                    <p class="text-warning">Caso faça o upload de um novo arquivo, será gerado uma nova
-                                        versão.</p>
-                                    <input type="file" class="form-control" name="file" id="file">
-                                    <div class="checkbox">
-                                        <p class="text-warning">A publicação só acontence após o procedimeto ser
-                                            validado.</p>
-
-                                        <label>
-                                            <input type="checkbox" name="publishEdit" disabled> Publicar
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary updateProcedure">Salvar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {{--View Files--}}
-    <div class="modal fade bs-example-modal-lg" id="view-files" tabindex="-1" role="dialog"
-         aria-labelledby="myLargeModalLabel" style=" height: 900px;">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Revisão de procedimento</h4>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="idDetails">
-                    <div class="">
-                        <p class="space-line"><label>Publicado :</label> <span id="publishDetails"></span></p>
-                        <p class="space-line"><label>Versão :</label> <span id="versionDetails"></span></p>
-                        <p class="space-line"><label>Status:</label> <span class="label label-warning"><span
-                                        id="stateDetails"></span></span></p>
-                        <p class="space-line"><label>Categoria:</label> <span id="categoryDetails"></span></p>
-                        <p class="space-line"><label>Data final publicação:</label> <span
-                                    id="datePublishFinishDetails"></span></p>
-
-                    </div>
-                    <div class="elaborate">
-                        <p class="space-line"><label>Elaborado por:</label> <span id="elaborateDetails"></span></p>
-                        <p class="space-line"><label>Data Elaboração:</label> <span id="elaborateDateDetails"></span>
-                        </p>
-                    </div>
-                    <div class="revision hide">
-                        <p class="space-line"><label>Revisado por:</label> <span id="revisionDetails"></span></p>
-                        <p class="space-line"><label>Data Revisão:</label> <span id="revisionDateDetails"></span></p>
-                    </div>
-                    <div class="approved hide">
-                        <p style="line-height:0"><label>Aprovado por :</label> <span id="approvedDetails"></span></p>
-                        <p style="line-height:0"><label>Data Aprovação:</label> <span id="approvedDateDetails"></span>
-                        </p>
-                    </div>
-
-                    <button type="button " class="btn btn-default approvedButton stepButton hide">
-                        Aprovar
+    <table class="table table-striped hover">
+        <thead>
+        <th>Nome</th>
+        <th>Versão</th>
+        <th>Categoria</th>
+        <th>Publicação</th>
+        <th>Final publicação</th>
+        <th>Fase</th>
+        <th></th>
+        </thead>
+        <tbody>
+        @forelse($procedures as $procedure)
+            <tr>
+                <td>{{$procedure->name}}</td>
+                <td>{{ $procedure->revisions()->count()}}</td>
+                <td>{{$procedure->category->name}}</td>
+                <td>{{$procedure->publish ? $procedure->date_publish->format('d/m/Y') : "Não publicado"}}</td>
+                <td>{{empty($procedure->date_publish_finish) ? 'Sem limite' : $procedure->date_publish_finish->format('d/m/Y')}}</td>
+                <td>{{$procedure->step()}}</td>
+                <td>
+                    <input type="hidden" class="id-procedure" value="{{$procedure->id}}">
+                    <input type="hidden" class="url-procedure"
+                           value="{{str_replace('/public/','/storage/',asset($procedure->file))}}">
+                    <button class="btn btn-primary btn-xs editar">
+                        <span class="glyphicon glyphicon-pencil"></span>
                     </button>
-                    <button type="button " class="btn btn-default revisionButton stepButton hide">
-                        Revisar
+                    <button class="btn btn-danger btn-xs excluir">
+                        <span class="glyphicon glyphicon-trash"></span>
                     </button>
-                </div>
+                    <button class="btn btn-success btn-xs view">
+                        <span class="glyphicon glyphicon-eye-open" title="Revisões do procedimento"></span>
+                    </button>
+                    <button class="btn btn-warning btn-xs notification" title="Notificar usuários">
+                        <span class="glyphicon glyphicon-file"></span>
+                    </button>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td rowspan="3">
+                    Sem registros
+                </td>
+            </tr>
+        @endforelse
+        </tbody>
+    </table>
+    {{$procedures->links()}}
+</div>
+<!-- Modal New Category-->
+<div class="modal fade" id="newCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Nova procedimento</h4>
+            </div>
+            <form id="newFormProcedure" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="row">
-                        <a href="" class="media"></a>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input type="text" class="form-control" name="name" id="name" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Data final publicação</label>
+                                <input type="text" class="form-control" name="date_publish_finish"
+                                       id="date_publish_finish">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Categoria</label>
+                                <select type="text" class="form-control" name="category_id"
+                                        id="category_id" required>
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Arquivo</label>
+                                <input type="file" class="form-control" name="file" id="file">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <p class="text-warning">Deixe o campo file vazio para inserir um texto..</p>
+                                <p class="text-danger">Permita pop-up desse domínio</p>
+                            </div>
+                        </div>
+
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary insertProcedure">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Editar Category-->
+<div class="modal fade" id="editProcedure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Editar procedimento</h4>
+            </div>
+            <form id="editFormProcedure" enctype="multipart/form-data">
+                <input type="hidden" id="idEdit" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input type="text" class="form-control" name="nameEdit" id="nameEdit" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Data final publicação</label>
+                                <input type="text" class="form-control" name="date_publish_finishEdit"
+                                       id="date_publish_finishEdit">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Categoria</label>
+                                <select type="text" class="form-control" name="category_idEdit"
+                                        id="category_idEdit" required>
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Arquivo</label>
+                                <p class="text-warning">Caso faça o upload de um novo arquivo, será gerado uma nova
+                                    versão.</p>
+                                <input type="file" class="form-control" name="file" id="file">
+                                <div class="checkbox">
+                                    <p class="text-warning">A publicação só acontence após o procedimeto ser
+                                        validado.</p>
+
+                                    <label>
+                                        <input type="checkbox" name="publishEdit" disabled> Publicar
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary updateProcedure">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{--View Files--}}
+<div class="modal fade bs-example-modal-lg" id="view-files" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" style=" height: 900px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Revisão de procedimento</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="idDetails">
+                <div class="">
+                    <p class="space-line"><label>Publicado :</label> <span id="publishDetails"></span></p>
+                    <p class="space-line"><label>Versão :</label> <span id="versionDetails"></span></p>
+                    <p class="space-line"><label>Status:</label> <span class="label label-warning"><span
+                                    id="stateDetails"></span></span></p>
+                    <p class="space-line"><label>Categoria:</label> <span id="categoryDetails"></span></p>
+                    <p class="space-line"><label>Data final publicação:</label> <span
+                                id="datePublishFinishDetails"></span></p>
+
+                </div>
+                <div class="elaborate">
+                    <p class="space-line"><label>Elaborado por:</label> <span id="elaborateDetails"></span></p>
+                    <p class="space-line"><label>Data Elaboração:</label> <span id="elaborateDateDetails"></span>
+                    </p>
+                </div>
+                <div class="revision hide">
+                    <p class="space-line"><label>Revisado por:</label> <span id="revisionDetails"></span></p>
+                    <p class="space-line"><label>Data Revisão:</label> <span id="revisionDateDetails"></span></p>
+                </div>
+                <div class="approved hide">
+                    <p style="line-height:0"><label>Aprovado por :</label> <span id="approvedDetails"></span></p>
+                    <p style="line-height:0"><label>Data Aprovação:</label> <span id="approvedDateDetails"></span>
+                    </p>
+                </div>
+
+                <button type="button " class="btn btn-default approvedButton stepButton hide">
+                    Aprovar
+                </button>
+                <button type="button " class="btn btn-default revisionButton stepButton hide">
+                    Revisar
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <a href="" class="media"></a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection
 @section('scripts')
     <script src="http://cdn.jsdelivr.net/contenttools/1.3.1/content-tools.min.js"></script>
@@ -309,13 +308,21 @@
                         }
                     },
                     success: function (data) {
-                        swal({
+                        if(data.file == null){
+                            console.log('nova aba')
+                            window.open("/procedures/text/"+data.id);
+                            location.reload();
+                        }
+                        else{
+                            console.log('ok');
+                        }
+                        /*swal({
                             title: 'Inserido',
                             text: 'O procedimento foi inserido',
                             type: 'success'
                         }).then(function () {
                             location.reload();
-                        });
+                        });*/
                     }
                 });
             });
@@ -378,7 +385,12 @@
                 });
             });
 
+
         });
+
+
+
+
         $(document).on('click', '.editar', function () {
             var id = $(this).parent().find('.id-procedure').val();
             var button = $(this);
@@ -392,9 +404,9 @@
                 } else {
                     $('input[name=publishEdit]').prop('disabled', true);
                 }
-                if(response.publish == '1'){
+                if (response.publish == '1') {
                     $('input[name=publishEdit]').prop("checked", true);
-                }else{
+                } else {
                     $('input[name=publishEdit]').prop("checked", false);
                 }
                 $('#editProcedure').modal('show');
@@ -479,7 +491,7 @@
         });
         $(".stepButton").click(function () {
             var button = $(this);
-            button.prop('disabled',true);
+            button.prop('disabled', true);
             button.text('processando...');
             var id = $('#idDetails').val();
             request('procedure/state/' + id, 'PUT').then(function (response) {

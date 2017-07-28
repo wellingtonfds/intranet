@@ -67,12 +67,11 @@ class ProcedureController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'file' => 'required|mimes:pdf',
+            'file' => 'mimes:pdf',
         ], [
             'name.required' => 'O nome é requerido.',
             'category_id.required' => 'A categoria é requerida.',
             'category_id.exists' => 'A categoria informada não existe.',
-            'file.required' => 'A arquivo é requerido.',
             'file.mimes' => 'A extensão do arquivo não foi aceita, utilizar apenas:pdf',
         ]);
         $procedure->name = $request->get('name');
@@ -81,7 +80,11 @@ class ProcedureController extends Controller
         $procedure->publish = $request->has('publish') ? true : false;
         $procedure->download = $request->has('download') ? true : false;
         $procedure->date_publish = $request->has('publish') ? Carbon::now() : null;
-        $procedure->file = $request->file('file')->store('public/procedures');
+        if($request->hasFile('file')){
+            $procedure->file = $request->file('file')->store('public/procedures');
+
+
+        }
         $procedure->save();
         $procedure->revisions()->create([
             'elaborate_date' => Carbon::now(),
@@ -89,8 +92,6 @@ class ProcedureController extends Controller
             'elaborate' => Auth::user()->id,
             'description' => 'teste'
         ]);
-
-
         $email = new NewProcedure('Criação de procedimento', "O administrador(a) [user_name] criou o procedimento \" [procedure_name]  \". O mesmo necessita de revisão.<br><br>Obrigado");
         $email->subject("Criação de procedimento");
         dispatch(new NotificationAdministrators($procedure, $email));
@@ -204,7 +205,9 @@ class ProcedureController extends Controller
 
     }
 
-    public function test(){
-        return view('procedure.test');
+    public function text(Procedure $procedure){
+        return view('procedure.test',[
+            'procedure'=>$procedure
+        ]);
     }
 }
