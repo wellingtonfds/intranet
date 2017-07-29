@@ -41,17 +41,33 @@
             }
         }
     </style>
-    {{--<link href="{{ asset('vendors/content-tools/content-tools.min.css') }}" rel="stylesheet">--}}
+    <link href="{{ asset('/css/all.css') }}" rel="stylesheet">
 @endsection
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1" style="margin-bottom: 5px">
-                <button class="btn btn-default save">Salvar</button>
-            </div>
-            <div class="col-md-10 col-md-offset-1" style="border: 2px black ridge;border-radius: 5px;padding: 5px 5px 400px 5px">
-                <div  class="editable">
 
+            <div class="panel panel-default col-md-10 col-md-offset-1">
+                <div class="panel-body">
+                    <div class="col-md-2">
+                        <button class="btn btn-default save">Salvar</button>
+                    </div>
+                    <div class="col-md-3">
+                        <span><label>Procedimento:</label>{{$procedure->name}}</span>
+                    </div>
+                    <div class="col-md-3">
+                        <span><label>Categoria:</label>{{$procedure->category->name}}</span>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="col-md-10 col-md-offset-1"
+                 style="border: 2px black ridge;border-radius: 5px;">
+                <div class="editable" style="padding: 5px 5px 400px 5px">
+                    {!!  $procedure->text !!}
                 </div>
             </div>
         </div>
@@ -59,6 +75,11 @@
     </div>
 @endsection
 @section('scripts')
+
+    <script src="{{ asset('js/all.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.js"></script>
+
     <script src="{{asset('js/handlebars/dist/handlebars.runtime.min.js')}}"></script>
     <script src="{{asset('js/jquery-sortable/source/js/jquery-sortable-min.js')}}"></script>
 
@@ -66,7 +87,52 @@
 
 
     <script>
-        function save(content){
+        function request(url, method, data) {
+            return $.ajax({
+                url: url,
+                data: data,
+                dataType: 'json',
+                method: method,
+                statusCode: {
+                    404: function () {
+                        swal(
+                                'Oops...',
+                                'Endereço não encontrado!',
+                                'error'
+                        )
+
+                    },
+                    403: function () {
+                        swal(
+                                'Oops...',
+                                'Acesso não autorizado!',
+                                'error'
+                        )
+                    },
+                    500: function () {
+                        swal(
+                                'Oops...',
+                                'Erro interno do servidor!',
+                                'error'
+                        )
+
+                    },
+                    422: function (response) {
+
+                        var messagem = "";
+                        $.each(response.responseJSON, function (index, item) {
+                            messagem += item + "\n";
+                        });
+                        swal(
+                                'Oops...',
+                                messagem,
+                                'error'
+                        )
+                    }
+                }
+            })
+        }
+        function save(content) {
             console.log(content);
         }
         var editor = new MediumEditor('.editable', {
@@ -114,9 +180,21 @@
                 }
             });
         });
-        $(document).ready(function(){
-            $('.save').click(function(){
-                console.log(editor.getContent());
+
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $('.save').click(function () {
+                request(window.location.href,'POST',{text: editor.getContent()}).then(function(response){
+                    swal({
+                        title: 'Salvo!',
+                        text: 'O procedimento foi salvo.',
+                        type: 'success'
+                    });
+                });
             });
         });
     </script>

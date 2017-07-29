@@ -15,6 +15,7 @@ Route::get('/', function () {
     return redirect('login');
 });
 Route::get('/procedures/text/{procedure}','ProcedureController@text' );
+Route::post('/procedures/text/{procedure}','ProcedureController@savetext' );
 Route::get('/publishfinish','ProcedureController@publishfinish' );
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {

@@ -78,9 +78,8 @@ class ProcedureController extends Controller
         $procedure->categories_id = $request->get('category_id');
         $procedure->date_publish_finish = $request->get('date_publish_finish');
         $procedure->publish = $request->has('publish') ? true : false;
-        $procedure->download = $request->has('download') ? true : false;
         $procedure->date_publish = $request->has('publish') ? Carbon::now() : null;
-        if($request->hasFile('file')){
+        if ($request->hasFile('file')) {
             $procedure->file = $request->file('file')->store('public/procedures');
 
 
@@ -192,9 +191,11 @@ class ProcedureController extends Controller
         dispatch(new SendReminderEmail($procedure, Auth::user()));
         return $procedure;
     }
-    public function publishfinish() {
-        $procedures = Procedure::where('date_publish_finish','<',Carbon::now()->format('Y-m-d'))
-            ->where('publish','=',true)
+
+    public function publishfinish()
+    {
+        $procedures = Procedure::where('date_publish_finish', '<', Carbon::now()->format('Y-m-d'))
+            ->where('publish', '=', true)
             ->get();
         foreach ($procedures as $procedure):
             $procedure->date_publish_finish = null;
@@ -205,9 +206,17 @@ class ProcedureController extends Controller
 
     }
 
-    public function text(Procedure $procedure){
-        return view('procedure.test',[
-            'procedure'=>$procedure
+    public function text(Procedure $procedure)
+    {
+        return view('procedure.text', [
+            'procedure' => $procedure
         ]);
+
+    }
+    public function saveText(Procedure $procedure,Request $request)
+    {
+        $procedure->text = $request->get('text');
+        $procedure->save();
+        return $procedure;
     }
 }
