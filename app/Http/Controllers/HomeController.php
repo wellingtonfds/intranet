@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
 
-        $lastProcedures = $lastProcedures = Procedure::where('date_publish', '<', Carbon::now()->addDays(5))
+        $lastProcedures = $lastProcedures = Procedure::where('date_publish', '>', Carbon::now()->subDays(5))
             ->where('publish','=',true)
             ->limit(5)
             ->get();
