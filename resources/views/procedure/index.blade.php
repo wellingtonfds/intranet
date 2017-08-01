@@ -87,6 +87,12 @@
                         <input type="hidden" class="id-procedure" value="{{$procedure->id}}">
                         <input type="hidden" class="url-procedure"
                                value="{{str_replace('/public/','/storage/',asset($procedure->file))}}">
+                        @if(empty($procedure->file))
+                            <a class="btn btn-success btn-xs" title="Editar Texto" target="_blank"
+                               href="{{url('/procedures/text')."/".$procedure->id}}">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        @endif
                         <button class="btn btn-primary btn-xs editar">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
