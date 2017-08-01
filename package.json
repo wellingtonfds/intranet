@@ -19,6 +19,10 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "ContentTools": "^1.3.4",
+    "medium-editor": "^5.23.1",
+    "medium-editor-insert-plugin": "^2.4.1",
+    "medium-editor-tables": "^0.6.1",
     "sweetalert2": "^6.6.5"
   }
 }

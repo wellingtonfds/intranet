@@ -118,8 +118,13 @@
                 <nav>
                     <div class="nav toggle">
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                    </div>
 
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <p class="navbar-text" style="font-size:15px;font-weight:bold">Informe Gestão de Notas Fiscais</p>
+                        </li>
+                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

@@ -11,6 +11,11 @@
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <div class="form-group">
+                                    <div class="col-md-4 col-md-offset-4">
+                                        <img src="{{asset('img/Logo_LyonFacilities.png')}}" width="300" height="150">
+                                    </div>
+                                </div>
                                 <label for="email" class="col-md-4 control-label">E-Mail</label>
 
                                 <div class="col-md-6">
@@ -72,7 +77,7 @@
 
 @section('scripts')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             console.log('ok')
         });
     </script>

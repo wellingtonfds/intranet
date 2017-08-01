@@ -1,6 +1,49 @@
 @extends('layouts.dashboard')
 
 @section('content')
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/editor.css')}}" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet"
+          href="{{asset('js/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin.min.css')}}"
+          type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet"
+          href="{{asset('js/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin-frontend.min.css')}}"
+          type="text/css" media="screen" charset="utf-8">
+    <style>
+        .medium-insert-images figure figcaption,
+        .mediumInsert figure figcaption,
+        .medium-insert-embeds figure figcaption,
+        .mediumInsert-embeds figure figcaption {
+            font-size: 12px;
+            line-height: 1.2em;
+        }
+
+        .medium-insert-images-slideshow figure {
+            width: 100%;
+        }
+
+        .medium-insert-images-slideshow figure img {
+            margin: 0;
+        }
+
+        .medium-insert-images.medium-insert-images-grid.small-grid figure {
+            width: 12.5%;
+        }
+
+        @media (max-width: 750px) {
+            .medium-insert-images.medium-insert-images-grid.small-grid figure {
+                width: 25%;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .medium-insert-images.medium-insert-images-grid.small-grid figure {
+                width: 50%;
+            }
+        }
+    </style>
+    <link href="{{ asset('/css/all.css') }}" rel="stylesheet">
+
     <style>
         .space-line {
             line-height: 0.2
@@ -44,6 +87,12 @@
                         <input type="hidden" class="id-procedure" value="{{$procedure->id}}">
                         <input type="hidden" class="url-procedure"
                                value="{{str_replace('/public/','/storage/',asset($procedure->file))}}">
+                        @if(empty($procedure->file))
+                            <a class="btn btn-success btn-xs" title="Editar Texto" target="_blank"
+                               href="{{url('/procedures/text')."/".$procedure->id}}">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        @endif
                         <button class="btn btn-primary btn-xs editar">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
@@ -110,7 +159,13 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Arquivo</label>
-                                    <input type="file" class="form-control" name="file" id="file" required>
+                                    <input type="file" class="form-control" name="file" id="file">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <p class="text-warning">Deixe o campo file vazio para inserir um texto..</p>
+                                    <p class="text-danger">Permita pop-up desse domínio</p>
                                 </div>
                             </div>
 
@@ -124,7 +179,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal Editar Category-->
     <div class="modal fade" id="editProcedure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -193,7 +247,7 @@
     </div>
     {{--View Files--}}
     <div class="modal fade bs-example-modal-lg" id="view-files" tabindex="-1" role="dialog"
-         aria-labelledby="myLargeModalLabel" style=" height: 900px;">
+         aria-labelledby="myLargeModalLabel" style="height:100% !important; width:100% !important;">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -238,13 +292,19 @@
                 <div class="modal-body">
                     <div class="row">
                         <a href="" class="media"></a>
+                        <div class="content-procedure"
+                             style="border: 1px ridge black;padding: 0px 0px 5px 5px;border-radius: 2px"></div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('scripts')
+    <script src="http://cdn.jsdelivr.net/contenttools/1.3.1/content-tools.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#date_publish_finish').datepicker();
@@ -297,13 +357,20 @@
                         }
                     },
                     success: function (data) {
-                        swal({
-                            title: 'Inserido',
-                            text: 'O procedimento foi inserido',
-                            type: 'success'
-                        }).then(function () {
+                        if (data.file == null) {
+                            console.log('nova aba')
+                            window.open("/procedures/text/" + data.id);
                             location.reload();
-                        });
+                        }
+                        else {
+                            swal({
+                                title: 'Inserido',
+                                text: 'O procedimento foi inserido',
+                                type: 'success'
+                            }).then(function () {
+                                location.reload();
+                            });
+                        }
                     }
                 });
             });
@@ -366,7 +433,10 @@
                 });
             });
 
+
         });
+
+
         $(document).on('click', '.editar', function () {
             var id = $(this).parent().find('.id-procedure').val();
             var button = $(this);
@@ -380,9 +450,9 @@
                 } else {
                     $('input[name=publishEdit]').prop('disabled', true);
                 }
-                if(response.publish == '1'){
+                if (response.publish == '1') {
                     $('input[name=publishEdit]').prop("checked", true);
-                }else{
+                } else {
                     $('input[name=publishEdit]').prop("checked", false);
                 }
                 $('#editProcedure').modal('show');
@@ -413,12 +483,21 @@
                     $('.revision').removeClass('hide');
                     $('.approved').removeClass('hide');
                 }
+                if (response.procedure.file != null) {
+                    $('.content-procedure').addClass('hide');
+                    $('.media').removeClass('hide');
+                    $('.media').attr('href', url);
+                    $('.media').media({
+                        width: 885,
+                        height: 800,
+                    });
+                } else {
+                    $('.media').addClass('hide');
+                    $('.content-procedure').removeClass('hide');
+                    $('.content-procedure').append(response.procedure.text);
 
-                $('.media').attr('href', url);
-                $('.media').media({
-                    width: 885,
-                    height: 800,
-                });
+                }
+
                 $('#view-files').modal('show');
             })
 
@@ -428,6 +507,7 @@
             $('.approved').addClass('hide');
             $('.approvedButton').addClass('hide');
             $('.revisionButton').addClass('hide');
+            $('.content-procedure').empty();
         });
         $(document).on('click', '.excluir', function () {
             var id = $(this).parent().find('.id-procedure').val();
@@ -467,7 +547,7 @@
         });
         $(".stepButton").click(function () {
             var button = $(this);
-            button.prop('disabled',true);
+            button.prop('disabled', true);
             button.text('processando...');
             var id = $('#idDetails').val();
             request('procedure/state/' + id, 'PUT').then(function (response) {

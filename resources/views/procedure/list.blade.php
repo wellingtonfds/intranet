@@ -1,6 +1,47 @@
 @extends('layouts.dashboard')
 
 @section('content')
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/editor.css')}}" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet"
+          href="{{asset('js/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin.min.css')}}"
+          type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet"
+          href="{{asset('js/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin-frontend.min.css')}}"
+          type="text/css" media="screen" charset="utf-8">
+    <style>
+        .medium-insert-images figure figcaption,
+        .mediumInsert figure figcaption,
+        .medium-insert-embeds figure figcaption,
+        .mediumInsert-embeds figure figcaption {
+            font-size: 12px;
+            line-height: 1.2em;
+        }
+
+        .medium-insert-images-slideshow figure {
+            width: 100%;
+        }
+
+        .medium-insert-images-slideshow figure img {
+            margin: 0;
+        }
+
+        .medium-insert-images.medium-insert-images-grid.small-grid figure {
+            width: 12.5%;
+        }
+
+        @media (max-width: 750px) {
+            .medium-insert-images.medium-insert-images-grid.small-grid figure {
+                width: 25%;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .medium-insert-images.medium-insert-images-grid.small-grid figure {
+                width: 50%;
+            }
+        }
+    </style>
     <style>
         .space-line {
             line-height: 0.2
@@ -93,6 +134,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <a href="" class="media"></a>
+                        <div class="content-procedure"
+                             style="border: 1px ridge black;padding: 0px 0px 5px 5px;border-radius: 2px"></div>
                     </div>
                 </div>
             </div>
@@ -171,70 +214,12 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $('#newFormProcedure').submit(function (e) {
-                e.preventDefault();
-                var formData = new FormData(this);
 
-                formData.set('date_publish_finish', dateBrToUs(formData.get('date_publish_finish')));
 
-                $.ajax({
-                    url: 'procedures', // Url do lado server que vai receber o arquivo
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: 'POST',
-                    statusCode: {
-                        422: function (response) {
-                            console.log(response.responseJSON)
 
-                        },
-                    },
-                    success: function (data) {
-                        console.log(data);
-                    }
-                });
-            });
-
-            $('#editFormProcedure').submit(function (e) {
-                e.preventDefault();
-                var formData = new FormData(this);
-                formData.set('date_publish_finish', dateBrToUs(formData.get('date_publish_finishEdit')));
-                $.ajax({
-                    url: 'procedures/' + $('#idEdit').val(),
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: 'POST',
-                    statusCode: {
-                        422: function (response) {
-                            console.log(response.responseJSON)
-
-                        },
-                    },
-                    success: function (data) {
-                        console.log(data);
-                    }
-                });
-            });
 
         });
-        $(document).on('click', '.editar', function () {
-            var id = $(this).parent().find('.id-procedure').val();
 
-            request('procedures/' + id + '/edit', 'get').done(function (response) {
-
-                $('#nameEdit').val(response.name);
-                $('#idEdit').val(response.id);
-                $('#date_publish_finishEdit').val(dateUsToBr(response.date_publish_finish))
-                $('#category_idEdit').val(response.categories_id);
-                if (response.step == 'Aprovado') {
-                    $('input[name=publishEdit]').removeAttr('disabled');
-                } else {
-                    $('input[name=publishEdit]').prop('disabled', true);
-                }
-                $('#editProcedure').modal('show');
-            })
-        });
         $(document).on('click', '.view', function () {
             var url = $(this).parent().find('.url-procedure').val();
             var id = $(this).parent().find('.id-procedure').val();
@@ -260,135 +245,30 @@
                     $('.revision').removeClass('hide');
                     $('.approved').removeClass('hide');
                 }
+                if (response.procedure.file != null) {
+                    $('.content-procedure').addClass('hide');
+                    $('.media').removeClass('hide');
+                    $('.media').attr('href', url);
+                    $('.media').media({
+                        width: 885,
+                        height: 800,
+                    });
+                } else {
+                    $('.media').addClass('hide');
+                    $('.content-procedure').removeClass('hide');
+                    $('.content-procedure').append(response.procedure.text);
 
-                $('.media').attr('href', url);
-                $('.media').media({
-                    width: 885,
-                    height: 800,
-                });
+                }
+
                 $('#view-files').modal('show');
             })
-
         });
         $('#view-files').on('hidden.bs.modal', function (e) {
             $('.revision').addClass('hide');
             $('.approved').addClass('hide');
             $('.approvedButton').addClass('hide');
             $('.revisionButton').addClass('hide');
-        });
-
-        $(document).on('click', '.notification', function () {
-            var id = $(this).parent().find('.id-procedure').val();
-            swal({
-                title: 'Notificar todos os usuários ?',
-                text: "Não será possível reverter",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, faça isso!',
-                cancelButtonText: 'Não, cancelar!',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false
-            }).then(function () {
-
-
-                request('categories/' + id, 'delete').done(function (response) {
-                    swal({
-                        title: 'Apagado!',
-                        text: 'A categoria foi deletada',
-                        type: 'success'
-                    }).then(function () {
-                        location.reload();
-                    })
-                });
-
-            }, function (dismiss) {
-                // dismiss can be 'cancel', 'overlay',
-                // 'close', and 'timer'
-                if (dismiss === 'cancel') {
-                    swal(
-                            'Cancelado',
-                            'Nenhum dado foi removido',
-                            'error'
-                    )
-                }
-            })
-
-
-        });
-        $(document).on('click', '.excluir', function () {
-            var id = $(this).parent().find('.id-procedure').val();
-            swal({
-                title: 'Você tem certeza?',
-                text: "Não será possível reverter",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, faça isso!',
-                cancelButtonText: 'Não, cancelar!',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false
-            }).then(function () {
-
-                request('categories/' + id, 'delete').done(function (response) {
-                    swal({
-                        title: 'Apagado!',
-                        text: 'A categoria foi deletada',
-                        type: 'success'
-                    }).then(function () {
-                        location.reload();
-                    })
-                });
-
-            }, function (dismiss) {
-                // dismiss can be 'cancel', 'overlay',
-                // 'close', and 'timer'
-                if (dismiss === 'cancel') {
-                    swal(
-                            'Cancelado',
-                            'Nenhum dado foi removido',
-                            'error'
-                    )
-                }
-            })
-
-
-        });
-        $(".stepButton").click(function () {
-            var id = $('#idDetails').val();
-            request('procedure/state/' + id, 'PUT').then(function (response) {
-                console.log(response);
-            });
-        });
-        $(".updateCategory").click(function () {
-            var category = {
-                name: $('#nameEdit').val(),
-                description: $('#descriptionEdit').val(),
-                id: $('#idEdit').val()
-            }
-            request('categories/' + category.id, 'put', category).done(function (response) {
-
-                swal({
-                    title: 'Categoria atualizada!',
-                    text: 'A tela irá se recarregar em 2 segundos.',
-                    timer: 2000
-                }).then(
-                        function () {
-                            location.reload();
-                        },
-                        // handling the promise rejection
-                        function (dismiss) {
-                            if (dismiss === 'timer') {
-                                location.reload();
-                            }
-                        }
-                )
-            });
-
+            $('.content-procedure').empty();
         });
     </script>
 
