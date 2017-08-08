@@ -43,13 +43,15 @@
 </head>
 
 <body class="nav-md">
-
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="/home" class="site_title"><i class="fa fa-file-archive-o"></i> <span>{{ config('app.name', 'Laravel') }}</span></a>
+                    <a href="/home" class="site_title">
+
+                        <img src="{{asset('img/Logo_LyonFacilities.png')}}" width="65" height="55" style="margin-left: -5px">
+                        <span>{{ config('app.name', 'Laravel') }}</span></a>
                 </div>
                 <div class="clearfix"></div>
                 <br />

@@ -188,12 +188,20 @@
                 }
             });
             $('.save').click(function () {
+                button = $(this);
+                button.prop('disabled', true);
+                button.text('processando...');
                 request(window.location.href,'POST',{text: editor.getContent()}).then(function(response){
                     swal({
                         title: 'Salvo!',
                         text: 'O procedimento foi salvo.',
                         type: 'success'
                     });
+                    button.prop('disabled', false);
+                    button.text('Salvar');
+                }).error(function(){
+                    button.prop('disabled', false);
+                    button.text('Salvar');
                 });
             });
         });
