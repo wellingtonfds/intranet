@@ -310,6 +310,8 @@
             $('#date_publish_finish').datepicker();
             $('#date_publish_finishEdit').datepicker();
             $('#newFormProcedure').submit(function (e) {
+                $('.insertProcedure').prop('disabled', true);
+                $('.insertProcedure').text('processando...');
                 e.preventDefault();
                 var formData = new FormData(this);
                 formData.set('date_publish_finish', dateBrToUs(formData.get('date_publish_finish')));
@@ -373,6 +375,9 @@
                         }
                     }
                 });
+            }).error(function(){
+                $('.insertProcedure').prop('disabled', false);
+                $('.insertProcedure').text('Salvar');
             });
             $('#editFormProcedure').submit(function (e) {
                 e.preventDefault();

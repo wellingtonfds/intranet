@@ -47,7 +47,7 @@ class NotificationAdministrators implements ShouldQueue
             ->where('roles.id', '=', 4)
             ->get();
         foreach ($users as $user) {
-            $this->message->setBody(str_replace('[user_name]', $user->name, $this->message->getBody()));
+            //$this->message->setBody(str_replace('[user_name]', $user->name, $this->message->getBody()));
             $this->message->setBody(str_replace('[procedure_name]', $this->procedure->name, $this->message->getBody()));
             $this->message->to($user->email);
             $this->message->from(env('MAIL_DEFAULT_TI', 'informe@lyonengenharia.com'));
