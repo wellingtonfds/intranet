@@ -52,15 +52,13 @@
         }
     </style>
     <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <img src="{{asset('img/lyon_email.jpg')}}" style="width: 100%;margin-bottom: 5px">
+        </div>
         <div class="page-header">
             <h1>Procedimentos
                 <small> Lista de procedimentos</small>
             </h1>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <button class="btn btn-default" data-toggle="modal" data-target="#newCategory">Novo</button>
-            </div>
         </div>
         <table class="table table-striped hover">
             <thead>

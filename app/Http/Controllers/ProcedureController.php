@@ -155,7 +155,9 @@ class ProcedureController extends Controller
             $lastRevision->save();
             $email = new NewProcedure('Revisão de procedimento', "O administrador(a) ".Auth::user()->name. " revisou o procedimento \" [procedure_name]  \" O mesmo necessita de aprovação.<br><br>Obrigado(a)");
             $email->subject("Revisão de procedimento");
-            dispatch(new NotificationAdministrators($procedure, $email));
+            $job = (new NotificationAdministrators($procedure, $email))
+                ->delay(Carbon::now()->addMinutes(5));
+            dispatch($job);
 
 
         } elseif (empty($lastRevision->approved)) {
@@ -164,7 +166,9 @@ class ProcedureController extends Controller
             $lastRevision->save();
             $email = new NewProcedure('Aprovação de procedimento', "O administrador(a)  ".Auth::user()->name. " aprovou o procedimento \" [procedure_name] \" O mesmo já pode ser publicado.<br><br>Obrigado(a)");
             $email->subject("Aprovação de procedimento");
-            dispatch(new NotificationAdministrators($procedure, $email));
+            $job = (new NotificationAdministrators($procedure, $email))
+                ->delay(Carbon::now()->addMinutes(5));
+            dispatch($job);
 
 
         }

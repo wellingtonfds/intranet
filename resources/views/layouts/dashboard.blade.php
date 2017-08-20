@@ -40,6 +40,11 @@
     {{--Jquery UI--}}
     <link href="{{ asset('/css/jquery-ui.theme.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/jquery-ui.css') }}" rel="stylesheet">
+    <style>
+        .navbar .nav_title{
+            background: red;
+        }
+    </style>
 </head>
 
 <body class="nav-md">
@@ -49,9 +54,8 @@
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
                     <a href="/home" class="site_title">
-
-                        <img src="{{asset('img/Logo_LyonFacilities.png')}}" width="65" height="55" style="margin-left: -5px">
-                        <span>{{ config('app.name', 'Laravel') }}</span></a>
+                        <img src="{{asset('img/Logo_LyonFacilities.png')}}" width="100" height="70" style="margin-left: -5px">
+                    </a>
                 </div>
                 <div class="clearfix"></div>
                 <br />
@@ -157,70 +161,7 @@
                             </ul>
                         </li>
 
-                        {{--<li role="presentation" class="dropdown">--}}
-                            {{--<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">--}}
-                                {{--<i class="fa fa-envelope-o"></i>--}}
-                                {{--<span class="badge bg-green">6</span>--}}
-                            {{--</a>--}}
-                            {{--<ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">--}}
-                                {{--<li>--}}
-                                    {{--<a>--}}
-                                        {{--<span class="image"><img src="{{ asset('img/img.jpg') }}" alt="Profile Image" /></span>--}}
-                        {{--<span>--}}
-                          {{--<span>John Smith</span>--}}
-                          {{--<span class="time">3 mins ago</span>--}}
-                        {{--</span>--}}
-                        {{--<span class="message">--}}
-                          {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                        {{--</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<a>--}}
-                                        {{--<span class="image"><img src="{{ asset('img/img.jpg') }}" alt="Profile Image" /></span>--}}
-                        {{--<span>--}}
-                          {{--<span>John Smith</span>--}}
-                          {{--<span class="time">3 mins ago</span>--}}
-                        {{--</span>--}}
-                        {{--<span class="message">--}}
-                          {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                        {{--</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<a>--}}
-                                        {{--<span class="image"><img src="{{ asset('img/img.jpg') }}" alt="Profile Image" /></span>--}}
-                        {{--<span>--}}
-                          {{--<span>John Smith</span>--}}
-                          {{--<span class="time">3 mins ago</span>--}}
-                        {{--</span>--}}
-                        {{--<span class="message">--}}
-                          {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                        {{--</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<a>--}}
-                                        {{--<span class="image"><img src="{{ asset('img/img.jpg') }}" alt="Profile Image" /></span>--}}
-                        {{--<span>--}}
-                          {{--<span>John Smith</span>--}}
-                          {{--<span class="time">3 mins ago</span>--}}
-                        {{--</span>--}}
-                        {{--<span class="message">--}}
-                          {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                        {{--</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<div class="text-center">--}}
-                                        {{--<a>--}}
-                                            {{--<strong>See All Alerts</strong>--}}
-                                            {{--<i class="fa fa-angle-right"></i>--}}
-                                        {{--</a>--}}
-                                    {{--</div>--}}
-                                {{--</li>--}}
-                            {{--</ul>--}}
-                        {{--</li>--}}
+
                     </ul>
                 </nav>
             </div>
@@ -231,14 +172,13 @@
         <div class="right_col" role="main">
             @yield('content')
             <!-- top tiles -->
-
         </div>
         <!-- /page content -->
 
         <!-- footer content -->
         <footer>
             <div class="pull-right">
-                Wellington Fernandes - Developer
+                <span>{{ config('app.name', '12910 - Informe Gestão de Notas Ficais') }}</span>
             </div>
             <div class="clearfix"></div>
         </footer>

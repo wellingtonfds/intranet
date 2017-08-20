@@ -8,7 +8,7 @@
                 <small> Lista de categorias</small>
             </h1>
         </div>
-        <div class="panel panel-default">
+        <div class="col-md-12">
             <div class="panel-body">
                 <button class="btn btn-default" data-toggle="modal" data-target="#newCategory">Novo</button>
             </div>
