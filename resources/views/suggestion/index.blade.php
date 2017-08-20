@@ -4,7 +4,7 @@
 
     <div class="row">
         <div class="page-header">
-            <h1>Sugestões
+            <h1>Sugestões [ {{ count($suggestions) }} ]
                 <small> Lista de sugestões</small>
             </h1>
         </div>
@@ -12,22 +12,27 @@
         <table class="table table-striped hover">
             <thead>
             <th>Usuário</th>
-            <th>E-mail</th>
+            <th>Prodecimento</th>
             <th>Data</th>
-            <th>Sugestão</th>
+            <th>Lido</th>
 
             </thead>
             <tbody>
             @forelse($suggestions as $suggestion)
                 <tr>
                     <td>{{$suggestion->user->name}}</td>
-                    <td>{{$suggestion->user->email}}</td>
+                    <td>{{ $suggestion->procedure->name }}</td>
                     <td>{{$suggestion->created_at->format('d/m/Y H:i')}}</td>
-                    <td>{{$suggestion->suggestion}}</td>
+                    <td>{{$suggestion->read?"Sim":"Não"}}</td>
                     <td>
                         <input type="hidden" class="id-suggestion" value="{{$suggestion->id}}">
                         <button class="btn btn-danger btn-xs excluir">
                             <span class="glyphicon glyphicon-trash"></span>
+                            Excluir
+                        </button>
+                        <button class="btn btn-default btn-xs view">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                            Visualizar
                         </button>
                     </td>
                 </tr>
