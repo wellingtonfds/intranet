@@ -15,7 +15,7 @@ Route::get('/', function () {
     return redirect('login');
 });
 Route::get('/procedures/text/{procedure}','ProcedureController@text' );
-Route::post('/procedures/text/{procedure}','ProcedureController@savetext' );
+
 Route::get('/publishfinish','ProcedureController@publishfinish' );
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/categories', 'CategoryController');
 });
 Route::group(['middleware' => ['can:admin']], function () {
+    Route::post('/procedures/text/{procedure}','ProcedureController@savetext');
     Route::put('/procedure/state/{procedure}', 'ProcedureController@state');
     Route::get('/procedure/notification/{procedure}','ProcedureController@notification');
     Route::resource('/users', 'UserController');
