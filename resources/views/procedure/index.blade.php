@@ -375,9 +375,6 @@
                         }
                     }
                 });
-            }).error(function(){
-                $('.insertProcedure').prop('disabled', false);
-                $('.insertProcedure').text('Salvar');
             });
             $('#editFormProcedure').submit(function (e) {
                 e.preventDefault();
@@ -427,6 +424,7 @@
                         }
                     },
                     success: function (data) {
+                        console.log(data);
                         swal({
                             title: 'Atualizado',
                             text: 'O procedimento foi atualizado',
