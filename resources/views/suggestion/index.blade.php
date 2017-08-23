@@ -47,6 +47,36 @@
         </table>
         {{$suggestions->links()}}
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="viewSuggestions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Sugestão</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" id="suggestionId" value="">
+                            <p>Procedimento: <span id="procedureSuggestion"></span></p>
+                            <p>Categoria: <span id="categorySuggestion"></span></p>
+                            <p>Usuário: <span id="userSuggestion"></span></p>
+                            <p>Data sugestão: <span id="dateSuggestion"></span></p>
+                            <p>Etapa: <span id="stateSuggestion"></span></p>
+                        </div>
+                        <div class="col-md-12" style="border: ridge 2px black;border-radius: 5px;padding-bottom: 50px;">
+                            <p id="suggestionStage" style="margin: 5px 5px"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="seen">Visto</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script>
@@ -89,6 +119,31 @@
                 })
 
 
+            });
+            $(document).on('click','.view',function () {
+                var id = $(this).parent().find('.id-suggestion').val();
+                request('/suggestions/'+id,'get').done(function (response) {
+                    $('#procedureSuggestion').text(response.procedure.name);
+                    $('#categorySuggestion').text(response.procedure.category.name);
+                    $('#userSuggestion').text(response.user.name);
+                    $('#dateSuggestion').text(response.created_at);
+                    $('#stateSuggestion').text(response.stage);
+                    $('#suggestionStage').text(response.suggestion);
+                    $('#suggestionId').val(response.id);
+                });
+                $('#viewSuggestions').modal('show');
+            });
+            $('#seen').click(function () {
+                var id = $('#suggestionId').val();
+                request('/suggestions/'+id,'put',{id:id,read:1}).done(function (response) {
+                    swal({
+                        title: 'Visto',
+                        text: 'A sugestão foi marcada como visualizada!',
+                        type: 'success'
+                    }).then(function () {
+                        location.reload();
+                    });
+                });
             });
         });
     </script>
