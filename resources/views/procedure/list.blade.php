@@ -159,7 +159,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Etapa</label>
-                                    <input type="text" class="form-control" name="Stage">
+                                    <input type="text" class="form-control" name="stage">
                                 </div>
                             </div>
                             <div class="col-md-12">

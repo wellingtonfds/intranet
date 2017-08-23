@@ -38,4 +38,16 @@ class SuggestionController extends Controller
         $suggestion->delete();
         return $suggestion;
     }
+
+    public function show(Suggestion $suggestion){
+        $suggestion->user = $suggestion->user;
+        $suggestion->procedure = $suggestion->procedure;
+        $suggestion->procedure->category = $suggestion->procedure->category;
+        return $suggestion;
+    }
+    public function update(Suggestion $suggestion, Request $request){
+        $suggestion->read = $request->get('read');
+        $suggestion->save();
+        return $suggestion;
+    }
 }
