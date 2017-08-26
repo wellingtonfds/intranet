@@ -105,37 +105,46 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><span id="procedureNameDetails"></span></h4>
+                    <p class="space-line">
+                        <label>Categoria:</label> <span id="categoryDetails"></span>
+                        <label>Versão :</label> <span id="versionDetails"></span>
+                    </p>
+                    <p class="space-line"><label>Data final publicação:</label> <span
+                                id="datePublishFinishDetails"></span></p>
                     <input type="hidden" id="idDetails">
-                    <div class="">
-                        {{--<p class="space-line"><label>Publicado :</label> <span id="publishDetails"></span></p>--}}
-                        <p class="space-line"><label>Versão :</label> <span id="versionDetails"></span></p>
-                        {{--<p class="space-line"><label>Status:</label> <span class="label label-warning"><span--}}
-                        {{--id="stateDetails"></span></span></p>--}}
-                        <p class="space-line"><label>Categoria:</label> <span id="categoryDetails"></span></p>
-                        <p class="space-line"><label>Data final publicação:</label> <span
-                                    id="datePublishFinishDetails"></span></p>
 
-                    </div>
                     <div class="elaborate">
-                        <p class="space-line"><label>Elaborado por:</label> <span id="elaborateDetails"></span></p>
-                        <p class="space-line"><label>Data Elaboração:</label> <span id="elaborateDateDetails"></span>
+                        <p class="space-line">
+                            <label>Elaborado por:</label> <span id="elaborateDetails"></span>
+                            <label>Data Elaboração:</label> <span id="elaborateDateDetails"></span>
                         </p>
                     </div>
                     <div class="revision hide">
-                        <p class="space-line"><label>Revisado por:</label> <span id="revisionDetails"></span></p>
-                        <p class="space-line"><label>Data Revisão:</label> <span id="revisionDateDetails"></span></p>
-                    </div>
-                    <div class="approved hide">
-                        <p style="line-height:0"><label>Aprovado por :</label> <span id="approvedDetails"></span></p>
-                        <p style="line-height:0"><label>Data Aprovação:</label> <span id="approvedDateDetails"></span>
+                        <p class="space-line">
+                            <label>Revisado por:</label> <span id="revisionDetails"></span>
+                            <label>Data Revisão:</label> <span id="revisionDateDetails"></span>
                         </p>
                     </div>
+                    <div class="approved hide">
+                        <p class="space-line">
+                            <label>Aprovado por :</label> <span id="approvedDetails"></span>
+                            <label>Data Aprovação:</label> <span id="approvedDateDetails"></span>
+                        </p>
+                    </div>
+                    <div class="">
+                        <button class="btn btn-info btn-xs print" >
+                            <span class="glyphicon glyphicon-print"> Imprimir</span>
+                        </button>
+                    </div>
                 </div>
+
                 <div class="modal-body">
                     <div class="row">
                         <a href="" class="media"></a>
                         <div class="content-procedure"
-                             style="border: 1px ridge black;padding: 0px 0px 5px 5px;border-radius: 2px"></div>
+                             style="border: 1px ridge black;padding: 0px 0px 5px 5px;border-radius: 4px"></div>
                     </div>
                 </div>
             </div>
@@ -260,6 +269,10 @@
 
 
         });
+        $(document).on('click','.print',function () {
+            var id =  $('#idDetails').val();
+            window.open('/procedure/detail/'+id,'_blank');
+        });
         $(document).on('click', '.suggestion', function () {
 
             $('#procedure_id').val($(this).parent().find('.id-procedure').val());
@@ -284,6 +297,7 @@
             var url = $(this).parent().find('.url-procedure').val();
             var id = $(this).parent().find('.id-procedure').val();
             request('/procedure/details/' + id, 'get').then(function (response) {
+                $('#procedureNameDetails').text(response.procedure.name);
                 $('#idDetails').val(response.procedure.id);
                 $('#publishDetails').text(response.procedure.publish === '1' ? "Sim" : "Não");
                 $('#versionDetails').text(response.lastRevision.lastVersion.version);
@@ -296,16 +310,8 @@
                 $('#revisionDateDetails').text(response.lastRevision.lastVersion.reviewed_date);
                 $('#approvedDetails').text(response.lastRevision.users.approved.name);
                 $('#approvedDateDetails').text(response.lastRevision.lastVersion.approved_date);
-                if (response.step == 'revisão pendente') {
-                    $('.revisionButton').removeClass('hide');
-                } else if (response.step == 'Aprovação pendente') {
-                    $('.revision').removeClass('hide');
-                    $('.approvedButton').removeClass('hide');
-                } else {
-                    $('.revision').removeClass('hide');
-                    $('.approved').removeClass('hide');
-                }
                 if (response.procedure.file != null) {
+                    $('.print').addClass('hide');
                     $('.content-procedure').addClass('hide');
                     $('.media').removeClass('hide');
                     $('.media').attr('href', url);
@@ -316,6 +322,7 @@
                 } else {
                     $('.media').addClass('hide');
                     $('.content-procedure').removeClass('hide');
+                    $('.print').removeClass('hide');
                     $('.content-procedure').append(response.procedure.text);
 
                 }

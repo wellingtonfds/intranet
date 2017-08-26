@@ -19,7 +19,7 @@
 </head>
 <body>
     <div>
-        <nav class="navbar navbar-default navbar-static-top">
+        <nav class="navbar navbar-default navbar-static-top .visible-print-block">
             <div class="container">
                 <div class="navbar-header">
 
