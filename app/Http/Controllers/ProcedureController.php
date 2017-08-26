@@ -18,9 +18,11 @@ use Illuminate\Support\Facades\Validator;
 
 class ProcedureController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
-
         return view('procedure.index', [
 
             'procedures' => Procedure::paginate(15),
@@ -28,8 +30,17 @@ class ProcedureController extends Controller
         ]);
     }
 
-    public function details(Procedure $procedure)
-    {
+    /**
+     * retonar uma view com os detalhes da procedure
+     * @param Procedure $procedure
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function detail(Procedure $procedure){
+        //dd($this->detailsProcedure($procedure));
+        return view('procedure.details',['procedure'=>$procedure,'details'=>$this->detailsProcedure($procedure)]);
+    }
+
+    protected function detailsProcedure(Procedure $procedure){
         $lastVersion = [
             "lastVersion" => $procedure->lastRevision()[0],
             "users" => [
@@ -47,21 +58,39 @@ class ProcedureController extends Controller
         if (!empty($lastVersion['lastVersion']->approved)) {
             $lastVersion['users']['approved'] = User::find($lastVersion['lastVersion']->approved);
         }
-        return response()->json($data = [
+        return [
             "procedure" => $procedure,
             "step" => $procedure->step(),
             "lastRevision" => $lastVersion,
             "category" => $procedure->category->name
-        ]);
+        ];
     }
 
+    /**
+     * retonar apenas os dados da procedure
+     * @param Procedure $procedure
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function details(Procedure $procedure)
+    {
+         return response()->json($this->detailsProcedure($procedure));
+    }
+
+    /**
+     * @param Procedure $procedure
+     * @return Procedure
+     */
     public function edit(Procedure $procedure)
     {
         $procedure->step = $procedure->step();
-        $date = new Carbon($procedure->date_publish_finish);
         return $procedure;
     }
 
+    /**
+     * @param Request $request
+     * @param Procedure $procedure
+     * @return Procedure
+     */
     public function store(Request $request, Procedure $procedure)
     {
         $this->validate($request, [
@@ -101,6 +130,11 @@ class ProcedureController extends Controller
 
     }
 
+    /**
+     * @param Procedure $procedure
+     * @param Request $request
+     * @return Procedure
+     */
     public function update(Procedure $procedure, Request $request)
     {
 
@@ -181,6 +215,12 @@ class ProcedureController extends Controller
         return $procedure;
     }
 
+    /**
+     * Notificação dos procedimentos
+     * @param Procedure $procedure
+     * @param Request $request
+     * @return Procedure|\Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function notification(Procedure $procedure, Request $request)
     {
         $validator = Validator::make($request->all(), [], []);
@@ -196,6 +236,10 @@ class ProcedureController extends Controller
         return $procedure;
     }
 
+    /**
+     * Remove todos o procedimento vencidos a partir da data corrente
+     * @return void
+     */
     public function publishfinish()
     {
         $procedures = Procedure::where('date_publish_finish', '<', Carbon::now()->format('Y-m-d'))
@@ -210,6 +254,12 @@ class ProcedureController extends Controller
 
     }
 
+    /**
+     * retonar um view com editor de texto para o procedimento
+     * @param Procedure $procedure
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+
     public function text(Procedure $procedure)
     {
         return view('procedure.text', [
@@ -217,6 +267,13 @@ class ProcedureController extends Controller
         ]);
 
     }
+
+    /**
+     * Save texto de um procedimento, inclui formatação e imagens
+     * @param Procedure $procedure
+     * @param Request $request
+     * @return Procedure
+     */
     public function saveText(Procedure $procedure,Request $request)
     {
         $procedure->text = $request->get('text');
