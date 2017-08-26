@@ -12,8 +12,6 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ProcedureController extends Controller
@@ -122,7 +120,10 @@ class ProcedureController extends Controller
         ]);
         $email = new NewProcedure('Criação de procedimento', "O administrador(a) ".Auth::user()->name. " criou o procedimento \" [procedure_name]  \". O mesmo necessita de revisão.<br><br>Obrigado");
         $email->subject("Criação de procedimento");
-        dispatch(new NotificationAdministrators($procedure, $email));
+        $job = (new NotificationAdministrators($procedure, $email))
+            ->delay(Carbon::now()->addMinutes(1));
+        dispatch($job);
+
 
 
         return $procedure;
@@ -190,7 +191,7 @@ class ProcedureController extends Controller
             $email = new NewProcedure('Revisão de procedimento', "O administrador(a) ".Auth::user()->name. " revisou o procedimento \" [procedure_name]  \" O mesmo necessita de aprovação.<br><br>Obrigado(a)");
             $email->subject("Revisão de procedimento");
             $job = (new NotificationAdministrators($procedure, $email))
-                ->delay(Carbon::now()->addMinutes(5));
+                ->delay(Carbon::now()->addMinutes(1));
             dispatch($job);
 
 
@@ -201,7 +202,7 @@ class ProcedureController extends Controller
             $email = new NewProcedure('Aprovação de procedimento', "O administrador(a)  ".Auth::user()->name. " aprovou o procedimento \" [procedure_name] \" O mesmo já pode ser publicado.<br><br>Obrigado(a)");
             $email->subject("Aprovação de procedimento");
             $job = (new NotificationAdministrators($procedure, $email))
-                ->delay(Carbon::now()->addMinutes(5));
+                ->delay(Carbon::now()->addMinutes(1));
             dispatch($job);
 
 
@@ -232,7 +233,10 @@ class ProcedureController extends Controller
         if ($validator->fails()) {
             return response($validator->errors(), 422);
         }
-        dispatch(new SendReminderEmail($procedure, Auth::user()));
+
+        $job = (new SendReminderEmail($procedure, Auth::user()))
+            ->delay(Carbon::now()->addMinutes(2));
+        dispatch($job);
         return $procedure;
     }
 

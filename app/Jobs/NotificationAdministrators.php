@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Mail\NewProcedure;
 use App\Procedure;
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -48,10 +47,10 @@ class NotificationAdministrators implements ShouldQueue
             ->get();
         foreach ($users as $user) {
             //$this->message->setBody(str_replace('[user_name]', $user->name, $this->message->getBody()));
-            $this->message->setBody(str_replace('[procedure_name]', $this->procedure->name, $this->message->getBody()));
             $this->message->to($user->email);
-            $this->message->from(env('MAIL_DEFAULT_TI', 'informe@lyonengenharia.com'));
-            Mail::send($this->message);
         }
+        $this->message->setBody(str_replace('[procedure_name]', $this->procedure->name, $this->message->getBody()));
+        $this->message->from(env('MAIL_DEFAULT_TI', 'informe@lyonengenharia.com'));
+        Mail::send($this->message);
     }
 }
