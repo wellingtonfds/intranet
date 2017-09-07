@@ -54,7 +54,8 @@
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
                     <a href="/home" class="site_title">
-                        <img src="{{asset('img/Logo_LyonFacilities.png')}}" width="100" height="70" style="margin-left: -5px">
+                        <img src="{{asset('img/cone.png')}}"  style="margin-left: -5px">
+                        <span style="color: #985f0d;font: bold">Informe</span>
                     </a>
                 </div>
                 <div class="clearfix"></div>
@@ -170,23 +171,24 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
+            <div class="container">
             @yield('content')
+
+            </div>
+
             <!-- top tiles -->
         </div>
+        <footer >
+
+                <img src="{{asset('img/footer_test.png')}}">
+                <span>{{ config('app.name', '12910 - Informe Gestão de Notas Ficais') }}</span>
+
+
+        </footer>
         <!-- /page content -->
 
         <!-- footer content -->
-        <footer>
-            <div class="pull-left">
-                <img src="{{asset('img/footer_left.jpg')}}" height="50px">
-                {{--<span>{{ config('app.name', '12910 - Informe Gestão de Notas Ficais') }}</span>--}}
-            </div>
-            <div class="pull-right">
-                <img src="{{asset('img/footer_right.jpg')}}" height="50px">
-                {{--<span>{{ config('app.name', '12910 - Informe Gestão de Notas Ficais') }}</span>--}}
-            </div>
-            <div class="clearfix"></div>
-        </footer>
+
         <!-- /footer content -->
     </div>
 </div>
