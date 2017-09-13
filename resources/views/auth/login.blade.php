@@ -4,7 +4,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default" id="back-login">
+                <div class="panel panel-default">
+                    <img src='/img/textura_fundo.jpg' id="back-login">
                     <div class="panel-heading">Login</div>
                     <div class="panel-body" style="">
                         <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
@@ -13,7 +14,7 @@
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                 <div class="form-group">
                                     <div class="col-md-4 col-md-offset-4">
-                                        <img src="{{asset('img/Logo_LyonFacilities.png')}}" width="300" height="150">
+                                        <img src="{{asset('img/login.png')}}" width="300" height="150">
                                     </div>
                                 </div>
                                 <label for="email" class="col-md-4 control-label">E-Mail</label>
@@ -77,8 +78,13 @@
 
 @section('styles')
 <style>
-    body{
-        background: url('img/textura_fundo.jpg') ;
+    #back-login{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        z-index: -1;
     }
 </style>
 @endsection

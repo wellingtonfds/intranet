@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <img src="{{asset('img/lyon_email.jpg')}}" style="width: 100%;margin-bottom: 5px">
-        </div>
+        {{--<div class="col-md-12 col-sm-12 col-xs-12">--}}
+            {{--<img src="{{asset('img/lyon_email.jpg')}}" style="width: 100%;margin-bottom: 5px">--}}
+        {{--</div>--}}
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
