@@ -228,7 +228,7 @@ $(document).ready(function() {
 
 // Panel toolbox
 $(document).ready(function() {
-    $BODY.toggleClass('nav-md nav-sm');
+    //$BODY.toggleClass('nav-md nav-sm');
     getCategories().done(function(response){
         for(i=0;i<response.length;i++){
             $('.nav .child_menu').append(

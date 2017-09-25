@@ -12,15 +12,15 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ProcedureController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
-
         return view('procedure.index', [
 
             'procedures' => Procedure::paginate(15),
@@ -28,8 +28,17 @@ class ProcedureController extends Controller
         ]);
     }
 
-    public function details(Procedure $procedure)
-    {
+    /**
+     * retonar uma view com os detalhes da procedure
+     * @param Procedure $procedure
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function detail(Procedure $procedure){
+        //dd($this->detailsProcedure($procedure));
+        return view('procedure.details',['procedure'=>$procedure,'details'=>$this->detailsProcedure($procedure)]);
+    }
+
+    protected function detailsProcedure(Procedure $procedure){
         $lastVersion = [
             "lastVersion" => $procedure->lastRevision()[0],
             "users" => [
@@ -47,21 +56,39 @@ class ProcedureController extends Controller
         if (!empty($lastVersion['lastVersion']->approved)) {
             $lastVersion['users']['approved'] = User::find($lastVersion['lastVersion']->approved);
         }
-        return response()->json($data = [
+        return [
             "procedure" => $procedure,
             "step" => $procedure->step(),
             "lastRevision" => $lastVersion,
             "category" => $procedure->category->name
-        ]);
+        ];
     }
 
+    /**
+     * retonar apenas os dados da procedure
+     * @param Procedure $procedure
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function details(Procedure $procedure)
+    {
+         return response()->json($this->detailsProcedure($procedure));
+    }
+
+    /**
+     * @param Procedure $procedure
+     * @return Procedure
+     */
     public function edit(Procedure $procedure)
     {
         $procedure->step = $procedure->step();
-        $date = new Carbon($procedure->date_publish_finish);
         return $procedure;
     }
 
+    /**
+     * @param Request $request
+     * @param Procedure $procedure
+     * @return Procedure
+     */
     public function store(Request $request, Procedure $procedure)
     {
         $this->validate($request, [
@@ -93,7 +120,10 @@ class ProcedureController extends Controller
         ]);
         $email = new NewProcedure('Criação de procedimento', "O administrador(a) ".Auth::user()->name. " criou o procedimento \" [procedure_name]  \". O mesmo necessita de revisão.<br><br>Obrigado");
         $email->subject("Criação de procedimento");
-        dispatch(new NotificationAdministrators($procedure, $email));
+        $job = (new NotificationAdministrators($procedure, $email))
+            ->delay(Carbon::now()->addMinutes(1));
+        dispatch($job);
+
 
 
         return $procedure;
@@ -101,6 +131,11 @@ class ProcedureController extends Controller
 
     }
 
+    /**
+     * @param Procedure $procedure
+     * @param Request $request
+     * @return Procedure
+     */
     public function update(Procedure $procedure, Request $request)
     {
 
@@ -155,7 +190,9 @@ class ProcedureController extends Controller
             $lastRevision->save();
             $email = new NewProcedure('Revisão de procedimento', "O administrador(a) ".Auth::user()->name. " revisou o procedimento \" [procedure_name]  \" O mesmo necessita de aprovação.<br><br>Obrigado(a)");
             $email->subject("Revisão de procedimento");
-            dispatch(new NotificationAdministrators($procedure, $email));
+            $job = (new NotificationAdministrators($procedure, $email))
+                ->delay(Carbon::now()->addMinutes(1));
+            dispatch($job);
 
 
         } elseif (empty($lastRevision->approved)) {
@@ -164,7 +201,9 @@ class ProcedureController extends Controller
             $lastRevision->save();
             $email = new NewProcedure('Aprovação de procedimento', "O administrador(a)  ".Auth::user()->name. " aprovou o procedimento \" [procedure_name] \" O mesmo já pode ser publicado.<br><br>Obrigado(a)");
             $email->subject("Aprovação de procedimento");
-            dispatch(new NotificationAdministrators($procedure, $email));
+            $job = (new NotificationAdministrators($procedure, $email))
+                ->delay(Carbon::now()->addMinutes(1));
+            dispatch($job);
 
 
         }
@@ -177,6 +216,12 @@ class ProcedureController extends Controller
         return $procedure;
     }
 
+    /**
+     * Notificação dos procedimentos
+     * @param Procedure $procedure
+     * @param Request $request
+     * @return Procedure|\Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function notification(Procedure $procedure, Request $request)
     {
         $validator = Validator::make($request->all(), [], []);
@@ -188,10 +233,17 @@ class ProcedureController extends Controller
         if ($validator->fails()) {
             return response($validator->errors(), 422);
         }
-        dispatch(new SendReminderEmail($procedure, Auth::user()));
+
+        $job = (new SendReminderEmail($procedure, Auth::user()))
+            ->delay(Carbon::now()->addMinutes(2));
+        dispatch($job);
         return $procedure;
     }
 
+    /**
+     * Remove todos o procedimento vencidos a partir da data corrente
+     * @return void
+     */
     public function publishfinish()
     {
         $procedures = Procedure::where('date_publish_finish', '<', Carbon::now()->format('Y-m-d'))
@@ -206,6 +258,12 @@ class ProcedureController extends Controller
 
     }
 
+    /**
+     * retonar um view com editor de texto para o procedimento
+     * @param Procedure $procedure
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+
     public function text(Procedure $procedure)
     {
         return view('procedure.text', [
@@ -213,6 +271,13 @@ class ProcedureController extends Controller
         ]);
 
     }
+
+    /**
+     * Save texto de um procedimento, inclui formatação e imagens
+     * @param Procedure $procedure
+     * @param Request $request
+     * @return Procedure
+     */
     public function saveText(Procedure $procedure,Request $request)
     {
         $procedure->text = $request->get('text');

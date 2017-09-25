@@ -57,11 +57,6 @@
                 <small> Lista de procedimentos</small>
             </h1>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <button class="btn btn-default" data-toggle="modal" data-target="#newCategory">Novo</button>
-            </div>
-        </div>
         <table class="table table-striped hover">
             <thead>
             <th>Nome</th>
@@ -84,6 +79,11 @@
                                value="{{str_replace('/public/','/storage/',asset($procedure->file))}}">
                         <button class="btn btn-success btn-xs view" title="Visualizar procedimento">
                             <span class="glyphicon glyphicon-eye-open"></span>
+                            Visualizar
+                        </button>
+                        <button class="btn btn-default btn-xs suggestion" title="Sugestão ">
+                            <span class="glyphicon glyphicon glyphicon-comment"></span>
+                            Sugestão
                         </button>
                     </td>
                 </tr>
@@ -105,39 +105,86 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><span id="procedureNameDetails"></span></h4>
+                    <p class="space-line">
+                        <label>Categoria:</label> <span id="categoryDetails"></span>
+                        <label>Versão :</label> <span id="versionDetails"></span>
+                    </p>
+                    <p class="space-line"><label>Data final publicação:</label> <span
+                                id="datePublishFinishDetails"></span></p>
                     <input type="hidden" id="idDetails">
-                    <div class="">
-                        {{--<p class="space-line"><label>Publicado :</label> <span id="publishDetails"></span></p>--}}
-                        <p class="space-line"><label>Versão :</label> <span id="versionDetails"></span></p>
-                        {{--<p class="space-line"><label>Status:</label> <span class="label label-warning"><span--}}
-                                        {{--id="stateDetails"></span></span></p>--}}
-                        <p class="space-line"><label>Categoria:</label> <span id="categoryDetails"></span></p>
-                        <p class="space-line"><label>Data final publicação:</label> <span
-                                    id="datePublishFinishDetails"></span></p>
 
-                    </div>
                     <div class="elaborate">
-                        <p class="space-line"><label>Elaborado por:</label> <span id="elaborateDetails"></span></p>
-                        <p class="space-line"><label>Data Elaboração:</label> <span id="elaborateDateDetails"></span>
+                        <p class="space-line">
+                            <label>Elaborado por:</label> <span id="elaborateDetails"></span>
+                            <label>Data Elaboração:</label> <span id="elaborateDateDetails"></span>
                         </p>
                     </div>
                     <div class="revision hide">
-                        <p class="space-line"><label>Revisado por:</label> <span id="revisionDetails"></span></p>
-                        <p class="space-line"><label>Data Revisão:</label> <span id="revisionDateDetails"></span></p>
-                    </div>
-                    <div class="approved hide">
-                        <p style="line-height:0"><label>Aprovado por :</label> <span id="approvedDetails"></span></p>
-                        <p style="line-height:0"><label>Data Aprovação:</label> <span id="approvedDateDetails"></span>
+                        <p class="space-line">
+                            <label>Revisado por:</label> <span id="revisionDetails"></span>
+                            <label>Data Revisão:</label> <span id="revisionDateDetails"></span>
                         </p>
                     </div>
+                    <div class="approved hide">
+                        <p class="space-line">
+                            <label>Aprovado por :</label> <span id="approvedDetails"></span>
+                            <label>Data Aprovação:</label> <span id="approvedDateDetails"></span>
+                        </p>
+                    </div>
+                    <div class="">
+                        <button class="btn btn-info btn-xs print" >
+                            <span class="glyphicon glyphicon-print"> Imprimir</span>
+                        </button>
+                    </div>
                 </div>
+
                 <div class="modal-body">
                     <div class="row">
                         <a href="" class="media"></a>
                         <div class="content-procedure"
-                             style="border: 1px ridge black;padding: 0px 0px 5px 5px;border-radius: 2px"></div>
+                             style="border: 1px ridge black;padding: 0px 0px 5px 5px;border-radius: 4px"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="suggestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Sugestão</h4>
+                </div>
+                <form id="newSuggestion">
+                    <input type="hidden" name="procedure_id" id="procedure_id">
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Etapa</label>
+                                    <input type="text" class="form-control" name="stage">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Sugestão</label>
+                                    <textarea class="form-control" name="suggestion" required></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" >Enviar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -153,6 +200,7 @@
             }
             return date;
         }
+
         function dateUsToBr(date) {
             if (date !== null) {
                 date = date.replace('00:00:00', '').trim();
@@ -161,33 +209,36 @@
             }
             return date;
         }
+
         function request(url, method, data) {
             return $.ajax({
                 url: url,
                 data: data,
                 dataType: 'json',
+                processData: false,
+                contentType: false,
                 method: method,
                 statusCode: {
                     404: function () {
                         swal(
-                                'Oops...',
-                                'Endereço não encontrado!',
-                                'error'
+                            'Oops...',
+                            'Endereço não encontrado!',
+                            'error'
                         )
 
                     },
                     403: function () {
                         swal(
-                                'Oops...',
-                                'Acesso não autorizado!',
-                                'error'
+                            'Oops...',
+                            'Acesso não autorizado!',
+                            'error'
                         )
                     },
                     500: function () {
                         swal(
-                                'Oops...',
-                                'Erro interno do servidor!',
-                                'error'
+                            'Oops...',
+                            'Erro interno do servidor!',
+                            'error'
                         )
 
                     },
@@ -198,14 +249,15 @@
                             messagem += item + "\n";
                         });
                         swal(
-                                'Oops...',
-                                messagem,
-                                'error'
+                            'Oops...',
+                            messagem,
+                            'error'
                         )
                     }
                 }
             })
         }
+
         $(document).ready(function () {
             $('#date_publish_finish').datepicker();
             $('#date_publish_finishEdit').datepicker();
@@ -216,14 +268,36 @@
             });
 
 
+        });
+        $(document).on('click','.print',function () {
+            var id =  $('#idDetails').val();
+            window.open('/procedure/detail/'+id,'_blank');
+        });
+        $(document).on('click', '.suggestion', function () {
 
+            $('#procedure_id').val($(this).parent().find('.id-procedure').val());
+            $('#suggestion').modal('show');
+        });
+        $('#newSuggestion').submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            formData.append('procedure_id',$('#procedure_id').val());
+            request('/suggestions','post',formData).then(function (response) {
+                $('#newSuggestion')[0].reset();
+                swal(
+                    'Sucesso...',
+                    'Obrigado pela sua sugestão ou crítica.',
+                    'success'
+                )
+                $('#suggestion').modal('hide');
+            });
 
         });
-
         $(document).on('click', '.view', function () {
             var url = $(this).parent().find('.url-procedure').val();
             var id = $(this).parent().find('.id-procedure').val();
             request('/procedure/details/' + id, 'get').then(function (response) {
+                $('#procedureNameDetails').text(response.procedure.name);
                 $('#idDetails').val(response.procedure.id);
                 $('#publishDetails').text(response.procedure.publish === '1' ? "Sim" : "Não");
                 $('#versionDetails').text(response.lastRevision.lastVersion.version);
@@ -236,16 +310,8 @@
                 $('#revisionDateDetails').text(response.lastRevision.lastVersion.reviewed_date);
                 $('#approvedDetails').text(response.lastRevision.users.approved.name);
                 $('#approvedDateDetails').text(response.lastRevision.lastVersion.approved_date);
-                if (response.step == 'revisão pendente') {
-                    $('.revisionButton').removeClass('hide');
-                } else if (response.step == 'Aprovação pendente') {
-                    $('.revision').removeClass('hide');
-                    $('.approvedButton').removeClass('hide');
-                } else {
-                    $('.revision').removeClass('hide');
-                    $('.approved').removeClass('hide');
-                }
                 if (response.procedure.file != null) {
+                    $('.print').addClass('hide');
                     $('.content-procedure').addClass('hide');
                     $('.media').removeClass('hide');
                     $('.media').attr('href', url);
@@ -256,6 +322,7 @@
                 } else {
                     $('.media').addClass('hide');
                     $('.content-procedure').removeClass('hide');
+                    $('.print').removeClass('hide');
                     $('.content-procedure').append(response.procedure.text);
 
                 }

@@ -57,8 +57,6 @@ class CategoryController extends Controller
         return view('procedure.list', [
             'categories' => $category,
             'procedures' => $category->procedures()
-                ->where('date_publish_finish','>=',Carbon::now()->format('Y-m-d'))
-                ->orWhere('date_publish_finish','=', null)
                 ->where('publish','=',true)
                 ->paginate(15)
         ]);
