@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect('login');
+    return view('home');
 });
 Route::get('/procedures/text/{procedure}','ProcedureController@text' );
 Route::get('/publishfinish','ProcedureController@publishfinish' );
