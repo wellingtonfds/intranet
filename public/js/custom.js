@@ -229,15 +229,6 @@ $(document).ready(function() {
 // Panel toolbox
 $(document).ready(function() {
     //$BODY.toggleClass('nav-md nav-sm');
-    getCategories().done(function(response){
-        for(i=0;i<response.length;i++){
-            $('.nav .child_menu').append(
-                '<li><a href="/categories/'+response[i].id+'">'+response[i].name+'</a></li>'
-            );
-        }
-
-
-    });
     $('.collapse-link').on('click', function() {
         var $BOX_PANEL = $(this).closest('.x_panel'),
             $ICON = $(this).find('i'),

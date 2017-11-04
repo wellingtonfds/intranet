@@ -12,12 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('home');
+      return view('home');
 });
-Route::get('/procedures/text/{procedure}','ProcedureController@text' );
+Route::get('/documentos/{procedure}','ProcedureController@view' );
+
+
 Route::get('/publishfinish','ProcedureController@publishfinish' );
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/procedures/text/{procedure}','ProcedureController@text' );
     Route::get('/home', 'HomeController@index')->name('home');
     Route::post('/procedures/{procedure}', 'ProcedureController@update');
     Route::get('/procedure/details/{procedure}', 'ProcedureController@details');

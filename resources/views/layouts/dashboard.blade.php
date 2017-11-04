@@ -54,8 +54,9 @@
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
                     <a href="/home" class="site_title">
-                        <img src="{{asset('img/cone.png')}}"  style="margin-left: -5px">
-                        <span style="color: #985f0d;font: bold">Informe</span>
+
+                        {{--<img src="{{asset('img/cone.png')}}"  style="margin-left: -5px">--}}
+                        <span style="color: #985f0d;font: bold">Intranet Lyon</span>
                     </a>
                 </div>
                 <div class="clearfix"></div>
@@ -67,10 +68,6 @@
                             <li><a href="/home">
                                     <i class="fa fa-home"></i> Home
                                 </a>
-                            </li>
-                            <li><a><i class="fa fa-edit"></i> Informes <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                </ul>
                             </li>
                             @can('admin')
                             <li>
@@ -85,7 +82,7 @@
                             </li>
                             <li>
                                 <a href="/procedures"><i class="fa fa-file">
-                                    </i>Prodecimentos<span class="fa fa-chevron-down"></span></a>
+                                    </i>Documentos<span class="fa fa-chevron-down"></span></a>
 
                             </li>
                             <li>
@@ -102,15 +99,6 @@
 
                 <!-- /menu footer buttons -->
                 <div class="sidebar-footer hidden-small">
-                    {{--<a data-toggle="tooltip" data-placement="top" title="Settings">--}}
-                        {{--<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>--}}
-                    {{--</a>--}}
-                    {{--<a data-toggle="tooltip" data-placement="top" title="FullScreen">--}}
-                        {{--<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>--}}
-                    {{--</a>--}}
-                    {{--<a data-toggle="tooltip" data-placement="top" title="Lock">--}}
-                        {{--<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>--}}
-                    {{--</a>--}}
                     <a data-toggle="tooltip" data-placement="top" title="Logout" href="{{ route('logout') }}">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                     </a>
@@ -129,7 +117,7 @@
                     </div>
                     <ul class="nav navbar-nav">
                         <li>
-                            <p class="navbar-text" style="font-size:15px;font-weight:bold">Informe Gestão de Notas Fiscais</p>
+                            <p class="navbar-text" style="font-size:15px;font-weight:bold">Intranet</p>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -139,14 +127,6 @@
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                {{--<li><a href="javascript:;"> Profile</a></li>--}}
-                                {{--<li>--}}
-                                    {{--<a href="javascript:;">--}}
-                                        {{--<span class="badge bg-red pull-right">50%</span>--}}
-                                        {{--<span>Settings</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li><a href="javascript:;">Help</a></li>--}}
                                 <li>
                                     <a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

@@ -55,8 +55,8 @@
     </style>
     <div class="row">
         <div class="page-header">
-            <h1>Procedimentos
-                <small> Lista de procedimentos</small>
+            <h1>Documentos
+                <small> Lista de documentos</small>
             </h1>
         </div>
         <div class="panel panel-default">
@@ -111,7 +111,7 @@
         </table>
         {{$procedures->links()}}
     </div>
-    <!-- Modal New Category-->
+    <!-- Modal New Procedure-->
     <div class="modal fade" id="newCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -172,7 +172,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal Editar Category-->
+    <!-- Modal Edit Procedure-->
     <div class="modal fade" id="editProcedure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -221,7 +221,7 @@
                                             validado.</p>
 
                                         <label>
-                                            <input type="checkbox" name="publishEdit" disabled> Publicar
+                                            <input type="checkbox" name="publishEdit"> Publicar
                                         </label>
                                     </div>
                                 </div>
@@ -418,11 +418,6 @@
                 $('#idEdit').val(response.id);
                 $('#date_publish_finishEdit').val(dateUsToBr(response.date_publish_finish))
                 $('#category_idEdit').val(response.categories_id);
-                if (response.step == 'Aprovado') {
-                    $('input[name=publishEdit]').removeAttr('disabled');
-                } else {
-                    $('input[name=publishEdit]').prop('disabled', true);
-                }
                 if (response.publish == '1') {
                     $('input[name=publishEdit]').prop("checked", true);
                 } else {

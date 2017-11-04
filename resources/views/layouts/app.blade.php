@@ -59,7 +59,7 @@
 
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/all.js') }}"></script>
-<script>@yield('script')</script>
+<script>@yield('scripts')</script>
 <script>
     // Accordion
     function myFunction(id) {

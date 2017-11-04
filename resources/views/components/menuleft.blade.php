@@ -36,7 +36,7 @@
 
     .mainmenu li:hover .submenu {
         display: block;
-        max-height: 200px;
+        max-height: 800px;
     }
 
     /*
@@ -82,7 +82,7 @@
                     <li><a href="">{{$category->name}}</a>
                         <ul class="submenu">
                             @forelse($category->procedures as $produre)
-                                <li><a href="/procedures/text/{{$produre->id}}">{{$produre->name}}</a></li>
+                                <li><a href="/documentos/{{$produre->id}}">{{$produre->name}}</a></li>
                             @empty
                             @endforelse
                         </ul>
@@ -90,16 +90,6 @@
                 @empty
 
                 @endforelse
-                {{--<li><a href="">Home</a></li>--}}
-                {{--<li><a href="">About</a></li>--}}
-                {{--<li><a href="">Products</a>--}}
-                    {{--<ul class="submenu">--}}
-                        {{--<li><a href="">Tops</a></li>--}}
-                        {{--<li><a href="">Bottoms</a></li>--}}
-                        {{--<li><a href="">Footwear</a></li>--}}
-                    {{--</ul>--}}
-                {{--</li>--}}
-                {{--<li><a href="">Contact us</a></li>--}}
             </ul>
         </nav>
     </div>

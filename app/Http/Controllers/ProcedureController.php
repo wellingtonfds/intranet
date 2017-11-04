@@ -34,7 +34,6 @@ class ProcedureController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function detail(Procedure $procedure){
-        //dd($this->detailsProcedure($procedure));
         return view('procedure.details',['procedure'=>$procedure,'details'=>$this->detailsProcedure($procedure)]);
     }
 
@@ -108,8 +107,6 @@ class ProcedureController extends Controller
         $procedure->date_publish = $request->has('publish') ? Carbon::now() : null;
         if ($request->hasFile('file')) {
             $procedure->file = $request->file('file')->store('public/procedures');
-
-
         }
         $procedure->save();
         $procedure->revisions()->create([
@@ -118,11 +115,11 @@ class ProcedureController extends Controller
             'elaborate' => Auth::user()->id,
             'description' => 'teste'
         ]);
-        $email = new NewProcedure('Criação de procedimento', "O administrador(a) ".Auth::user()->name. " criou o procedimento \" [procedure_name]  \". O mesmo necessita de revisão.<br><br>Obrigado");
+        /*$email = new NewProcedure('Criação de procedimento', "O administrador(a) ".Auth::user()->name. " criou o procedimento \" [procedure_name]  \". O mesmo necessita de revisão.<br><br>Obrigado");
         $email->subject("Criação de procedimento");
         $job = (new NotificationAdministrators($procedure, $email))
             ->delay(Carbon::now()->addMinutes(1));
-        dispatch($job);
+        dispatch($job);*/
 
 
 
@@ -136,9 +133,7 @@ class ProcedureController extends Controller
      * @param Request $request
      * @return Procedure
      */
-    public function update(Procedure $procedure, Request $request)
-    {
-
+    public function update(Procedure $procedure, Request $request){
         $this->validate($request, [
             'nameEdit' => 'required',
             'category_idEdit' => 'required|exists:categories,id',
@@ -147,35 +142,17 @@ class ProcedureController extends Controller
             'name.required' => 'O nome é requerido.',
             'category_id.required' => 'A categoria é requerida.',
             'category_id.exists' => 'A categoria informada não existe.',
-
             'file.mimes' => 'A extensão do arquivo não foi aceita, utilizar apenas:pdf',
         ]);
         $procedure->date_publish_finish = $request->get('date_publish_finish');
         $procedure->categories_id = $request->get('category_idEdit');
         $procedure->name = $request->get('nameEdit');
+        $procedure->publish = $request->has('publishEdit') ? 1 : 0;
+        $procedure->date_publish = $request->has('publishEdit') ? Carbon::now() : null;
         if ($request->hasFile('file')) {
-            $procedure->publish = 0;
-            $procedure->date_publish = null;
             $procedure->file = $request->file('file')->store('public/procedures');
-            $procedure->save();
-            $procedure->revisions()->create([
-                'elaborate_date' => Carbon::now(),
-                'version' => count($procedure->revisions()) + 1,
-                'elaborate', Auth::user()->id,
-                'description' => 'teste'
-            ]);
-        } else {
-            if ($procedure->step() == 'Aprovado') {
-
-                $procedure->publish = $request->has('publishEdit') ? 1 : 0;
-                $procedure->date_publish = $request->has('publishEdit') ? Carbon::now() : null;
-
-
-            }
-            $procedure->save();
         }
-
-
+        $procedure->save();
         return $procedure;
     }
 
@@ -264,12 +241,20 @@ class ProcedureController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
 
-    public function text(Procedure $procedure)
-    {
+    public function text(Procedure $procedure){
         return view('procedure.text', [
             'procedure' => $procedure
         ]);
+    }
 
+    /**
+     * @param Procedure $procedure
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function view(Procedure $procedure){
+        return view('procedure.view', [
+            'procedure' => $procedure
+        ]);
     }
 
     /**
