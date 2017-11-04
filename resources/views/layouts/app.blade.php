@@ -5,14 +5,10 @@
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-brown.css">
@@ -24,7 +20,6 @@
     @yield('styles')
 </head>
 <body class="w3-theme-l5">
-
 <!-- Navbar -->
 <div class="w3-top">
     <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
@@ -45,6 +40,7 @@
     </div>
 </div>
 
+
 <!-- Navbar on small screens -->
 <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
     <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
@@ -52,13 +48,10 @@
     <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
     <a href="#" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
 </div>
-
 <!-- Page Container -->
 <div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
     <!-- The Grid -->
-
 @yield('content')
-
 <!-- End Grid -->
 </div>
 
@@ -67,7 +60,6 @@
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/all.js') }}"></script>
 <script>@yield('script')</script>
-
 <script>
     // Accordion
     function myFunction(id) {
@@ -81,7 +73,6 @@
                 x.previousElementSibling.className.replace(" w3-theme-d1", "");
         }
     }
-
     // Used to toggle the menu on smaller screens when clicking on the menu button
     function openNav() {
         var x = document.getElementById("navDemo");
