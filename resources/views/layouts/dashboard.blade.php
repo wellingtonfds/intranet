@@ -70,26 +70,26 @@
                                 </a>
                             </li>
                             @can('admin')
-                            <li>
-                                <a href="/users"><i class="fa fa-user">
-                                    </i>Usuários<span class="fa fa-chevron-down"></span></a>
+                                <li>
+                                    <a href="/post"><i class="fa fa-book"></i>Posts</a>
 
-                            </li>
-                            <li>
-                                <a href="/categories"><i class="fa fa-list">
-                                    </i>Categorias<span class="fa fa-chevron-down"></span></a>
+                                </li>
+                                <li>
+                                    <a href="/users"><i class="fa fa-user"></i>Usuários</a>
 
-                            </li>
-                            <li>
-                                <a href="/procedures"><i class="fa fa-file">
-                                    </i>Documentos<span class="fa fa-chevron-down"></span></a>
+                                </li>
+                                <li>
+                                    <a href="/categories"><i class="fa fa-list"></i>Categorias</a>
 
-                            </li>
-                            <li>
-                                <a href="/suggestions"><i class="fa fa-question">
-                                    </i>Sugestões<span class="fa fa-chevron-down"></span></a>
+                                </li>
+                                <li>
+                                    <a href="/procedures"><i class="fa fa-file"></i>Documentos</a>
 
-                            </li>
+                                </li>
+                                <li>
+                                    <a href="/suggestions"><i class="fa fa-question"></i>Sugestões</a>
+
+                                </li>
                             @endcan
 
                         </ul>

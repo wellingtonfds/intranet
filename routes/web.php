@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/procedure/detail/{procedure}','ProcedureController@detail');
     Route::resource('/suggestions', 'SuggestionController');
     Route::resource('/categories', 'CategoryController');
+    Route::resource('/post', 'PostController');
 });
 Route::group(['middleware' => ['can:admin']], function () {
     Route::post('/procedures/text/{procedure}','ProcedureController@savetext');
