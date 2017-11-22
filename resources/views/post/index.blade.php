@@ -9,7 +9,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-body">
-                <button class="btn btn-default" data-toggle="modal" data-target="#newCategory">Novo</button>
+                <a href="/post/create" target="_blank" class="btn btn-default">Novo</a>
             </div>
         </div>
         <table class="table table-striped hover">

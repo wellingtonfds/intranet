@@ -44,43 +44,38 @@
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-    <div class="row">
-        <div class="page-header">
+
+        <div class="w3-panel">
             <h1>Post
-                <small> Lista de posts</small>
+                <small> Criação de post</small>
             </h1>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <button class="btn btn-default" data-toggle="modal" data-target="#newCategory">Novo</button>
-            </div>
+        <div class="w3-panel">
+                <button class="btn btn-default" id="salvar">Salvar</button>
         </div>
+        <form class="w3-container" id="newPost">
 
-            <form class="form">
+            <label>Title</label>
+            <input type="text" class="w3-input" name="title">
 
-                <div class="form-group col-md-6">
-                    <label>Title</label>
-                    <input type="text" class="form-control" name="title">
+
+            <label>Status</label>
+            <select class="w3-input" name="status_post_id">
+                @forelse($status_post as $status)
+                    <option value="{{$status->id}}">{{$status->status}}</option>
+                    @empty
+                @endforelse
+            </select>
+
+            <label>Imagem de destaque</label>
+            <input type="file" class="w3-input" name="featured">
+
+            <div class="col-md-12 " style="border: 2px black ridge;border-radius: 5px;">
+                <div class="editable" style="padding: 5px 5px 400px 5px">
                 </div>
-                <div class="form-group col-md-6">
-                    <label>Status</label>
-                    <select class="form-control" name="status"></select>
-                </div>
-                <div class="form-group col-md-12">
-                    <label>Imagem de destaque</label>
-                    <input type="file" class="form-control" name="title">
-                </div>
-                <div class="col-md-12 " style="border: 2px black ridge;border-radius: 5px;">
-                    <div class="editable" style="padding: 5px 5px 400px 5px">
+            </div>
+        </form>
 
-
-
-
-                    </div>
-                </div>
-            </form>
-
-    </div>
 @endsection
 @section('scripts')
 
@@ -93,12 +88,13 @@
 
     <script src="{{asset('js/editor.js')}}"></script>
 
-
     <script>
         function request(url, method, data) {
             return $.ajax({
                 url: url,
                 data: data,
+                processData: false,
+                contentType: false,
                 dataType: 'json',
                 method: method,
                 statusCode: {
@@ -129,7 +125,7 @@
 
                         var messagem = "";
                         $.each(response.responseJSON, function (index, item) {
-                            messagem += item + "\n";
+                            messagem += item + "<br>";
                         });
                         swal(
                             'Oops...',
@@ -195,22 +191,41 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $('.save').click(function () {
+            $('#salvar').click(function () {
                 button = $(this);
                 button.prop('disabled', true);
                 button.text('processando...');
-                request(window.location.href,'POST',{text: editor.getContent()}).then(function(response){
+                var data = new FormData($('#newPost').get(0));
+                data.append('content',editor.getContent());
+                console.log(data);
+                request('/post','POST',data).then(function (response) {
+                    $('#newPost')[0].reset();
+                    $('.editable').text('');
+
+
+
                     swal({
-                        title: 'Salvo!',
-                        text: 'O procedimento foi salvo.',
-                        type: 'success'
-                    });
+                        title: 'Salvo',
+                        text: 'O post foi salvo, em cinco segundos essa tela será fechada',
+                        timer: 5000,
+                    }).then(function (result) {
+                        if (result.dismiss === 'timer') {
+                            window.frames.closewindow();
+                        }
+                    },function () {
+                        window.frames.closewindow();
+                    })
                     button.prop('disabled', false);
                     button.text('Salvar');
-                }).error(function(){
-                    button.prop('disabled', false);
-                    button.text('Salvar');
-                });
+
+                },function (response) {
+                        console.log(response);
+                        button.prop('disabled', false);
+                        button.text('Salvar');
+
+
+                })
+
             });
         });
     </script>

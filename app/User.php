@@ -56,4 +56,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         return $this->roles()->get()->contains('name', $roles);
     }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
 }
