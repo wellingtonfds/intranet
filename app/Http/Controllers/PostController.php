@@ -27,7 +27,8 @@ class PostController extends Controller
            'status_post_id'=>'required',
            'content'=>'required'
         ]);
-        $name = Storage::put('posts', $request->file('featured'));
+
+        $name = $request->file('featured')->store('public/posts');
         $user = Auth::user();
         $post = $user->posts()->create([
             'title'=>$request->get('title'),
@@ -37,5 +38,28 @@ class PostController extends Controller
         ]);
 
         return $post;
+    }
+    public function update(Request $request,Post $post){
+        $this->validate($request,[
+            'title'=>'required',
+            'featured'=>'image',
+            'status_post_id'=>'required',
+            'content'=>'required'
+        ]);
+        $post->fill($request->all());
+        if($request->hasFile('featured')){
+            Storage::delete($post->featured);
+            $post->featured = $request->file('featured')->store('public/posts');
+        }
+        //return $request->all();
+        $post->save();
+        return $post;
+    }
+    public function edit(Post $post){
+        return view('post.edit',['status_post'=>StatusPost::all(),'post'=>$post]);
+    }
+
+    public function show(Post $post){
+        return view('post.view',['post'=>$post]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\Procedure;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class HomeController extends Controller
             ->limit(5)
             ->get();
         return view('home/home',[
-            'lastProcedures'=>$lastProcedures
+            'lastProcedures'=>$lastProcedures,
         ]);
     }
 }

@@ -44,32 +44,23 @@
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet">
 @endsection
 @section('content')
+
+
+
     @component('components.menuleft')
 
     @endcomponent
-
-
-            <div class="panel panel-default col-md-10 col-md-offset-1">
-                <div class="panel-body">
-                    <div class="col-md-3">
-                        <span><label>{{$procedure->category->name}} </label> - {{$procedure->name}}</span>
+    <div class="w3-col m8 w3-margin-left">
+            <div class="w3-container w3-card-2 w3-white w3-round ">
+                <span><label>{{$post->title}} </label></span>
+                <hr>
+                    <div class="content-procedure w3-padding-64">
+                        {!!  $post->content !!}
                     </div>
-                 </div>
             </div>
 
-            <hr>
-            <div class="col-md-10 col-md-offset-1">
-                @if(empty($procedure->file))
-                    <div class="content-procedure">
-                        {!!  $procedure->text !!}
-                    </div>
-                @else
-                    <a href="{{str_replace('/public/','/storage/',asset($procedure->file))}}" class="media"></a>
-                @endif
 
-
-            </div>
-
+    </div>
 @endsection
 @section('scripts')
     <script src="{{ asset('js/all.js') }}"></script>

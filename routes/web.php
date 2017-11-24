@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-      return view('home');
+      return view('home',['posts'=>\App\Post::paginate(5)]);
 });
 Route::get('/documentos/{procedure}','ProcedureController@view' );
 
@@ -22,18 +22,21 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/procedures/text/{procedure}','ProcedureController@text' );
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::post('/procedures/{procedure}', 'ProcedureController@update');
     Route::get('/procedure/details/{procedure}', 'ProcedureController@details');
     Route::get('/procedure/detail/{procedure}','ProcedureController@detail');
+    Route::get('/post/{post}', 'PostController@show');
+    Route::post('/procedures/{procedure}', 'ProcedureController@update');
     Route::resource('/suggestions', 'SuggestionController');
     Route::resource('/categories', 'CategoryController');
-    Route::resource('/post', 'PostController');
 });
 Route::group(['middleware' => ['can:admin']], function () {
-    Route::post('/procedures/text/{procedure}','ProcedureController@savetext');
-    Route::put('/procedure/state/{procedure}', 'ProcedureController@state');
-
     Route::get('/procedure/notification/{procedure}','ProcedureController@notification');
+    Route::put('/procedure/state/{procedure}', 'ProcedureController@state');
+    Route::post('/procedures/text/{procedure}','ProcedureController@savetext');
+    Route::post('/post/{post}', 'PostController@update');
     Route::resource('/users', 'UserController');
+    Route::resource('/post', 'PostController');
     Route::resource('/procedures', 'ProcedureController');
 });
+
+Route::get('/post/{post}','PostController@show');

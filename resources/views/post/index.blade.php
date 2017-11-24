@@ -26,14 +26,12 @@
                     <td>{{$post->status_post_id}}</td>
                     <td>{{$post->created_at}}</td>
                     <td>
-                        <button class="btn btn-primary btn-xs editar">
+                        <input type="hidden" class="id-post" value="{{$post->id}}">
+                        <a href="/post/{{$post->id}}/edit" target="_blank" class="btn btn-primary btn-xs editar">
                             <span class="glyphicon glyphicon-pencil"></span>
-                        </button>
+                        </a>
                         <button class="btn btn-danger btn-xs excluir">
                             <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                        <button class="btn btn-success btn-xs view">
-                            <span class="glyphicon glyphicon-eye-open" title="Revisões do procedimento"></span>
                         </button>
                     </td>
                 </tr>
@@ -50,4 +48,5 @@
     </div>
 @endsection
 @section('scripts')
+
 @endsection
