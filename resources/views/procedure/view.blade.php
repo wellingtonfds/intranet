@@ -49,26 +49,19 @@
     @endcomponent
 
 
-            <div class="panel panel-default col-md-10 col-md-offset-1">
-                <div class="panel-body">
-                    <div class="col-md-3">
-                        <span><label>{{$procedure->category->name}} </label> - {{$procedure->name}}</span>
-                    </div>
-                 </div>
-            </div>
-
+    <div class="w3-col m8 w3-margin-left">
+        <div class="w3-container w3-card-2 w3-white w3-round ">
+            <span><label>{{$procedure->category->name}} </label> - {{$procedure->name}}</span>
             <hr>
-            <div class="col-md-10 col-md-offset-1">
-                @if(empty($procedure->file))
-                    <div class="content-procedure">
-                        {!!  $procedure->text !!}
-                    </div>
-                @else
-                    <a href="{{str_replace('/public/','/storage/',asset($procedure->file))}}" class="media"></a>
-                @endif
-
-
-            </div>
+            @if(empty($procedure->file))
+                <div class="content-procedure">
+                    {!!  $procedure->text !!}
+                </div>
+            @else
+                <a href="{{str_replace('/public/','/storage/',asset($procedure->file))}}" class="media"></a>
+            @endif
+        </div>
+    </div>
 
 @endsection
 @section('scripts')

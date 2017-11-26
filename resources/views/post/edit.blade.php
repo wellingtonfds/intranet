@@ -47,7 +47,7 @@
 
         <div class="w3-panel">
             <h1>Post
-                <small> Criação de post</small>
+                <small> Edição de post</small>
             </h1>
         </div>
         <div class="w3-panel">

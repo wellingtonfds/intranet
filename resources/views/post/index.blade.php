@@ -23,8 +23,8 @@
             @forelse($posts as $post)
                 <tr>
                     <td>{{$post->title}}</td>
-                    <td>{{$post->status_post_id}}</td>
-                    <td>{{$post->created_at}}</td>
+                    <td>{{$post->status->status}}</td>
+                    <td>{{$post->created_at->format('d/m/Y H:i')}}</td>
                     <td>
                         <input type="hidden" class="id-post" value="{{$post->id}}">
                         <a href="/post/{{$post->id}}/edit" target="_blank" class="btn btn-primary btn-xs editar">
@@ -48,5 +48,42 @@
     </div>
 @endsection
 @section('scripts')
+<script>
+    $(document).on('click','.excluir',function () {
+        var id = $(this).parent().find('.id-post').val();
 
+        swal({
+            title: 'Deseja apagar esse post?',
+            text: "Não será possível reverter a ação!",
+            type: 'Atenção',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, pode apagar!'
+        }).then(function (result) {
+                if (result) {
+                    $.ajax({
+                        url:'/post/'+id,
+                        type:'delete',
+
+                    }).then(function (response) {
+                        swal(
+                            'Removido',
+                            'O posto foi removido!',
+                            'success'
+                        ).then(function () {
+                            location.reload();
+                        })
+                    },function (response) {
+                        swal(
+                            'Oops...',
+                            'Error interno no servidor!',
+                            'error'
+                        )
+                    })
+
+                }
+        })
+    });
+</script>
 @endsection

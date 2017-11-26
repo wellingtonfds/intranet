@@ -66,36 +66,9 @@
     <!-- Profile -->
     <div class="w3-card-2 w3-round w3-white">
         <div class="w3-container">
-            <h4 class="w3-center">My Profile</h4>
-            <p class="w3-center"><img src="/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
-            <hr>
-            <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
-            <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-            <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
+            <h4 class="w3-center">Menu Fixo</h4>
         </div>
     </div>
-    <br>
-    <div class="w3-card-2 w3-round w3-white">
-        <nav class="navigation">
-            <ul class="mainmenu">
-                @forelse($categories as $category)
-                    <li><a href="">{{$category->name}}</a>
-                        <ul class="submenu">
-                            @forelse($category->procedures as $produre)
-                                <li><a href="/documentos/{{$produre->id}}">{{$produre->name}}</a></li>
-                            @empty
-                            @endforelse
-                        </ul>
-                    </li>
-                @empty
-
-                @endforelse
-            </ul>
-        </nav>
-    </div>
-    <br>
-
-    <!-- Accordion -->
     <div class="w3-card-2 w3-round">
         <div class="w3-white">
             <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups</button>
@@ -133,36 +106,31 @@
         </div>
     </div>
     <br>
+    <div class="w3-card-2 w3-round w3-white">
+        <nav class="navigation">
+            <ul class="mainmenu">
+                @forelse($categories as $category)
+                    <li><a href="">{{$category->name}}</a>
+                        <ul class="submenu">
+                            @forelse($category->procedures as $produre)
+                                <li><a href="/documentos/{{$produre->id}}">{{$produre->name}}</a></li>
+                            @empty
+                            @endforelse
+                        </ul>
+                    </li>
+                @empty
 
-    <!-- Interests -->
-    <div class="w3-card-2 w3-round w3-white w3-hide-small">
-        <div class="w3-container">
-            <p>Interests</p>
-            <p>
-                <span class="w3-tag w3-small w3-theme-d5">News</span>
-                <span class="w3-tag w3-small w3-theme-d4">W3Schools</span>
-                <span class="w3-tag w3-small w3-theme-d3">Labels</span>
-                <span class="w3-tag w3-small w3-theme-d2">Games</span>
-                <span class="w3-tag w3-small w3-theme-d1">Friends</span>
-                <span class="w3-tag w3-small w3-theme">Games</span>
-                <span class="w3-tag w3-small w3-theme-l1">Friends</span>
-                <span class="w3-tag w3-small w3-theme-l2">Food</span>
-                <span class="w3-tag w3-small w3-theme-l3">Design</span>
-                <span class="w3-tag w3-small w3-theme-l4">Art</span>
-                <span class="w3-tag w3-small w3-theme-l5">Photos</span>
-            </p>
-        </div>
+                @endforelse
+            </ul>
+        </nav>
     </div>
     <br>
 
-    <!-- Alert Box -->
-    <div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
-                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
-                    <i class="fa fa-remove"></i>
-                </span>
-        <p><strong>Hey!</strong></p>
-        <p>People are looking at your profile. Find out who.</p>
-    </div>
+
+
+
+
+
 
     <!-- End Left Column -->
 </div>

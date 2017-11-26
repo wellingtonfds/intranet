@@ -62,4 +62,10 @@ class PostController extends Controller
     public function show(Post $post){
         return view('post.view',['post'=>$post]);
     }
+
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        return $post;
+    }
 }
