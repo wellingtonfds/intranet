@@ -24,19 +24,25 @@
 <div class="w3-top">
     <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
         <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-        <a href="" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Logo</a>
-        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
-        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
-        <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
+        <a href="" class="w3-bar-item w3-button w3-padding-large w3-theme-d4">
+            <img src="/img/logo-sm.png" height="70" width="100">
+        </a>
+        <div class="w3-display-middle">
+        <a href="//www.lyonengenharia.com.br/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Site Lyon engenharia"><i class="fa fa-globe"></i></a>
+        <a href="//https://site.vagas.com.br/PagEmpr.asp?e=lyonengenharia" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Vagas"><i class="fa fa-briefcase"></i></a>
+        <a href="// fa-briefcase" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Contato"><i class="fa fa-envelope"></i></a>
+        </div>
         <div class="w3-dropdown-hover w3-hide-small">
-            <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>
+
             <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
+                <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>
                 <a href="#" class="w3-bar-item w3-button">One new friend request</a>
                 <a href="#" class="w3-bar-item w3-button">John Doe posted on your wall</a>
                 <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
+
             </div>
         </div>
-        <a href="/login" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account"><img src="/w3images/avatar2.png" class="w3-circle" style="height:25px;width:25px" alt="Avatar"></a>
+
     </div>
 </div>
 
@@ -49,7 +55,7 @@
     <a href="#" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
 </div>
 <!-- Page Container -->
-<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:120px">
     <!-- The Grid -->
 @yield('content')
 <!-- End Grid -->

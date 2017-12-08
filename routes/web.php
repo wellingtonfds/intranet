@@ -11,12 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-      return view('home',['posts'=>\App\Post::where('status_post_id','=',2)->paginate(5)]);
-});
+Route::get('/test', 'HomeController@bday');
+Route::get('/', 'HomeController@initial');
 Route::get('/documentos/{procedure}','ProcedureController@view' );
-
-
 Route::get('/publishfinish','ProcedureController@publishfinish' );
 Auth::routes();
 Route::group(['middleware' => ['can:admin']], function () {

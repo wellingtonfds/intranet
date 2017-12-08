@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use App\Managers\AuthenticatesLdapUsers;
+
 
 class LoginController extends Controller
 {
@@ -19,7 +22,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, AuthenticatesLdapUsers;
 
     /**
      * Where to redirect users after login.
@@ -36,6 +39,28 @@ class LoginController extends Controller
     public function __construct()
     {
        $this->middleware('guest')->except('logout');
+    }
+
+    public function loginLdap(Request $request){
+        $this->validateLogin($request);
+
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+        if($this->attemptLoginLdap($request)){
+            if ($this->attemptLogin($request)) {
+                return $this->sendLoginResponse($request);
+            }
+        }
+        $this->incrementLoginAttempts($request);
+        return $this->sendFailedLoginResponse($request);
+
+
     }
 
 

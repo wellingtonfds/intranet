@@ -71,13 +71,11 @@
     </div>
     <div class="w3-card-2 w3-round">
         <div class="w3-white">
-            <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups</button>
-            <div id="Demo1" class="w3-hide w3-container">
-                <p>Some text..</p>
-            </div>
-            <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events</button>
+            <a href="/login" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Login</a>
+            <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Centros de custo</button>
             <div id="Demo2" class="w3-hide w3-container">
-                <p>Some other text..</p>
+                <a href="//www.lyonengenharia.com.br/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Site Lyon engenharia"><i class="fa fa-globe"></i></a>
+                <a href="//https://site.vagas.com.br/PagEmpr.asp?e=lyonengenharia" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Vagas"><i class="fa fa-briefcase"></i></a>
             </div>
             <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Photos</button>
             <div id="Demo3" class="w3-hide w3-container">
