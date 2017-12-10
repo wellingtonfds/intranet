@@ -35,7 +35,7 @@ trait SapiensCommunication
         try{
             return DB::connection('sqlsrv')->select(DB::raw($sql));
         }catch (\Exception $ex){
-            throw new \Exception($ex->getMessage(), $ex->getCode(),$ex);
+            throw new \Exception($ex->getMessage(), $ex->getCode());
         }
     }
 
