@@ -12,6 +12,9 @@
 */
 
 Route::get('/', 'HomeController@initial');
+Route::get('/phpinfo', function (){
+    phpinfo();
+});
 Route::get('/centro-de-custo/{choice}', 'HomeController@centerOfCost');
 Route::get('/documentos/{procedure}','ProcedureController@view' );
 Route::get('/publishfinish','ProcedureController@publishfinish' );
