@@ -74,32 +74,12 @@
             <a href="/login" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Login</a>
             <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Centros de custo</button>
             <div id="Demo2" class="w3-hide w3-container">
-                <a href="//www.lyonengenharia.com.br/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Site Lyon engenharia"><i class="fa fa-globe"></i></a>
-                <a href="//https://site.vagas.com.br/PagEmpr.asp?e=lyonengenharia" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Vagas"><i class="fa fa-briefcase"></i></a>
-            </div>
-            <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Photos</button>
-            <div id="Demo3" class="w3-hide w3-container">
-                <div class="w3-row-padding">
-                    <br>
-                    <div class="w3-half">
-                        <img src="/w3images/lights.jpg" style="width:100%" class="w3-margin-bottom">
-                    </div>
-                    <div class="w3-half">
-                        <img src="/w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
-                    </div>
-                    <div class="w3-half">
-                        <img src="/w3images/mountains.jpg" style="width:100%" class="w3-margin-bottom">
-                    </div>
-                    <div class="w3-half">
-                        <img src="/w3images/forest.jpg" style="width:100%" class="w3-margin-bottom">
-                    </div>
-                    <div class="w3-half">
-                        <img src="/w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
-                    </div>
-                    <div class="w3-half">
-                        <img src="/w3images/fjords.jpg" style="width:100%" class="w3-margin-bottom">
-                    </div>
-                </div>
+                <a href="/centro-de-custo/gerenciamento" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Gerenciamento">
+                    <i class="fa fa-globe"></i> Gerenciamento
+                </a>
+                <a href="/centro-de-custo/Facilities" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Facilities">
+                    <i class="fa fa-briefcase"></i> Facilities
+                </a>
             </div>
         </div>
     </div>

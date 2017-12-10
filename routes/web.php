@@ -11,10 +11,11 @@
 |
 */
 
-Route::get('/test', 'HomeController@bday');
 Route::get('/', 'HomeController@initial');
+Route::get('/centro-de-custo/{choice}', 'HomeController@centerOfCost');
 Route::get('/documentos/{procedure}','ProcedureController@view' );
 Route::get('/publishfinish','ProcedureController@publishfinish' );
+
 Auth::routes();
 Route::group(['middleware' => ['can:admin']], function () {
     Route::get('/procedure/notification/{procedure}','ProcedureController@notification');
@@ -24,6 +25,7 @@ Route::group(['middleware' => ['can:admin']], function () {
     Route::resource('/users', 'UserController');
     Route::resource('/post', 'PostController');
     Route::resource('/procedures', 'ProcedureController');
+
 });
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/procedures/text/{procedure}','ProcedureController@text' );
@@ -35,6 +37,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/suggestions', 'SuggestionController');
     Route::resource('/categories', 'CategoryController');
 });
-
-
 Route::get('/post/{post}','PostController@show');

@@ -50,4 +50,9 @@ class SuggestionController extends Controller
         $suggestion->save();
         return $suggestion;
     }
+
+    public function create(){
+        return view('home.suggestion');
+    }
+
 }
