@@ -5,7 +5,8 @@
         <div class="w3-container w3-brown">
             <h2>Acesso Administrativo</h2>
         </div>
-        <form class="w3-container w3-padding-32" role="form" method="POST" action="{{ route('login') }}">
+        <form class="w3-container w3-padding-32" role="form" method="POST"
+              action="{{ env('ENABLE_LOGIN_LDAP')?'/login/ldap':route('login') }}">
             {{ csrf_field() }}
             <label for="email">E-Mail</label>
             <div class="col-md-6">

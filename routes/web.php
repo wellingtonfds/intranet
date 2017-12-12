@@ -18,6 +18,7 @@ Route::get('/phpinfo', function (){
 Route::get('/centro-de-custo/{choice}', 'HomeController@centerOfCost');
 Route::get('/documentos/{procedure}','ProcedureController@view' );
 Route::get('/publishfinish','ProcedureController@publishfinish' );
+Route::post('/login/ldap','Auth\LoginController@loginLdap');
 
 Auth::routes();
 Route::group(['middleware' => ['can:admin']], function () {

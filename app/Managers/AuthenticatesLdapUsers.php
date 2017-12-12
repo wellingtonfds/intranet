@@ -8,18 +8,19 @@ use Illuminate\Http\Request;
 trait AuthenticatesLdapUsers{
 
     protected function attemptLoginLdap(Request $request){
-
-        return false;
+        $email = $request->get('email');
+        $email = explode('@',$email)[0];
+        return $this->checkDominio($email,$request->get('password'));
     }
 
-    protected static function checkDominio($user,$pass) {
+    protected function checkDominio($user,$pass) {
         $dominios = array("lyonengenharia", "lyonfacilities", "admgeral");
         foreach ($dominios as $row) {
-            if(self::CheckLdap($user, $pass, $row)){
-                return $user."@".$row.".com.br";
+            if($this->CheckLdap($user, $pass, $row)){
+                return true;
             }
         }
-        return NULL;
+        return false;
     }
 
     private function checkLdap($user,$pass, $domain) {
@@ -29,12 +30,15 @@ trait AuthenticatesLdapUsers{
         $ldap['port'] = 389;
         $ldap['dn'] = 'uid=' . $ldap['user'] . ',ou=people,dc=' . $domain . ',dc=com,dc=br';
         $ldap['base'] = '';
-        $ldap['conn'] = ldap_connect($ldap['host'], $ldap['port']);
-        ldap_set_option($ldap['conn'], LDAP_OPT_PROTOCOL_VERSION, 3);
-        if (@ldap_bind($ldap['conn'], $ldap['dn'], $ldap['pass'])) {
+        $ldap['conn'] = \ldap_connect($ldap['host'], $ldap['port']);
+        \ldap_set_option($ldap['conn'], LDAP_OPT_PROTOCOL_VERSION, 3);
+        try{
+            \ldap_bind($ldap['conn'], $ldap['dn'], $ldap['pass']);
             return true;
+        }catch (\Exception $ex){
+            return false;
         }
-        return false;
+
 
     }
 
