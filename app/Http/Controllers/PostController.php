@@ -23,7 +23,7 @@ class PostController extends Controller
     public function store(Request $request){
         $this->validate($request,[
            'title'=>'required',
-           'featured'=>'required|image',
+           'featured'=>'image',
            'status_post_id'=>'required',
            'content'=>'required'
         ]);

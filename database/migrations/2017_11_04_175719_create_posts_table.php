@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->string('featured');
+            $table->string('featured')->nullable();
             $table->text('content');
             $table->integer('status_post_id')->unsigned();
             $table->integer('views')->default(0);

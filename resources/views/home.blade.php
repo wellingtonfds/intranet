@@ -16,7 +16,11 @@
                 <hr class="w3-clear">
                 <div class="w3-row-padding" style="margin:0 -16px">
                     <div class="w3-half">
-                        <img src="{{Storage::url($post->featured)}}" style="width:100%" alt="Northern Lights" class="w3-margin-bottom">
+                        @if(empty($post->featured))
+                            <h4>{{$post->title}}</h4>
+                        @else
+                            <img src="{{Storage::url($post->featured)}}" style="width:100%" alt="Northern Lights" class="w3-margin-bottom">
+                        @endif
                     </div>
 
                 </div>
