@@ -15,6 +15,7 @@ class StatusPost extends Seeder
             ["status"=>"rascunho"],
             ["status"=>"publicado"],
             ["status"=>"apagado"],
+            ["status"=>"invisivel"],
 
         ];
         DB::table('status_post')->insert($data);

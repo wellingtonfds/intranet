@@ -22,14 +22,15 @@
 <body class="w3-theme-l5">
 <!-- Navbar -->
 <div class="w3-top">
-    <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+    <div class="w3-bar w3-theme-d1 w3-left-align w3-large">
         <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-        <a href="/" class="w3-bar-item w3-button w3-padding-large w3-theme-d4">
+        <a href="/" class="w3-bar-item w3-button w3-padding-large w3-theme-d1">
             <img src="/img/logo-sm.png" height="70" width="100">
         </a>
         <div class="w3-display-middle">
-        <a href="//www.lyonengenharia.com.br/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Site Lyon engenharia"><i class="fa fa-globe"></i></a>
-        <a href="//https://site.vagas.com.br/PagEmpr.asp?e=lyonengenharia" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Vagas"><i class="fa fa-briefcase"></i></a>
+            <p class="w3-small" style="line-height:1em !important;">
+                A Lyon Engenharia é uma empresa brasileira especializada na prestação de serviços de engenharia consultiva com ênfase na gestão de empreendimentos e na gestão integrada de Facilities. Somos uma empresa diversificada, que possuio soluções completas e inovadoras, auxiliando nossos clientes em todos os segmentos produtivos do país.
+            </p>
         </div>
     </div>
 </div>

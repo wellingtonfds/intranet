@@ -91,7 +91,9 @@
                     <li><a href="">{{$category->name}}</a>
                         <ul class="submenu">
                             @forelse($category->procedures as $produre)
-                                <li><a href="/documentos/{{$produre->id}}">{{$produre->name}}</a></li>
+                                @if($produre->publish)
+                                    <li><a href="/documentos/{{$produre->id}}">{{$produre->name}}</a></li>
+                                @endif
                             @empty
                             @endforelse
                         </ul>

@@ -34,6 +34,7 @@ class HomeController extends Controller
             ->where('publish','=',true)
             ->limit(5)
             ->get();
+
         return view('home/home',[
             'lastProcedures'=>$lastProcedures,
         ]);
@@ -46,7 +47,7 @@ class HomeController extends Controller
         }catch (\Exception $e){
             $birthDays = 'null';
         }
-        $posts = Post::where('status_post_id','=',2)->paginate(5);
+        $posts = Post::where('status_post_id','=',2)->orderBy('created_at','DESC')->paginate(5);
         return view('home',['posts'=>$posts,'birthDays'=>$birthDays]);
     }
 
