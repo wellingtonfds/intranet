@@ -27,16 +27,24 @@ class PostController extends Controller
            'status_post_id'=>'required',
            'content'=>'required'
         ]);
-
-        $name = $request->file('featured')->store('public/posts');
         $user = Auth::user();
-        $post = $user->posts()->create([
-            'title'=>$request->get('title'),
-            'featured'=>$name,
-            'status_post_id'=>$request->get('status_post_id'),
-            'content'=>$request->get('content')
-        ]);
-
+        $data = [];
+        if($request->hasFile('featured')){
+            $name = $request->file('featured')->store('public/posts');
+            $data = [
+                'title'=>$request->get('title'),
+                'featured'=>$name,
+                'status_post_id'=>$request->get('status_post_id'),
+                'content'=>$request->get('content')
+            ];
+        }else{
+            $data = [
+                'title'=>$request->get('title'),
+                'status_post_id'=>$request->get('status_post_id'),
+                'content'=>$request->get('content')
+            ];
+        }
+        $post = $user->posts()->create($data);
         return $post;
     }
     public function update(Request $request,Post $post){
@@ -51,7 +59,6 @@ class PostController extends Controller
             Storage::delete($post->featured);
             $post->featured = $request->file('featured')->store('public/posts');
         }
-        //return $request->all();
         $post->save();
         return $post;
     }
