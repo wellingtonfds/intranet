@@ -22,13 +22,13 @@
 <body class="w3-theme-l5">
 <!-- Navbar -->
 <div class="w3-top">
-    <div class="w3-bar w3-theme-d1 w3-left-align w3-large">
+    <div class="w3-bar w3-theme-l5 w3-left-align w3-large w3-border-bottom" >
         <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-        <a href="/" class="w3-bar-item w3-button w3-padding-large w3-theme-d1">
-            <img src="/img/logo-sm.png" height="70" width="100">
+        <a href="/" class="w3-bar-item w3-button w3-padding-large w3-theme-l5">
+            <img src="/img/logo-sm.png" height="90" width="120">
         </a>
         <div class="w3-display-middle">
-            <p class="w3-small" style="line-height:1em !important;">
+            <p class="w3-medium" style="line-height:1em !important;">
                 A Lyon Engenharia é uma empresa brasileira especializada na prestação de serviços de engenharia consultiva com ênfase na gestão de empreendimentos e na gestão integrada de Facilities. Somos uma empresa diversificada, que possuio soluções completas e inovadoras, auxiliando nossos clientes em todos os segmentos produtivos do país.
             </p>
         </div>

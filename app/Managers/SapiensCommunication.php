@@ -49,7 +49,7 @@ trait SapiensCommunication
        E085cto.usu_codcar AS 'Usu_CodCar',
        E085CTO.usu_codent AS 'Usu_CodEnt',
        E085CTO.NomCto AS 'Usu_NomCto',
-    -- R900CPL.EMAIL AS 'e-Mail',
+       --R900CPL.EMAIL,
        MAX(usu_t100con.usu_datbas) AS 'Usu_DatBas'
        FROM sapiens..usu_t100ccu, sapiens..usu_t100con, sapiens..e044ccu, sapiens..e085cto, sapiens..r900cpl
   WHERE usu_t100ccu.usu_codemp = 1 

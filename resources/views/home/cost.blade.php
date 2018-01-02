@@ -4,7 +4,7 @@
     @component('components.menuleft')
 
     @endcomponent
-    <div class="w3-col m7" >
+    <div class="w3-col m9" >
         <div class="w3-row-padding">
             <div class="w3-col m12">
                 @if($costs=='null')
@@ -16,14 +16,42 @@
                     <table class="w3-table-all w3-hoverable">
                         <tr>
                             <td>CC</td>
-                            <td>desc</td>
-                            <td>Analista</td>
+                            <td>Descrição</td>
+                            <td>Cargo</td>
+                            <td>Funcionário(a)</td>
+                            <td>Data Base</td>
                         </tr>
                         @forelse($costs as $cost)
                             <tr>
-                                <td>{{$cost->Usu_CodCcu}}</td>
-                                <td>{{$cost->Usu_DesCcu}}</td>
-                                <td>{{$cost->Usu_NomCto}}</td>
+                                <td class="w3-small">{{$cost->Usu_CodCcu}}</td>
+                                <td class="w3-small">{{$cost->Usu_DesCcu}}</td>
+                                <td class="w3-small">
+                                @php
+                                    switch ($cost->Usu_CodCar){
+                                        case 1:
+                                            echo "Gerente do contrato";
+                                        break;
+                                        case 2:
+                                            echo "Analista do contrato";
+                                        break;
+                                        case 5:
+                                            echo "Gerente de operação";
+                                        break;
+                                        case 9:
+                                            echo "Ponto Focal";
+                                        break;
+                                    }
+
+                                @endphp
+                                </td>
+                                <td class="w3-small">{{$cost->Usu_NomCto}}</td>
+                                <td class="w3-small">
+                                    @php
+                                        $data = new \Carbon\Carbon($cost->Usu_DatBas);
+                                        echo $data->format('d/m/Y')
+
+                                    @endphp
+                                </td>
                             </tr>
                         @empty
 

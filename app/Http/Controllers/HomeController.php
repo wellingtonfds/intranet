@@ -55,9 +55,11 @@ class HomeController extends Controller
         $costs = [];
         try {
             $costs = $this->getCenterOfCost($choice);
+
         }catch (\Exception $e){
             $costs = 'null';
         }
+
         return view('home.cost',['costs'=>$costs,'choice'=>$choice]);
     }
 }
