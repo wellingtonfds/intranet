@@ -40,6 +40,7 @@
     {{--Jquery UI--}}
     <link href="{{ asset('/css/jquery-ui.theme.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/jquery-ui.css') }}" rel="stylesheet">
+
     <style>
         .navbar .nav_title{
             background: red;
