@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(GateContract $gate)
     {
-        $this->registerPolicies($gate);
+        /*$this->registerPolicies($gate);
         $permissions = Permission::with('roles')->get();
         foreach ($permissions as $permission) {
             $gate->define($permission->name, function (User $user) use ($permission) {
@@ -37,6 +37,6 @@ class AuthServiceProvider extends ServiceProvider
             if($user->hasAnyRoles('admin')){
                 return true;
             }
-        });
+        });*/
     }
 }
