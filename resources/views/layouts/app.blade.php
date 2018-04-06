@@ -20,7 +20,7 @@
     </style>
     @yield('styles')
 </head>
-<body class="w3-theme-l5">
+<body class="w3-theme-l5" style="overflow: auto">
 <!-- Navbar -->
 <div class="w3-top">
     <div class="w3-bar w3-theme-l5 w3-left-align w3-large w3-border-bottom" >

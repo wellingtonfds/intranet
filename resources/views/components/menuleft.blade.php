@@ -28,7 +28,7 @@
                 <ul>
                 @forelse($category->procedures as $produre)
                     @if($produre->publish)
-                        <li class='has-sub'><a href="/documentos/{{$produre->id}}">{{$produre->name}}</a></li>
+                        <li><a href="/documentos/{{$produre->id}}">{{$produre->name}}</a></li>
                         @endif
                         @empty
 
