@@ -18,7 +18,7 @@ class CreateDisciplinesTable extends Migration
             $table->string('initials')->nullable();
             $table->string('description');
             $table->enum('business_unit',[
-                'Genrenciamento','Facilities',
+                'Gerenciamento','Facilities',
                 'Engenharia','Administrativo'
             ]);
             $table->timestamps();

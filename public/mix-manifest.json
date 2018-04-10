@@ -7,5 +7,6 @@
   "/js/editor.js": "/js/editor.js",
   "/css/editor.css": "/css/editor.css",
   "/js/vendor.js": "/js/vendor.js",
-  "/js/manifest.js": "/js/manifest.js"
+  "/js/manifest.js": "/js/manifest.js",
+  "/js/angular.js": "/js/angular.js"
 }

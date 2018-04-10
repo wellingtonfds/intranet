@@ -24,6 +24,12 @@ class CreateDocumentsTable extends Migration
                 ->on('disciplines')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->integer('sub_discipline_id')->unsigned()->nullable();
+            $table->foreign('sub_discipline_id')
+                ->references('id')
+                ->on('sub_disciplines')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->integer('categorization_id')->unsigned()->nullable();
             $table->foreign('categorization_id')
                 ->references('id')

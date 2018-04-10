@@ -12,15 +12,13 @@
 */
 
 Route::get('/', 'HomeController@initial');
-Route::get('/phpinfo', function (){
-    phpinfo();
-});
 Route::get('/centro-de-custo/{choice}', 'HomeController@centerOfCost');
 Route::get('/documentos/{procedure}','ProcedureController@view' );
 Route::get('/publishfinish','ProcedureController@publishfinish' );
 Route::post('/login/ldap','Auth\LoginController@loginLdap');
 
 Auth::routes();
+Route::resource('/document', 'PatternController');
 Route::group(['middleware' => ['can:admin']], function () {
     Route::get('/procedure/notification/{procedure}','ProcedureController@notification');
     Route::put('/procedure/state/{procedure}', 'ProcedureController@state');
@@ -29,6 +27,8 @@ Route::group(['middleware' => ['can:admin']], function () {
     Route::resource('/users', 'UserController');
     Route::resource('/post', 'PostController');
     Route::resource('/procedures', 'ProcedureController');
+    Route::get('/documents', 'PatternController@listDocuments');
+    Route::post('/documents/{document}', 'PatternController@update');
 
 });
 Route::group(['middleware' => ['auth']], function () {
@@ -40,5 +40,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/procedures/{procedure}', 'ProcedureController@update');
     Route::resource('/suggestions', 'SuggestionController');
     Route::resource('/categories', 'CategoryController');
+    Route::resource('/discipline', 'DisciplineController');
+    Route::get('/discipline/sub/{discipline}', 'DisciplineController@subDiscipline');
+    Route::get('/discipline/cat/{discipline}/{subDiscipline}', 'DisciplineController@category');
 });
 Route::get('/post/{post}','PostController@show');

@@ -14,6 +14,8 @@ const { mix } = require('laravel-mix');
 mix.js(
     [
         'resources/assets/js/app.js',
+        'resources/assets/js/angular/app.module.js',
+        'resources/assets/js/angular/pattern.controller.js',
         'node_modules/jquery/dist/jquery.min.js',
     ],  'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
@@ -38,4 +40,6 @@ mix.js(
         'node_modules/medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin.min.css',
         'node_modules/medium-editor-tables/dist/css/medium-editor-tables.css'
 
-    ],'public/css/editor.css')
+    ],'public/css/editor.css');
+//mix.js('resources/assets/js/angular/*.js', 'public/js/angular.js');
+

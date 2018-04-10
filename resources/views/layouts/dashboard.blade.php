@@ -89,7 +89,9 @@
                                 </li>
                                 <li>
                                     <a href="/suggestions"><i class="fa fa-question"></i>Sugestões</a>
-
+                                </li>
+                                <li>
+                                    <a href="/document"><i class="fa fa-question"></i>Padronização</a>
                                 </li>
                             @endcan
 

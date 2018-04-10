@@ -15,6 +15,7 @@ class CreateCategorizationsTable extends Migration
     {
         Schema::create('categorizations', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('description');
             $table->integer('discipline_id')->unsigned();
             $table->foreign('discipline_id')
                 ->references('id')
