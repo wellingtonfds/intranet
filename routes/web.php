@@ -31,6 +31,7 @@ Route::group(['middleware' => ['can:admin']], function () {
     Route::post('/documents/{document}', 'PatternController@update');
 
 });
+Route::get('/documents', 'PatternController@listDocuments');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/procedures/text/{procedure}','ProcedureController@text' );
     Route::get('/home', 'HomeController@index')->name('home');
