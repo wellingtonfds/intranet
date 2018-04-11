@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Document;
-use App\Managers\SapiensCommunication;
 use App\Post;
-
+use App\Document;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
+use App\Managers\SapiensCommunication;
+use Illuminate\Support\Facades\Storage;
 
 class PatternController extends Controller
 {
@@ -55,5 +56,11 @@ class PatternController extends Controller
     public function destroy(Document $document){
         $document->delete();
         return $document;
+    }
+    public function show(Document $document){
+        //dd($document);
+        $path = str_replace('/','\\',$document->file);
+        return response()->download(storage_path('app\\'.$path));
+        
     }
 }

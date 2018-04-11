@@ -1,11 +1,11 @@
 @extends(Auth::check()?'layouts.dashboard':'layouts.app')
 @section('content')
         @if(!Auth::check())
-            @component('components.menuleft')
-
-            @endcomponent
+            <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+            <script src="{{ asset('js/app.js') }}"></script>
+            <script src="{{ asset('js/all.js') }}"></script>
         @endif
-
         <div class="row" ng-app="app" ng-controller="patternController">
         <div class="page-header">
             <h1>Padronização
@@ -54,9 +54,9 @@
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
                         @endcan
-                        <button class="btn btn-default btn-xs">
+                        <a href="/document/2" class="btn btn-default btn-xs" target="_blank">
                             <span class="glyphicon glyphicon-download" ></span>
-                        </button>
+                        </a>
                     </td>
                 </tr>
             </tbody>
