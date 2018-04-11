@@ -80,6 +80,7 @@
                                             <option value="impressos">Impressos</option>
                                             <option value="Manuais">Manuais</option>
                                             <option value="SIPOC">SIPOC</option>
+                                            <option value="Procedimentos">Procedimentos</option>
                                         </select>
                                     </div>
                                 </div>
@@ -164,6 +165,7 @@
                                         <option value="impressos">Impressos</option>
                                         <option value="Manuais">Manuais</option>
                                         <option value="SIPOC">SIPOC</option>
+                                        <option value="Procedimentos">Procedimentos</option>
                                     </select>
                                 </div>
                             </div>
