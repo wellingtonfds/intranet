@@ -79,7 +79,6 @@
                                             <option value="fluxogramas">Fluxogramas</option>
                                             <option value="impressos">Impressos</option>
                                             <option value="Manuais">Manuais</option>
-                                            <option value="Procedimentos">Procedimentos</option>
                                             <option value="SIPOC">SIPOC</option>
                                         </select>
                                     </div>
@@ -164,7 +163,6 @@
                                         <option value="fluxogramas">Fluxogramas</option>
                                         <option value="impressos">Impressos</option>
                                         <option value="Manuais">Manuais</option>
-                                        <option value="Procedimentos">Procedimentos</option>
                                         <option value="SIPOC">SIPOC</option>
                                     </select>
                                 </div>
