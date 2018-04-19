@@ -54,7 +54,7 @@
                             <span class="glyphicon glyphicon-pencil"></span>
                         </button>
                         @endcan
-                        <a href="/document/2" class="btn btn-default btn-xs" target="_blank">
+                        <a href="/document/@{{ document.id }}" class="btn btn-default btn-xs" target="_blank">
                             <span class="glyphicon glyphicon-download" ></span>
                         </a>
                     </td>
@@ -210,7 +210,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Resisão</label>
+                                    <label>Revisão</label>
                                     <input type="text" class="form-control" ng-model="document.review">
                                 </div>
                             </div>
