@@ -9,7 +9,7 @@
         <div class="w3-white">
             <a href="/login" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Login</a>
             <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Centros de custo</button>
-            <a href="/document" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Padronização</a>
+            <a href="/document" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-book fa-fw w3-margin-right"></i> Padronização</a>
             <div id="Demo2" class="w3-hide w3-container">
                 <a href="/centro-de-custo/gerenciamento" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Gerenciamento">
                     <i class="fa fa-globe"></i> Gerenciamento
