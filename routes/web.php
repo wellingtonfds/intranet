@@ -32,6 +32,10 @@ Route::group(['middleware' => ['can:admin']], function () {
 
 });
 Route::get('/documents', 'PatternController@listDocuments');
+Route::resource('/categories', 'CategoryController');
+Route::resource('/discipline', 'DisciplineController');
+Route::get('/discipline/sub/{discipline}', 'DisciplineController@subDiscipline');
+Route::get('/discipline/cat/{discipline}/{subDiscipline}', 'DisciplineController@category');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/procedures/text/{procedure}','ProcedureController@text' );
     Route::get('/home', 'HomeController@index')->name('home');
@@ -40,9 +44,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/post/{post}', 'PostController@show');
     Route::post('/procedures/{procedure}', 'ProcedureController@update');
     Route::resource('/suggestions', 'SuggestionController');
-    Route::resource('/categories', 'CategoryController');
-    Route::resource('/discipline', 'DisciplineController');
-    Route::get('/discipline/sub/{discipline}', 'DisciplineController@subDiscipline');
-    Route::get('/discipline/cat/{discipline}/{subDiscipline}', 'DisciplineController@category');
+
+
 });
 Route::get('/post/{post}','PostController@show');
