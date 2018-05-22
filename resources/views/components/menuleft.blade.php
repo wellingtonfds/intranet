@@ -2,7 +2,7 @@
     <!-- Profile -->
     <div class="w3-card-2 w3-round w3-white">
         <div class="w3-container">
-            <h4 class="w3-center">Menu</h4>
+            <h4 class="w3-center"><b>Menu</b></h4>
         </div>
     </div>
     <div class="w3-card-2 w3-round">
