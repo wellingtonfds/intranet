@@ -17,6 +17,9 @@
                 <a href="/centro-de-custo/Facilities" class="w3-bar-item w3-button w3-hide-small  w3-hover-white" title="Facilities">
                     <i class="fa fa-briefcase"></i> Facilities
                 </a>
+                <a href="/centro-de-custo/sede" class="w3-bar-item w3-button w3-hide-small  w3-hover-white" title="Facilities">
+                    <i class="fa fa-building"></i> Sede
+                </a>
             </div>
         </div>
     </div>

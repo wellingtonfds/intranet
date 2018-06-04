@@ -58,6 +58,7 @@ class HomeController extends Controller
 
         }catch (\Exception $e){
             $costs = 'null';
+            return view('home.sede');
         }
 
         return view('home.cost',['costs'=>$costs,'choice'=>$choice]);
