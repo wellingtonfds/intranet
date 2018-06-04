@@ -46,7 +46,7 @@
                     <span class="w3-tag w3-small w3-yellow">Sem conexão com banco de dados</span>
                 @else
                     @forelse($birthDays as $birthDay)
-                        <span>{{substr($birthDay->nomfun,0,20)}}</span><br>
+                        <span><b>{{substr($birthDay->nomfun,0,20)}}</b></span><br>
                         <span><b>{{substr($birthDay->nomloc,0,20)}}</b></span>
                         @if($loop->first)
                             <br>
