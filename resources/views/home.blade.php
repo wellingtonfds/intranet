@@ -46,8 +46,16 @@
                     <span class="w3-tag w3-small w3-yellow">Sem conexão com banco de dados</span>
                 @else
                     @forelse($birthDays as $birthDay)
-                        <span><b>{{substr($birthDay->nomfun,0,20)}}</b></span><br>
-                        <span><b>{{substr($birthDay->nomloc,0,20)}}</b></span>
+                        @php
+                            $name = explode(' ',$birthDay->nomfun);
+                            if(count($name)>=1){
+                                echo "<span><b>".$name[0]." ".$name[1]."</b></span><br>";
+                            }else{
+                                echo "<span><b>".$birthDay->nomfun."</b></span><br>";
+                            }
+                        @endphp
+
+                        <span>{{substr($birthDay->nomloc,0,20)}}</span>
                         @if($loop->first)
                             <br>
                         @endif
