@@ -46,6 +46,7 @@
                     <span class="w3-tag w3-small w3-yellow">Sem conexão com banco de dados</span>
                 @else
                     @forelse($birthDays as $birthDay)
+                        <div class="w3-light-grey w3-hover-shadow w3-center w3-padding-16">
                         @php
                             $name = explode(' ',$birthDay->nomfun);
                             if(count($name)>=1){
@@ -55,10 +56,9 @@
                             }
                         @endphp
 
-                        <span>{{substr($birthDay->nomloc,0,20)}}</span>
-                        @if($loop->first)
-                            <br>
-                        @endif
+                        <span>{{$birthDay->nomloc}}</span>
+                        </div>
+                        <br>
                     @empty
                         <span class="w3-tag w3-small w3-yellow">Sem aniversariantes</span>
                     @endforelse
