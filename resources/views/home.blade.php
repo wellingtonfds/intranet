@@ -50,9 +50,9 @@
                         @php
                             $name = explode(' ',$birthDay->nomfun);
                             if(count($name)>=1){
-                                echo "<span><b>".$name[0]." ".$name[1]."</b></span><br>";
+                                echo "<span><strong>".$name[0]." ".$name[1]."</strong></span><br>";
                             }else{
-                                echo "<span><b>".$birthDay->nomfun."</b></span><br>";
+                                echo "<span><strong>".$birthDay->nomfun."</strong></span><br>";
                             }
                         @endphp
 

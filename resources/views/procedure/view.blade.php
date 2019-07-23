@@ -51,7 +51,7 @@
 
     <div class="w3-col m8 w3-margin-left">
         <div class="w3-container w3-card-2 w3-white w3-round ">
-            <span><b><h2><label>{{$procedure->category->name}} </label> - {{$procedure->name}}</h2></b></span>
+            <span><strong><h2><label>{{$procedure->category->name}} </label> - {{$procedure->name}}</h2></strong></span>
             <hr>
             @if(empty($procedure->file))
                 <div class="content-procedure">
