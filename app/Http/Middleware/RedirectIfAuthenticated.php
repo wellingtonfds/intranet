@@ -18,6 +18,9 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
+            if (env('ENABLE_LOGIN_LDAP', false)) {
+                return redirect('/');
+            }
             return redirect('/home');
         }
         return $next($request);

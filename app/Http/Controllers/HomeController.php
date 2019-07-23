@@ -59,12 +59,16 @@ class HomeController extends Controller
      * @return mixed
      */
     public function centerOfCost($choice){
+        if($choice == 'sede')
+            return view('home.sede');
+
         $costs = [];
         try {
             $costs = $this->getCenterOfCost($choice);
 
         }catch (\Exception $e){
             $costs = 'null';
+
         }
 
         return view('home.cost',['costs'=>$costs,'choice'=>$choice]);

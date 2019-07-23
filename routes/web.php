@@ -1,16 +1,8 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
+Route::get('/info',function (){
+   phpinfo();
+});
 Route::get('/', 'HomeController@initial');
 Route::get('/centro-de-custo/{choice}', 'HomeController@centerOfCost');
 Route::get('/documentos/{procedure}','ProcedureController@view' );
@@ -32,6 +24,10 @@ Route::group(['middleware' => ['can:admin']], function () {
 
 });
 Route::get('/documents', 'PatternController@listDocuments');
+Route::resource('/categories', 'CategoryController');
+Route::resource('/discipline', 'DisciplineController');
+Route::get('/discipline/sub/{discipline}', 'DisciplineController@subDiscipline');
+Route::get('/discipline/cat/{discipline}/{subDiscipline}', 'DisciplineController@category');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/procedures/text/{procedure}','ProcedureController@text' );
     Route::get('/home', 'HomeController@index')->name('home');
@@ -40,9 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/post/{post}', 'PostController@show');
     Route::post('/procedures/{procedure}', 'ProcedureController@update');
     Route::resource('/suggestions', 'SuggestionController');
-    Route::resource('/categories', 'CategoryController');
-    Route::resource('/discipline', 'DisciplineController');
-    Route::get('/discipline/sub/{discipline}', 'DisciplineController@subDiscipline');
-    Route::get('/discipline/cat/{discipline}/{subDiscipline}', 'DisciplineController@category');
+
+
 });
 Route::get('/post/{post}','PostController@show');

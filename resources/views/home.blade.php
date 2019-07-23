@@ -3,7 +3,7 @@
     @component('components.menuleft')
     @endcomponent
     <!-- Middle Column -->
-    <div class="w3-col m7">
+    <div class="w3-col m6">
         @if($posts->total() > 5)
             <div class="w3-container w3-card-2 w3-white w3-round w3-margin w3-padding-small">
                 {{$posts->links()}}
@@ -38,7 +38,7 @@
     </div>
     <!-- End Middle Column -->
     <!-- Right Column -->
-    <div class="w3-col m2">
+    <div class="w3-col m3">
         <div class="w3-card-2 w3-round w3-white w3-center w3-padding-16">
             <div class="w3-container">
                 <h4>Aniversáriantes</h4>
@@ -46,11 +46,19 @@
                     <span class="w3-tag w3-small w3-yellow">Sem conexão com banco de dados</span>
                 @else
                     @forelse($birthDays as $birthDay)
-                        <span class="w3-large">{{substr($birthDay->nomfun,0,20)}}</span><br>
-                        <span>{{substr($birthDay->nomloc,0,20)}}</span>
-                        @if($loop->first)
-                            <br>
-                        @endif
+                        <div class="w3-light-grey w3-hover-shadow w3-center w3-padding-16">
+                        @php
+                            $name = explode(' ',$birthDay->nomfun);
+                            if(count($name)>=1){
+                                echo "<span><b>".$name[0]." ".$name[1]."</b></span><br>";
+                            }else{
+                                echo "<span><b>".$birthDay->nomfun."</b></span><br>";
+                            }
+                        @endphp
+
+                        <span>{{$birthDay->nomloc}}</span>
+                        </div>
+                        <br>
                     @empty
                         <span class="w3-tag w3-small w3-yellow">Sem aniversariantes</span>
                     @endforelse
