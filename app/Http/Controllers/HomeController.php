@@ -40,6 +40,9 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     * @return mixed
+     */
     public function initial(){
         $birthDays =[];
         try{
@@ -51,6 +54,10 @@ class HomeController extends Controller
         return view('home',['posts'=>$posts,'birthDays'=>$birthDays]);
     }
 
+    /**
+     * @param $choice
+     * @return mixed
+     */
     public function centerOfCost($choice){
         if($choice == 'sede')
             return view('home.sede');
