@@ -9,12 +9,21 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    /**
+     * @return mixed
+     */
     public function index(){
         return view('auth.index',[
             'users'=>User::paginate(15),
             'roles'=>Role::all()
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     * @return User
+     */
     public function store(Request $request,User $user){
         $this->validate($request,[
             'name' => 'required|string|max:255',
@@ -33,11 +42,20 @@ class UserController extends Controller
         return $user;
     }
 
+    /**
+     * @param User $user
+     * @return User
+     */
     public function edit(User $user){
         $user->roles = $user->roles[0];
         return $user;
     }
 
+    /**
+     * @param User $user
+     * @param Request $request
+     * @return User
+     */
     public function update(User $user,Request $request){
 
         $this->validate($request,[
@@ -60,6 +78,10 @@ class UserController extends Controller
 
     }
 
+    /**
+     * @param User $user
+     * @return User
+     */
     public function destroy(User $user){
         if(Auth::user()->id == $user->id){
             abort(403,'Você não pode apagar seu usuário');
