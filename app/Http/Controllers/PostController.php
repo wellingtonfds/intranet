@@ -20,6 +20,10 @@ class PostController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function store(Request $request){
         $this->validate($request,[
            'title'=>'required',
@@ -47,6 +51,12 @@ class PostController extends Controller
         $post = $user->posts()->create($data);
         return $post;
     }
+
+    /**
+     * @param Request $request
+     * @param Post $post
+     * @return Post
+     */
     public function update(Request $request,Post $post){
         $this->validate($request,[
             'title'=>'required',
@@ -62,6 +72,11 @@ class PostController extends Controller
         $post->save();
         return $post;
     }
+
+    /**
+     * @param Post $post
+     * @return mixed
+     */
     public function edit(Post $post){
         return view('post.edit',['status_post'=>StatusPost::all(),'post'=>$post]);
     }
