@@ -10,17 +10,35 @@ use Illuminate\Support\Facades\DB;
 
 class DisciplineController extends Controller
 {
+    /**
+     * @return mixed
+     */
     public function index(){
         return Discipline::all();
     }
 
+    /**
+     * @param Discipline $discipline
+     * @return mixed
+     */
     public  function subDiscipline(Discipline $discipline){
         return $discipline->subDiscipline;
     }
+
+    /**
+     * @param Discipline $discipline
+     * @param SubDiscipline $subDiscipline
+     * @return mixed
+     */
     public  function category(Discipline $discipline,SubDiscipline $subDiscipline){
         return DB::table('categorizations')->where('discipline_id',$discipline->id)->where('sub_discipline_id',$subDiscipline->id)->get();
     }
 
+    /**
+     * @param Request $request
+     * @param Document $document
+     * @return Document
+     */
     public function store(Request $request,Document $document){
         $this->validate($request,[
            'file'=>'required',
