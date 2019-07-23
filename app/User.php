@@ -8,6 +8,10 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
+/**
+ * Class User
+ * @package App
+ */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword; // Insert trait here
@@ -37,11 +41,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         return $roles;
     }
+
+    /**
+     * @return mixed
+     */
     public function roles()
     {
         return $this->belongsToMany(Role::class);
     }
 
+    /**
+     * @param Permission $permission
+     * @return bool
+     */
     public function hasPermission(Permission $permission)
     {
 
@@ -49,6 +61,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     }
 
+    /**
+     * @param $roles
+     * @return bool
+     */
     public function hasAnyRoles($roles)
     {
         if (is_array($roles) || is_object($roles)) {
@@ -57,6 +73,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->roles()->get()->contains('name', $roles);
     }
 
+    /**
+     * @return mixed
+     */
     public function posts(){
         return $this->hasMany(Post::class);
     }
