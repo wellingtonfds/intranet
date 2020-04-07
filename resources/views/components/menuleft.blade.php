@@ -7,7 +7,10 @@
     </div>
     <div class="w3-card-2 w3-round">
         <div class="w3-white">
-            <a href="/login" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Login</a>
+            <a href="/login" class="w3-button w3-block w3-theme-l1 w3-left-align">
+                <i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Login</a>
+                <a href="/EPIContrato.xlsx" target="blank" class="w3-button w3-block w3-theme-l1 w3-left-align">
+                    <i class="fa fa-user-circle fa-fw w3-margin-right"></i> Matriz de EPI</a>
             <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> Centros de custo</button>
             <a href="/document" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-book fa-fw w3-margin-right"></i> Padronização</a>
             <div id="Demo2" class="w3-hide w3-container">
