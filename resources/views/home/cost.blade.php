@@ -20,9 +20,10 @@
                             <td>Cargo</td>
                             <td>Funcionário(a)</td>
                             <td>Data Base</td>
+                            <td></td>
                         </tr>
                         @forelse($costs as $cost)
-                            <tr>
+                            <tr >
                                 <td class="w3-small">{{$cost->Usu_CodCcu}}</td>
                                 <td class="w3-small">{{$cost->Usu_DesCcu}}</td>
                                 <td class="w3-small">
@@ -44,13 +45,39 @@
 
                                 @endphp
                                 </td>
-                                <td class="w3-small">{{$cost->Usu_NomCto}}</td>
+                                <td class="w3-small">{{$cost->Usu_CodCcu}}</td>
                                 <td class="w3-small">
                                     @php
                                         $data = new \Carbon\Carbon($cost->Usu_DatBas);
                                         echo $data->format('d/m/Y')
 
                                     @endphp
+                                </td>
+                                <td>
+                                    @isset($cost->epi['epis'])
+                                    <a tabindex="0" class="btn btn-xs btn-primary" 
+                                        role="button" data-toggle="popover" 
+                                        data-trigger="focus" 
+                                        data-toggle="popover" 
+                                        data-html='true'
+                                        data-original-title="Epis" 
+                                        data-content="
+                                            <b>Epi's</b><br/>
+                                            <ul>
+                                                @foreach($cost->epi['epis'] as $epi)
+                                                    <li>{{$epi}}</li>
+                                                @endforeach
+                                            </ul>
+                                            <br/><b>Uniforme</b><br/>
+                                            <ul>
+                                                @foreach(@$cost->epi['uniforme'] as $epi)
+                                                    <li>{{$epi}}</li>
+                                                @endforeach
+                                            </ul>
+                                        "
+                                        data-placement="left">    
+                                        EPI</a>
+                                    @endisset
                                 </td>
                             </tr>
                         @empty
@@ -63,4 +90,9 @@
     </div>
 @endsection
 @section('scripts')
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+</script>
 @endsection

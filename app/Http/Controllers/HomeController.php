@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Epi;
 use App\Managers\SapiensCommunication;
 use App\Post;
 use App\Procedure;
 use Carbon\Carbon;
-
+use Illuminate\Support\Collection;
 
 class HomeController extends Controller
 {
@@ -64,7 +65,11 @@ class HomeController extends Controller
 
         $costs = [];
         try {
-            $costs = $this->getCenterOfCost($choice);
+            $costs = new Collection($this->getCenterOfCost($choice));
+            $costs = $costs->map(function($cc){
+                $cc->epi = @(Epi::centerOfCost(substr($cc->Usu_CodCcu,0,5))->first())->meta;
+                return $cc;
+            });
 
         }catch (\Exception $e){
             $costs = 'null';
