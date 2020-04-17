@@ -18,10 +18,7 @@ describe('Images addon', function () {
     });
 
     it('creates preview image before upload', function (done) {
-        var $p = this.$el.find('p');
-
-        placeCaret($p.get(0), 0);
-        $p.click();
+        this.$el.find('p').click();
 
         this.addon.uploadAdd(null, {
             autoUpload: true,
@@ -60,12 +57,8 @@ describe('Images addon', function () {
     });
 
     it('uploads without preview when it is set like this in options', function (done) {
-        var $p = this.$el.find('p');
-
         this.addon.options.preview = false;
-
-        placeCaret($p.get(0), 0);
-        $p.click();
+        this.$el.find('p').click();
 
         this.addon.uploadAdd(null, {
             autoUpload: true,

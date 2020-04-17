@@ -1,46 +1,32 @@
 {
   "_args": [
     [
-      {
-        "raw": "jquery-sortable@~0.9.12",
-        "scope": null,
-        "escapedName": "jquery-sortable",
-        "name": "jquery-sortable",
-        "rawSpec": "~0.9.12",
-        "spec": ">=0.9.12 <0.10.0",
-        "type": "range"
-      },
-      "/mnt/c/Users/Wellington/Documents/intranet/node_modules/medium-editor-insert-plugin"
+      "jquery-sortable@0.9.13",
+      "C:\\Users\\wellington\\Documents\\Apps\\intranet"
     ]
   ],
-  "_from": "jquery-sortable@>=0.9.12 <0.10.0",
+  "_from": "jquery-sortable@0.9.13",
   "_id": "jquery-sortable@0.9.13",
-  "_inCache": true,
+  "_inBundle": false,
+  "_integrity": "sha1-HL+2VQE6B0c3BXHwbiL1JKAP+6I=",
   "_location": "/jquery-sortable",
-  "_nodeVersion": "0.12.4",
-  "_npmUser": {
-    "name": "cedrsystems",
-    "email": "zschuster@sjcoe.net"
-  },
-  "_npmVersion": "2.10.1",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "jquery-sortable@~0.9.12",
-    "scope": null,
-    "escapedName": "jquery-sortable",
+    "type": "version",
+    "registry": true,
+    "raw": "jquery-sortable@0.9.13",
     "name": "jquery-sortable",
-    "rawSpec": "~0.9.12",
-    "spec": ">=0.9.12 <0.10.0",
-    "type": "range"
+    "escapedName": "jquery-sortable",
+    "rawSpec": "0.9.13",
+    "saveSpec": null,
+    "fetchSpec": "0.9.13"
   },
   "_requiredBy": [
     "/medium-editor-insert-plugin"
   ],
   "_resolved": "https://registry.npmjs.org/jquery-sortable/-/jquery-sortable-0.9.13.tgz",
-  "_shasum": "1cbfb655013a0747370571f06e22f524a00ffba2",
-  "_shrinkwrap": null,
-  "_spec": "jquery-sortable@~0.9.12",
-  "_where": "/mnt/c/Users/Wellington/Documents/intranet/node_modules/medium-editor-insert-plugin",
+  "_spec": "0.9.13",
+  "_where": "C:\\Users\\wellington\\Documents\\Apps\\intranet",
   "author": "",
   "bugs": {
     "url": "https://github.com/johnny/jquery-sortable/issues"
@@ -49,13 +35,6 @@
     "jquery": "^2.1.2"
   },
   "description": "jquery plugin for sortable, nestable lists",
-  "devDependencies": {},
-  "directories": {},
-  "dist": {
-    "shasum": "1cbfb655013a0747370571f06e22f524a00ffba2",
-    "tarball": "https://registry.npmjs.org/jquery-sortable/-/jquery-sortable-0.9.13.tgz"
-  },
-  "gitHead": "35f4ffaf5802ebf61202279cbab5037edf2af82a",
   "homepage": "https://github.com/johnny/jquery-sortable",
   "keywords": [
     "sortable",
@@ -66,15 +45,7 @@
   ],
   "license": "BSD-3",
   "main": "./source/js/jquery-sortable.js",
-  "maintainers": [
-    {
-      "name": "cedrsystems",
-      "email": "zschuster@sjcoe.net"
-    }
-  ],
   "name": "jquery-sortable",
-  "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/johnny/jquery-sortable.git"

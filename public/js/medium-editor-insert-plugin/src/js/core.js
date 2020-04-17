@@ -51,9 +51,6 @@
         }
         this.options = $.extend(true, {}, defaults, options);
         this.options.editor = editor;
-        if (options) {
-            options.editor = editor; // Restore original object definition
-        }
 
         this._defaults = defaults;
         this._name = pluginName;
@@ -311,7 +308,7 @@
             return;
         }
 
-        if (this.$el.html().length === 0) {
+        if (this.$el.children().length === 0) {
             this.$el.html(this.templates['src/js/templates/core-empty-line.hbs']().trim());
         }
 

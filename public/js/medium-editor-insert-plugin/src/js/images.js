@@ -386,7 +386,7 @@
         if (this.options.preview && data.context) {
             domImage = this.getDOMImage();
             domImage.onload = function () {
-                data.context.find('img').attr('src', img);
+                data.context.find('img').attr('src', domImage.src);
 
                 if (this.options.uploadCompleted) {
                     this.options.uploadCompleted(data.context, data);
@@ -520,7 +520,7 @@
             if (selection && selection.rangeCount) {
                 range = selection.getRangeAt(0);
                 current = range.commonAncestorContainer;
-                $current = current.nodeName === '#text' || current.nodeName === 'BR' ? $(current).parent() : $(current);
+                $current = current.nodeName === '#text' ? $(current).parent() : $(current);
                 caretPosition = MediumEditor.selection.getCaretOffsets(current).left;
 
                 // Is backspace pressed and caret is at the beginning of a paragraph, get previous element
@@ -546,7 +546,7 @@
 
             if (images.length) {
                 for (i = 0; i < images.length; i++) {
-                    this.deleteFile(images[i].attr('src'), images[i]);
+                    this.deleteFile(images[i].attr('src'));
 
                     $parent = images[i].closest('.medium-insert-images');
                     images[i].closest('figure').remove();
@@ -577,25 +577,17 @@
     /**
      * Makes ajax call to deleteScript
      *
-     * @param {string} file The name of the file to delete
-     * @param {jQuery} $el The jQuery element of the file to delete
+     * @param {String} file File name
      * @returns {void}
      */
 
-    Images.prototype.deleteFile = function (file, $el) {
-        // only take action if there is a truthy value
+    Images.prototype.deleteFile = function (file) {
         if (this.options.deleteScript) {
-            // try to run it as a callback
-            if (typeof this.options.deleteScript === 'function') {
-                this.options.deleteScript(file, $el);
-            // otherwise, it's probably a string, call it as ajax
-            } else {
-                $.ajax($.extend(true, {}, {
-                    url: this.options.deleteScript,
-                    type: this.options.deleteMethod || 'POST',
-                    data: { file: file }
-                }, this.options.fileDeleteOptions));
-            }
+            $.ajax($.extend(true, {}, {
+                url: this.options.deleteScript,
+                type: this.options.deleteMethod || 'POST',
+                data: { file: file }
+            }, this.options.fileDeleteOptions));
         }
     };
 
