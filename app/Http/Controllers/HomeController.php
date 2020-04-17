@@ -68,18 +68,13 @@ class HomeController extends Controller
             $costs = new Collection($this->getCenterOfCost($choice));
             foreach($costs as $key => $cost){
                 $epi =  Epi::centerOfCost(substr($cost->Usu_CodCcu,0,5))->first();
-                $costs[$key]->epi = $epi->meta;
+                if(!empty($epi)){
+                    $costs[$key]->epi = $epi->meta;
+                }
             }
-            //$costs = $costs->map(function($cc){
-            //    $cc->epi = @(Epi::centerOfCost(substr($cc->Usu_CodCcu,0,5))->first())->meta;
-            //    return $cc;
-            //});
-
         }catch (\Exception $e){
             $costs = 'null';
-
         }
-
         return view('home.cost',['costs'=>$costs,'choice'=>$choice]);
     }
 }
