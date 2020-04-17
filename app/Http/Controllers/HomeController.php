@@ -66,10 +66,14 @@ class HomeController extends Controller
         $costs = [];
         try {
             $costs = new Collection($this->getCenterOfCost($choice));
-            $costs = $costs->map(function($cc){
-                $cc->epi = @(Epi::centerOfCost(substr($cc->Usu_CodCcu,0,5))->first())->meta;
-                return $cc;
-            });
+            foreach($costs as $key => $cost){
+                $epi =  Epi::centerOfCost(substr($cost->Usu_CodCcu,0,5))->first();
+                $costs[$key]->epi = $epi->meta;
+            }
+            //$costs = $costs->map(function($cc){
+            //    $cc->epi = @(Epi::centerOfCost(substr($cc->Usu_CodCcu,0,5))->first())->meta;
+            //    return $cc;
+            //});
 
         }catch (\Exception $e){
             $costs = 'null';

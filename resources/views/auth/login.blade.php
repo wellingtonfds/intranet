@@ -9,7 +9,7 @@
               action="{{ env('ENABLE_LOGIN_LDAP')?'/login/ldap':route('login') }}">
             {{ csrf_field() }}
             <label for="email">E-Mail</label>
-            <div class="col-md-6">
+            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <input id="email" type="email" class="w3-input {{ $errors->has('email') ? ' w3-red' : '' }}" name="email"
                        value="{{ old('email') }}" required autofocus>
                 @if ($errors->has('email'))
