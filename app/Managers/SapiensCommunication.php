@@ -63,6 +63,7 @@ trait SapiensCommunication
     AND e085cto.CodCli = usu_t100con.usu_empcon
     AND e085cto.SeqCto = usu_t100con.usu_codcon
     AND e085cto.usu_codcar IN (1,2,5,9)
+    AND e085cto.codniv = 5
     AND usu_t100con.usu_datbas = (SELECT MAX(A.usu_datbas)       
                                     FROM sapiens..usu_t100con A,              
                                          sapiens..e085cto B                   
