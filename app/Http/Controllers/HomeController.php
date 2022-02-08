@@ -19,7 +19,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        if(env('ENABLE_LOGIN_LDAP'))
+        if (env('ENABLE_LOGIN_LDAP'))
             $this->middleware('auth');
     }
 
@@ -31,46 +31,49 @@ class HomeController extends Controller
     public function index()
     {
         $lastProcedures = $lastProcedures = Procedure::where('date_publish', '>', Carbon::now()->subDays(5))
-            ->where('publish','=',true)
+            ->where('publish', '=', true)
             ->limit(5)
             ->get();
 
-        return view('home/home',[
-            'lastProcedures'=>$lastProcedures,
+        return view('home/home', [
+            'lastProcedures' => $lastProcedures,
         ]);
     }
 
     /**
      * @return mixed
      */
-    public function initial(){
-        $birthDays =[];
-        try{
+    public function initial()
+    {
+        $birthDays = [];
+        try {
             $birthDays = $this->getBirthdays();
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $birthDays = 'null';
         }
-        $posts = Post::where('status_post_id','=',2)->orderBy('created_at','DESC')->paginate(5);
-        return view('home',['posts'=>$posts,'birthDays'=>$birthDays]);
+        $posts = Post::where('status_post_id', '=', 2)->orderBy('created_at', 'DESC')->paginate(5);
+        return view('home', ['posts' => $posts, 'birthDays' => $birthDays]);
     }
 
     /**
      * @param $choice
      * @return mixed
      */
-    public function centerOfCost($choice){
-        if($choice == 'sede')
-            return view('home.sede');
+    public function centerOfCost($choice)
+    {
+        if ($choice == 'sede') {
+
+            return view('home.sede', ['cc' => $this->getCenterOfCostSede()]);
+        }
+
 
         $costs = [];
         try {
             $costs = $this->getCenterOfCost($choice);
-
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $costs = 'null';
-
         }
 
-        return view('home.cost',['costs'=>$costs,'choice'=>$choice]);
+        return view('home.cost', ['costs' => $costs, 'choice' => $choice]);
     }
 }

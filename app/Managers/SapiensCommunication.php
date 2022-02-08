@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Wellington
@@ -17,7 +18,8 @@ trait SapiensCommunication
      * @return mixed
      * @throws \Exception
      */
-    protected function getBirthdays(){
+    protected function getBirthdays()
+    {
 
         $sql = "
             SELECT vetorh..r034fun.datnas,
@@ -32,9 +34,9 @@ trait SapiensCommunication
             AND vetorh..r016orn.numloc = vetorh..r034fun.numloc
             ORDER BY vetorh..R034FUN.nomfun
         ";
-        try{
+        try {
             return DB::connection('sqlsrv')->select(DB::raw($sql));
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             throw new \Exception("Sem conexão com banco de dados");
         }
     }
@@ -42,7 +44,8 @@ trait SapiensCommunication
     /**
      * Choice Facilities or Gerenciamento
      */
-    protected function getCenterOfCost($choice){
+    protected function getCenterOfCost($choice)
+    {
         $sql = "
             SELECT usu_t100ccu.usu_codccu AS 'Usu_CodCcu', 
        E044CCU.DesCcu AS 'Usu_DesCcu',
@@ -69,13 +72,28 @@ trait SapiensCommunication
             E085cto.usu_codcar,
             E085CTO.usu_codent
         ";
-        try{
+        try {
             return DB::connection('sqlsrv')->select(DB::raw($sql));
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             throw new \Exception("Sem conexão com banco de dados");
         }
     }
 
+    protected function getCenterOfCostSede()
+    {
 
-
+        $sql = "
+            SELECT E044CCU.CodCcu, E044CCU.DesCcu
+                FROM sapiens..e044ccu 
+                WHERE E044CCU.CodEmp = 1 
+                    AND E044CCU.AceRat = 'S' 
+                    AND E044CCU.DesCcu LIKE '%ADM Central%' 
+                ORDER BY E044CCU.CodCcu
+        ";
+        try {
+            return DB::connection('sqlsrv')->select(DB::raw($sql));
+        } catch (\Exception $ex) {
+            throw new \Exception("Sem conexão com banco de dados");
+        }
+    }
 }
